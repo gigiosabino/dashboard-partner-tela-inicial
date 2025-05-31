@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   LineChart,
@@ -25,11 +24,17 @@ const monthlyData = [
 ];
 
 const statusData = [
-  { name: "Em análise", value: 145, color: "#F59E0B" },
+  { name: "Em analise", value: 145, color: "#F59E0B" },
   { name: "Aprovada", value: 234, color: "#3B82F6" },
-  { name: "Finalizada", value: 789, color: "#059669" },
-  { name: "Liberada", value: 567, color: "#6366F1" },
-  { name: "Paga", value: 856, color: "#10B981" },
+  { name: "Finalizada", value: 189, color: "#059669" },
+  { name: "Liberada", value: 167, color: "#6366F1" },
+  { name: "Cedida", value: 156, color: "#8B5CF6" },
+  { name: "Paga", value: 256, color: "#10B981" },
+  { name: "Pendente pagamento", value: 89, color: "#EF4444" },
+  { name: "Cancelada", value: 45, color: "#6B7280" },
+  { name: "Conferida", value: 78, color: "#14B8A6" },
+  { name: "Pendente", value: 123, color: "#F97316" },
+  { name: "Recusada", value: 67, color: "#DC2626" },
 ];
 
 const weeklyData = [
@@ -87,7 +92,7 @@ export function ChartsSection() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
                 data={statusData}
@@ -95,8 +100,10 @@ export function ChartsSection() {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius={90}
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                labelLine={false}
+                fontSize={10}
               >
                 {statusData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
