@@ -25,11 +25,11 @@ const monthlyData = [
 ];
 
 const statusData = [
-  { name: "Pagas", value: 856, color: "#10B981" },
-  { name: "Cedidas", value: 423, color: "#8B5CF6" },
-  { name: "Finalizadas", value: 789, color: "#059669" },
-  { name: "Liberadas", value: 567, color: "#6366F1" },
-  { name: "Pendentes", value: 89, color: "#F59E0B" },
+  { name: "Em análise", value: 145, color: "#F59E0B" },
+  { name: "Aprovada", value: 234, color: "#3B82F6" },
+  { name: "Finalizada", value: 789, color: "#059669" },
+  { name: "Liberada", value: 567, color: "#6366F1" },
+  { name: "Paga", value: 856, color: "#10B981" },
 ];
 
 const weeklyData = [
