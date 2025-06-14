@@ -8,8 +8,6 @@ import {
   Unlock,
   Clock,
   DollarSign,
-  Percent,
-  Users,
 } from "lucide-react";
 
 const metrics = [
@@ -68,22 +66,6 @@ const metrics = [
     icon: DollarSign,
     color: "text-blue-600",
     bgColor: "bg-blue-50",
-  },
-  {
-    title: "FEE BMP",
-    value: "R$ 245.678",
-    subtitle: "valor calculado",
-    icon: Percent,
-    color: "text-yellow-600",
-    bgColor: "bg-yellow-50",
-  },
-  {
-    title: "Clientes Cadastrados",
-    value: "456",
-    subtitle: "no mês vigente",
-    icon: Users,
-    color: "text-teal-600",
-    bgColor: "bg-teal-50",
   },
 ];
 

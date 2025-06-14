@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   LineChart,
@@ -13,6 +14,10 @@ import {
   Pie,
   Cell,
 } from "recharts";
+
+interface ChartsSectionProps {
+  selectedPeriod: string;
+}
 
 const monthlyData = [
   { month: "Jan", propostas: 120, valor: 2400000 },
@@ -47,37 +52,59 @@ const weeklyData = [
   { day: "Dom", propostas: 18 },
 ];
 
-export function ChartsSection() {
+export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
+  // Simular mudança de dados baseado no período selecionado
+  const getDataByPeriod = () => {
+    console.log("Período selecionado:", selectedPeriod);
+    // Aqui você implementaria a lógica para buscar dados baseados no período
+    return monthlyData;
+  };
+
+  const currentData = getDataByPeriod();
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Evolução Mensal */}
-      <Card className="col-span-1 lg:col-span-2">
+      {/* Contratações Mensais */}
+      <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">
-            Evolução Mensal de Propostas e Valor Financiado
+            Contratações Mensais
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyData}>
+            <BarChart data={currentData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
-              <YAxis yAxisId="left" />
-              <YAxis yAxisId="right" orientation="right" />
+              <YAxis />
+              <Tooltip formatter={(value) => [value, "Propostas"]} />
+              <Bar dataKey="propostas" fill="#3B82F6" />
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/* Valor Financiado Mensal */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            Valor Financiado Mensal
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={currentData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
               <Tooltip 
-                formatter={(value, name) => [
-                  name === "propostas" ? value : `R$ ${value.toLocaleString()}`,
-                  name === "propostas" ? "Propostas" : "Valor Financiado"
-                ]}
+                formatter={(value) => [`R$ ${value.toLocaleString()}`, "Valor Financiado"]}
               />
-              <Bar yAxisId="left" dataKey="propostas" fill="#3B82F6" name="propostas" />
               <Line
-                yAxisId="right"
                 type="monotone"
                 dataKey="valor"
                 stroke="#10B981"
                 strokeWidth={3}
-                name="valor"
               />
             </LineChart>
           </ResponsiveContainer>

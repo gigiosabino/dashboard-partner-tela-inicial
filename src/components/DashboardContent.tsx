@@ -1,11 +1,15 @@
 
+import { useState } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Search, Clock, User } from "lucide-react";
 import { MetricsCards } from "@/components/MetricsCards";
 import { ChartsSection } from "@/components/ChartsSection";
+import { PeriodFilter } from "@/components/PeriodFilter";
 
 export function DashboardContent() {
+  const [selectedPeriod, setSelectedPeriod] = useState("last-6-months");
+
   return (
     <div className="flex-1">
       {/* Header */}
@@ -42,13 +46,19 @@ export function DashboardContent() {
 
       {/* Main Content */}
       <main className="p-6 space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Dashboard de Parceiros</h1>
-          <p className="text-gray-600">Visualize as principais métricas e indicadores do seu negócio</p>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Dashboard de Parceiros</h1>
+            <p className="text-gray-600">Visualize as principais métricas e indicadores do seu negócio</p>
+          </div>
+          <PeriodFilter 
+            selectedPeriod={selectedPeriod} 
+            onPeriodChange={setSelectedPeriod}
+          />
         </div>
 
         <MetricsCards />
-        <ChartsSection />
+        <ChartsSection selectedPeriod={selectedPeriod} />
       </main>
       
       {/* Footer */}
