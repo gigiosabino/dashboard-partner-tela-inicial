@@ -1,30 +1,16 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 
 interface ChartsSectionProps {
   selectedPeriod: string;
 }
-
-const monthlyData = [
-  { month: "Jan", propostas: 120 },
-  { month: "Fev", propostas: 190 },
-  { month: "Mar", propostas: 150 },
-  { month: "Abr", propostas: 280 },
-  { month: "Mai", propostas: 320 },
-  { month: "Jun", propostas: 290 },
-];
 
 const statusData = [
   { name: "Em análise", value: 145, color: "#F59E0B" },
@@ -43,63 +29,40 @@ const statusData = [
 export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   const getDataByPeriod = () => {
     console.log("Período selecionado:", selectedPeriod);
-    return monthlyData;
+    return statusData;
   };
 
   const currentData = getDataByPeriod();
 
   return (
-    <div className="space-y-6">
-      {/* Propostas x Status - ocupa 2 colunas completas */}
-      <Card className="h-[400px]">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">
-            Propostas x Status
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="h-[320px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={statusData}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                labelLine={false}
-                fontSize={10}
-              >
-                {statusData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => [value, "Propostas"]} />
-            </PieChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-
-      {/* Contratações mensais - ocupa 2 colunas completas */}
-      <Card className="h-[400px]">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900">
-            Contratações mensais
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="h-[320px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={currentData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip formatter={(value) => [value, "Propostas"]} />
-              <Bar dataKey="propostas" fill="#3B82F6" />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="h-[400px]">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-gray-900">
+          Propostas x Status
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="h-[320px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={currentData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              labelLine={false}
+              fontSize={10}
+            >
+              {currentData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <Tooltip formatter={(value) => [value, "Propostas"]} />
+          </PieChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
   );
 }

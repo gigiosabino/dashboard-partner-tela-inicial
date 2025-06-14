@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,7 @@ import { ChartsSection } from "@/components/ChartsSection";
 import { RecentPendencies } from "@/components/RecentPendencies";
 import { PeriodFilter } from "@/components/PeriodFilter";
 import { FinancedValueChart } from "@/components/FinancedValueChart";
+import { MonthlyContractsChart } from "@/components/MonthlyContractsChart";
 
 export function DashboardContent() {
   const [selectedPeriod, setSelectedPeriod] = useState("last-6-months");
@@ -104,14 +104,15 @@ export function DashboardContent() {
         <MetricsCards key={`metrics-${refreshKey}`} selectedPeriod={selectedPeriod} />
         
         <div className="space-y-6">
-          {/* Propostas x Status - 2 colunas completas */}
-          <div className="grid grid-cols-1 gap-6">
+          {/* Primeira linha - Propostas x Status e Pendências */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
           
-          {/* Segunda linha - Pendências e Valor financiado mensal */}
+          {/* Segunda linha - Contratações mensais e Valor financiado mensal */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            <MonthlyContractsChart key={`contracts-${refreshKey}`} selectedPeriod={selectedPeriod} />
             <FinancedValueChart key={`financed-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
         </div>
