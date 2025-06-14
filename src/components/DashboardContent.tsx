@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
@@ -103,19 +104,15 @@ export function DashboardContent() {
         <MetricsCards key={`metrics-${refreshKey}`} selectedPeriod={selectedPeriod} />
         
         <div className="space-y-6">
-          {/* Propostas x Status - largura completa */}
-          <div>
+          {/* Propostas x Status - 2 colunas completas */}
+          <div className="grid grid-cols-1 gap-6">
             <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
           
           {/* Segunda linha - Pendências e Valor financiado mensal */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <div>
-              <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
-            </div>
-            <div>
-              <FinancedValueChart key={`financed-${refreshKey}`} selectedPeriod={selectedPeriod} />
-            </div>
+            <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            <FinancedValueChart key={`financed-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
         </div>
       </main>

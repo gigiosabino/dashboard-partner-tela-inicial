@@ -1,7 +1,6 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  LineChart,
-  Line,
   BarChart,
   Bar,
   XAxis,
@@ -19,12 +18,12 @@ interface ChartsSectionProps {
 }
 
 const monthlyData = [
-  { month: "Jan", propostas: 120, valor: 2400000 },
-  { month: "Fev", propostas: 190, valor: 3200000 },
-  { month: "Mar", propostas: 150, valor: 2800000 },
-  { month: "Abr", propostas: 280, valor: 4500000 },
-  { month: "Mai", propostas: 320, valor: 5200000 },
-  { month: "Jun", propostas: 290, valor: 4800000 },
+  { month: "Jan", propostas: 120 },
+  { month: "Fev", propostas: 190 },
+  { month: "Mar", propostas: 150 },
+  { month: "Abr", propostas: 280 },
+  { month: "Mai", propostas: 320 },
+  { month: "Jun", propostas: 290 },
 ];
 
 const statusData = [
@@ -42,10 +41,8 @@ const statusData = [
 ];
 
 export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
-  // Simular mudança de dados baseado no período selecionado
   const getDataByPeriod = () => {
     console.log("Período selecionado:", selectedPeriod);
-    // Aqui você implementaria a lógica para buscar dados baseados no período
     return monthlyData;
   };
 
@@ -84,7 +81,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
         </CardContent>
       </Card>
 
-      {/* Contratações mensais - ocupa 2 colunas */}
+      {/* Contratações mensais - ocupa 2 colunas completas */}
       <Card className="h-[400px]">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">
