@@ -9,6 +9,14 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 // Dados mockados da proposta
 const propostaDetalhes = {
@@ -107,9 +115,32 @@ export function PropostaDetalhesContent() {
         </CollapsibleTrigger>
         <CollapsibleContent className="px-6 pb-4">
           <div className="border-t pt-4">
-            <p className="text-sm text-gray-600">
-              Conteúdo de {bloco} será exibido aqui quando implementado.
-            </p>
+            {bloco === "Assinantes (CCB Digital)" ? (
+              <div className="space-y-4">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nome</TableHead>
+                      <TableHead>E-mail</TableHead>
+                      <TableHead>Documento</TableHead>
+                      <TableHead>Celular</TableHead>
+                      <TableHead>Identificador</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center text-gray-500 py-8">
+                        Nenhum assinante cadastrado
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
+            ) : (
+              <p className="text-sm text-gray-600">
+                Conteúdo de {bloco} será exibido aqui quando implementado.
+              </p>
+            )}
           </div>
         </CollapsibleContent>
       </Collapsible>
