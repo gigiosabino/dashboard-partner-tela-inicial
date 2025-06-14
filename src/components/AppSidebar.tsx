@@ -87,7 +87,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild className="text-white hover:bg-gray-700 bg-blue-600">
                     <Link to="/">
                       <BarChart3 className="w-4 h-4" />
-                      <span>Dashboard</span>
+                      <span>Início</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
