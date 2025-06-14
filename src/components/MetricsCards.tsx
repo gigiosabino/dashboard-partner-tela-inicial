@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FileText,
@@ -30,15 +29,6 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
 
   const metrics = [
     {
-      title: "Valor total financiado",
-      value: "R$ 12.456.789",
-      subtitle: "no período selecionado",
-      icon: DollarSign,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      exportable: false,
-    },
-    {
       title: "Propostas criadas",
       value: "1,234",
       subtitle: "no período selecionado",
@@ -47,6 +37,15 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       bgColor: "bg-blue-50",
       exportable: true,
       status: "criadas",
+    },
+    {
+      title: "Valor total financiado",
+      value: "R$ 12.456.789",
+      subtitle: "no período selecionado",
+      icon: DollarSign,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      exportable: false,
     },
     {
       title: "Propostas aprovadas",
