@@ -1,4 +1,3 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,7 +70,6 @@ export function GestaoAcessosContent() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [usuarioEditando, setUsuarioEditando] = useState<any>(null);
   const [nomeEditando, setNomeEditando] = useState("");
-  const [emailEditando, setEmailEditando] = useState("");
   const [perfisEditando, setPerfisEditando] = useState<string[]>([]);
 
   const handleEditarUsuario = (id: number) => {
@@ -79,7 +77,6 @@ export function GestaoAcessosContent() {
     if (usuario) {
       setUsuarioEditando(usuario);
       setNomeEditando(usuario.nome);
-      setEmailEditando(usuario.email);
       setPerfisEditando([...usuario.perfis]);
       setIsEditModalOpen(true);
     }
@@ -89,7 +86,6 @@ export function GestaoAcessosContent() {
     console.log('Salvando edição:', {
       id: usuarioEditando.id,
       nome: nomeEditando,
-      email: emailEditando,
       perfis: perfisEditando
     });
     // Aqui seria implementada a lógica para salvar as alterações
@@ -101,7 +97,6 @@ export function GestaoAcessosContent() {
     setIsEditModalOpen(false);
     setUsuarioEditando(null);
     setNomeEditando("");
-    setEmailEditando("");
     setPerfisEditando([]);
   };
 
@@ -241,16 +236,12 @@ export function GestaoAcessosContent() {
             </div>
             
             <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="email" className="text-right text-sm font-medium">
+              <label className="text-right text-sm font-medium">
                 Email
               </label>
-              <Input
-                id="email"
-                type="email"
-                value={emailEditando}
-                onChange={(e) => setEmailEditando(e.target.value)}
-                className="col-span-3"
-              />
+              <div className="col-span-3 px-3 py-2 bg-gray-50 border rounded-md text-sm text-gray-600">
+                {usuarioEditando?.email}
+              </div>
             </div>
             
             <div className="grid grid-cols-4 items-start gap-4">
