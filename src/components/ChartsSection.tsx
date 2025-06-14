@@ -14,17 +14,17 @@ interface ChartsSectionProps {
 }
 
 const statusData = [
-  { name: "Paga", value: 256, color: "#10B981" },
-  { name: "Aprovada", value: 234, color: "#3B82F6" },
-  { name: "Finalizada", value: 189, color: "#059669" },
-  { name: "Liberada", value: 167, color: "#6366F1" },
-  { name: "Cedida", value: 156, color: "#8B5CF6" },
-  { name: "Em análise", value: 145, color: "#F59E0B" },
-  { name: "Pendente", value: 123, color: "#F97316" },
-  { name: "Pendente pagamento", value: 89, color: "#EF4444" },
-  { name: "Conferida", value: 78, color: "#14B8A6" },
-  { name: "Recusada", value: 67, color: "#DC2626" },
-  { name: "Cancelada", value: 45, color: "#6B7280" },
+  { name: "Em Análise", code: "1", value: 145, color: "#F59E0B" },
+  { name: "Aprovada", code: "2", value: 234, color: "#3B82F6" },
+  { name: "Recusada", code: "3", value: 67, color: "#DC2626" },
+  { name: "Cancelada", code: "4", value: 45, color: "#6B7280" },
+  { name: "Pendente", code: "5", value: 123, color: "#F97316" },
+  { name: "Finalizada", code: "6", value: 189, color: "#059669" },
+  { name: "Conferida", code: "7", value: 78, color: "#14B8A6" },
+  { name: "Liberada", code: "8", value: 167, color: "#6366F1" },
+  { name: "Paga", code: "9", value: 256, color: "#10B981" },
+  { name: "Cedida", code: "10", value: 156, color: "#8B5CF6" },
+  { name: "Pendente Pagamento", code: "11", value: 89, color: "#EF4444" },
 ];
 
 export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
@@ -34,6 +34,26 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   };
 
   const currentData = getDataByPeriod();
+
+  // Função personalizada para renderizar a legenda
+  const renderCustomLegend = (props: any) => {
+    const { payload } = props;
+    return (
+      <ul className="space-y-1 text-xs">
+        {payload.map((entry: any, index: number) => (
+          <li key={`item-${index}`} className="flex items-center space-x-2">
+            <span
+              className="w-2 h-2 rounded-full flex-shrink-0"
+              style={{ backgroundColor: entry.color }}
+            />
+            <span className="text-gray-700 truncate">
+              {entry.payload.name} ({entry.payload.code})
+            </span>
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   return (
     <Card className="h-[400px] hover:shadow-lg transition-shadow duration-200">
@@ -59,18 +79,22 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
               ))}
             </Pie>
             <Tooltip 
-              formatter={(value) => [value, "Propostas"]}
+              formatter={(value, name, props) => [
+                value, 
+                `${props.payload.name} (${props.payload.code})`
+              ]}
               labelStyle={{ fontSize: '12px' }}
             />
             <Legend 
+              content={renderCustomLegend}
               verticalAlign="middle" 
               align="left"
               layout="vertical"
-              iconSize={8}
               wrapperStyle={{
                 paddingRight: '20px',
                 fontSize: '11px',
-                lineHeight: '14px'
+                lineHeight: '14px',
+                width: '180px'
               }}
             />
           </PieChart>
