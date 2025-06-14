@@ -16,7 +16,6 @@ import {
   Users,
   Shield,
   FileCheck,
-  Settings,
   MessageSquare,
   BarChart3,
   FileSpreadsheet,
@@ -51,11 +50,6 @@ const menuItems = [
   {
     title: "Gestão de acessos",
     icon: Users,
-    items: []
-  },
-  {
-    title: "Outros serviços",
-    icon: Settings,
     items: []
   },
   {
