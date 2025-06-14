@@ -138,10 +138,10 @@ export function DashboardContent() {
             <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
           
-          {/* Segunda linha - Contratações mensais e Valor financiado mensal */}
+          {/* Segunda linha - Valor financiado mensal e Contratações mensais */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <MonthlyContractsChart key={`contracts-${refreshKey}`} selectedPeriod={selectedPeriod} />
             <FinancedValueChart key={`financed-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            <MonthlyContractsChart key={`contracts-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
         </div>
       </main>
