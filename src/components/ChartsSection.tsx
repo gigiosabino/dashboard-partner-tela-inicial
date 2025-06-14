@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   LineChart,
@@ -54,89 +53,56 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
 
   return (
     <div className="space-y-6">
-      {/* Primeira linha - Propostas x Status */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Propostas x Status */}
-        <Card className="h-[400px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Propostas x Status
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[320px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={statusData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelLine={false}
-                  fontSize={10}
-                >
-                  {statusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => [value, "Propostas"]} />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Propostas x Status - ocupa 2 colunas completas */}
+      <Card className="h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            Propostas x Status
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="h-[320px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={statusData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                labelLine={false}
+                fontSize={10}
+              >
+                {statusData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => [value, "Propostas"]} />
+            </PieChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
-      {/* Segunda linha - Contratações mensais e Valor financiado mensal */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Contratações mensais */}
-        <Card className="h-[400px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Contratações mensais
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[320px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={currentData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value) => [value, "Propostas"]} />
-                <Bar dataKey="propostas" fill="#3B82F6" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Valor financiado mensal */}
-        <Card className="h-[400px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Valor financiado mensal
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[320px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={currentData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip 
-                  formatter={(value) => [`R$ ${value.toLocaleString()}`, "Valor financiado"]}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="valor"
-                  stroke="#10B981"
-                  strokeWidth={3}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Contratações mensais - ocupa 2 colunas */}
+      <Card className="h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            Contratações mensais
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="h-[320px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={currentData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip formatter={(value) => [value, "Propostas"]} />
+              <Bar dataKey="propostas" fill="#3B82F6" />
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }
