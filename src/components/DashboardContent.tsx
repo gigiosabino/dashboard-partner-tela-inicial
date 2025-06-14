@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
-import { Search, Clock, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Clock, User, RefreshCw } from "lucide-react";
 import { MetricsCards } from "@/components/MetricsCards";
 import { ChartsSection } from "@/components/ChartsSection";
 import { RecentPendencies } from "@/components/RecentPendencies";
@@ -17,10 +18,26 @@ export function DashboardContent() {
     startDate: null,
     endDate: null,
   });
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleDateRangeChange = (startDate: Date | null, endDate: Date | null) => {
     setCustomDateRange({ startDate, endDate });
     console.log("Data range changed:", startDate, endDate);
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    console.log("Atualizando dashboard...");
+    
+    // Simula um delay de carregamento
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Força a re-renderização de todos os componentes filhos
+    setRefreshKey(prev => prev + 1);
+    setIsRefreshing(false);
+    
+    console.log("Dashboard atualizado!");
   };
 
   return (
@@ -36,6 +53,17 @@ export function DashboardContent() {
           </div>
           
           <div className="flex items-center space-x-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center space-x-2"
+            >
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span>{isRefreshing ? 'Atualizando...' : 'Atualizar'}</span>
+            </Button>
+            
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input 
@@ -71,14 +99,14 @@ export function DashboardContent() {
           />
         </div>
 
-        <MetricsCards selectedPeriod={selectedPeriod} />
+        <MetricsCards key={`metrics-${refreshKey}`} selectedPeriod={selectedPeriod} />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <ChartsSection selectedPeriod={selectedPeriod} />
+            <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
           <div>
-            <RecentPendencies selectedPeriod={selectedPeriod} />
+            <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
           </div>
         </div>
       </main>
