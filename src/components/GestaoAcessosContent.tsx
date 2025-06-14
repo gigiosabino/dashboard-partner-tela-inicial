@@ -69,7 +69,8 @@ export function GestaoAcessosContent() {
 
   const filteredUsuarios = usuarios.filter(usuario => 
     usuario.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    usuario.email.toLowerCase().includes(searchTerm.toLowerCase())
+    usuario.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    usuario.perfis.some(perfil => perfil.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -95,7 +96,7 @@ export function GestaoAcessosContent() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
-                  placeholder="Buscar por nome ou email..."
+                  placeholder="Buscar por nome, email ou perfil..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 w-80"
