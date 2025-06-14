@@ -31,7 +31,7 @@ import { useState } from "react";
 // Dados mockados para demonstração
 const propostas = [
   {
-    numero: "PROP-2024-001",
+    numero: "004935629",
     dataCriacao: "15/01/2024",
     nomeCliente: "João Silva Santos",
     documentoFederal: "123.456.789-00",
@@ -42,7 +42,7 @@ const propostas = [
     tipoContrato: "Crédito Pessoal"
   },
   {
-    numero: "PROP-2024-002",
+    numero: "004935630",
     dataCriacao: "16/01/2024",
     nomeCliente: "Ana Carolina Lima",
     documentoFederal: "987.654.321-00",
@@ -53,7 +53,7 @@ const propostas = [
     tipoContrato: "Financiamento"
   },
   {
-    numero: "PROP-2024-003",
+    numero: "004935631",
     dataCriacao: "17/01/2024",
     nomeCliente: "Pedro Henrique Costa",
     documentoFederal: "456.789.123-00",
@@ -64,7 +64,7 @@ const propostas = [
     tipoContrato: "Crédito Pessoal"
   },
   {
-    numero: "PROP-2024-004",
+    numero: "004935632",
     dataCriacao: "18/01/2024",
     nomeCliente: "Mariana Ferreira",
     documentoFederal: "789.123.456-00",
@@ -75,7 +75,7 @@ const propostas = [
     tipoContrato: "Financiamento"
   },
   {
-    numero: "PROP-2024-005",
+    numero: "004935633",
     dataCriacao: "19/01/2024",
     nomeCliente: "Gabriel Almeida",
     documentoFederal: "321.654.987-00",
