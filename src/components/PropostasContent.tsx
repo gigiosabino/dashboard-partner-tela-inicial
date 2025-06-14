@@ -15,11 +15,16 @@ import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DateRangePicker } from "@/components/DateRangePicker";
 import { exportToCSV } from "@/utils/csvExport";
 import { useState } from "react";
 
@@ -99,6 +104,11 @@ const getStatusColor = (status: string) => {
 
 export function PropostasContent() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
+  const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
+  const [filterProposalNumber, setFilterProposalNumber] = useState("");
+  const [filterSituation, setFilterSituation] = useState("");
+  const [filterContractType, setFilterContractType] = useState("");
 
   const handleVerDetalhes = (numeroProposta: string) => {
     console.log("Ver detalhes da proposta:", numeroProposta);
@@ -125,19 +135,18 @@ export function PropostasContent() {
     exportToCSV(propostas, 'propostas.csv', headers);
   };
 
-  const handleFilterByPeriod = (period: string) => {
-    console.log("Filtrar por período:", period);
-    // Implementar filtro por período
+  const handleDateRangeChange = (startDate: Date | null, endDate: Date | null) => {
+    setFilterStartDate(startDate);
+    setFilterEndDate(endDate);
+    console.log("Filtrar por período:", { startDate, endDate });
   };
 
-  const handleFilterBySituation = (situation: string) => {
-    console.log("Filtrar por situação:", situation);
-    // Implementar filtro por situação
-  };
-
-  const handleFilterByContractType = (contractType: string) => {
-    console.log("Filtrar por tipo de contrato:", contractType);
-    // Implementar filtro por tipo de contrato
+  const handleClearFilters = () => {
+    setFilterStartDate(null);
+    setFilterEndDate(null);
+    setFilterProposalNumber("");
+    setFilterSituation("");
+    setFilterContractType("");
   };
 
   return (
@@ -176,43 +185,62 @@ export function PropostasContent() {
                     Filtros
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56 bg-white">
-                  <DropdownMenuLabel>Filtrar por período</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => handleFilterByPeriod("ultima-semana")}>
-                    Última semana
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleFilterByPeriod("ultimo-mes")}>
-                    Último mês
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleFilterByPeriod("ultimos-3-meses")}>
-                    Últimos 3 meses
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuLabel>Filtrar por situação</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => handleFilterBySituation("Aprovada")}>
-                    Aprovada
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleFilterBySituation("Em Análise")}>
-                    Em Análise
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleFilterBySituation("Rejeitada")}>
-                    Rejeitada
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleFilterBySituation("Pendente")}>
-                    Pendente
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuLabel>Filtrar por tipo de contrato</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => handleFilterByContractType("Crédito Pessoal")}>
-                    Crédito Pessoal
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleFilterByContractType("Financiamento")}>
-                    Financiamento
-                  </DropdownMenuItem>
+                <DropdownMenuContent align="start" className="w-96 bg-white p-4">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Período</label>
+                      <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Número da Proposta</label>
+                      <Input
+                        placeholder="Digite o número da proposta"
+                        value={filterProposalNumber}
+                        onChange={(e) => setFilterProposalNumber(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Situação</label>
+                      <Select value={filterSituation} onValueChange={setFilterSituation}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione a situação" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Aprovada">Aprovada</SelectItem>
+                          <SelectItem value="Em Análise">Em Análise</SelectItem>
+                          <SelectItem value="Rejeitada">Rejeitada</SelectItem>
+                          <SelectItem value="Pendente">Pendente</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Tipo de Contrato</label>
+                      <Select value={filterContractType} onValueChange={setFilterContractType}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o tipo de contrato" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="CG">CG - Crédito Geral</SelectItem>
+                          <SelectItem value="CDC">CDC - Crédito Direto ao Consumidor</SelectItem>
+                          <SelectItem value="EP">EP - Empréstimo Pessoal</SelectItem>
+                          <SelectItem value="Crédito Pessoal">Crédito Pessoal</SelectItem>
+                          <SelectItem value="Financiamento">Financiamento</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="flex justify-end space-x-2 pt-2">
+                      <Button variant="outline" size="sm" onClick={handleClearFilters}>
+                        Limpar
+                      </Button>
+                      <Button size="sm">
+                        Aplicar Filtros
+                      </Button>
+                    </div>
+                  </div>
                 </DropdownMenuContent>
               </DropdownMenu>
 
