@@ -409,29 +409,26 @@ export function PropostaDetalhesContent() {
 
       {/* Modal para reenviar link */}
       <Dialog open={reenviarModalOpen} onOpenChange={setReenviarModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Notificar Assinante</DialogTitle>
           </DialogHeader>
-          <div className="flex gap-3 py-4">
+          <div className="flex gap-4 py-6">
             <Button 
-              variant="outline" 
               onClick={() => handleReenviarVia('E-mail')}
-              className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
+              className="flex-1 justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 h-12"
             >
               EMAIL
             </Button>
             <Button 
-              variant="outline" 
               onClick={() => handleReenviarVia('WhatsApp')}
-              className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
+              className="flex-1 justify-center bg-green-600 hover:bg-green-700 text-white font-semibold py-3 h-12"
             >
               WHATSAPP
             </Button>
             <Button 
-              variant="outline" 
               onClick={() => handleReenviarVia('SMS')}
-              className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
+              className="flex-1 justify-center bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 h-12"
             >
               SMS
             </Button>
