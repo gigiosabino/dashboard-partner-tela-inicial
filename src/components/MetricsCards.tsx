@@ -8,78 +8,148 @@ import {
   Unlock,
   Clock,
   DollarSign,
+  ThumbsUp,
+  TrendingUp,
+  Percent,
+  Download,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { exportToCSV, generateMockData } from "@/utils/csvExport";
 
-const metrics = [
-  {
-    title: "Propostas Criadas",
-    value: "1,234",
-    subtitle: "no mês vigente",
-    icon: FileText,
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-  },
-  {
-    title: "Propostas Pagas",
-    value: "856",
-    subtitle: "no mês vigente",
-    icon: CheckCircle,
-    color: "text-green-600",
-    bgColor: "bg-green-50",
-  },
-  {
-    title: "Propostas Cedidas",
-    value: "423",
-    subtitle: "no mês vigente",
-    icon: ArrowRightLeft,
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
-  },
-  {
-    title: "Propostas Finalizadas",
-    value: "789",
-    subtitle: "no mês vigente",
-    icon: FileCheck,
-    color: "text-emerald-600",
-    bgColor: "bg-emerald-50",
-  },
-  {
-    title: "Propostas Liberadas",
-    value: "567",
-    subtitle: "no mês vigente",
-    icon: Unlock,
-    color: "text-indigo-600",
-    bgColor: "bg-indigo-50",
-  },
-  {
-    title: "Pendente Pagamento",
-    value: "89",
-    subtitle: "tempo real",
-    icon: Clock,
-    color: "text-orange-600",
-    bgColor: "bg-orange-50",
-  },
-  {
-    title: "Valor Total Financiado",
-    value: "R$ 12.456.789",
-    subtitle: "no mês vigente",
-    icon: DollarSign,
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-  },
-];
+interface MetricsCardsProps {
+  selectedPeriod: string;
+}
 
-export function MetricsCards() {
+export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
+  const handleExportCSV = (status: string, title: string) => {
+    const data = generateMockData(status, selectedPeriod);
+    const headers = ['id', 'cliente', 'valor', 'status', 'data', 'taxa'];
+    const filename = `${title.toLowerCase().replace(/\s+/g, '-')}-${selectedPeriod}.csv`;
+    exportToCSV(data, filename, headers);
+  };
+
+  const metrics = [
+    {
+      title: "Valor Total Financiado",
+      value: "R$ 12.456.789",
+      subtitle: "no período selecionado",
+      icon: DollarSign,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      exportable: false,
+    },
+    {
+      title: "Propostas Criadas",
+      value: "1,234",
+      subtitle: "no período selecionado",
+      icon: FileText,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      exportable: true,
+      status: "criadas",
+    },
+    {
+      title: "Propostas Aprovadas",
+      value: "987",
+      subtitle: "no período selecionado",
+      icon: ThumbsUp,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+      exportable: true,
+      status: "aprovadas",
+    },
+    {
+      title: "Propostas Finalizadas",
+      value: "789",
+      subtitle: "no período selecionado",
+      icon: FileCheck,
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
+      exportable: true,
+      status: "finalizadas",
+    },
+    {
+      title: "Propostas Liberadas",
+      value: "567",
+      subtitle: "no período selecionado",
+      icon: Unlock,
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-50",
+      exportable: true,
+      status: "liberadas",
+    },
+    {
+      title: "Propostas Pagas",
+      value: "856",
+      subtitle: "no período selecionado",
+      icon: CheckCircle,
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+      exportable: true,
+      status: "pagas",
+    },
+    {
+      title: "Pendente Pagamento",
+      value: "89",
+      subtitle: "tempo real",
+      icon: Clock,
+      color: "text-orange-600",
+      bgColor: "bg-orange-50",
+      exportable: true,
+      status: "pendente-pagamento",
+    },
+    {
+      title: "Propostas Cedidas",
+      value: "423",
+      subtitle: "no período selecionado",
+      icon: ArrowRightLeft,
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
+      exportable: true,
+      status: "cedidas",
+    },
+    {
+      title: "Ticket Médio",
+      value: "R$ 10.089",
+      subtitle: "valor médio por proposta",
+      icon: TrendingUp,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      exportable: false,
+    },
+    {
+      title: "Taxa Média de Juros",
+      value: "3,45%",
+      subtitle: "taxa média cobrada",
+      icon: Percent,
+      color: "text-purple-600",
+      bgColor: "bg-purple-50",
+      exportable: false,
+    },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {metrics.map((metric) => (
         <Card key={metric.title} className="hover:shadow-lg transition-shadow duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
               {metric.title}
             </CardTitle>
-            <div className={`p-2 rounded-md ${metric.bgColor}`}>
-              <metric.icon className={`w-4 h-4 ${metric.color}`} />
+            <div className="flex items-center space-x-2">
+              {metric.exportable && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleExportCSV(metric.status!, metric.title)}
+                  className="h-6 w-6 p-0 hover:bg-gray-100"
+                >
+                  <Download className="w-3 h-3 text-gray-500" />
+                </Button>
+              )}
+              <div className={`p-2 rounded-md ${metric.bgColor}`}>
+                <metric.icon className={`w-4 h-4 ${metric.color}`} />
+              </div>
             </div>
           </CardHeader>
           <CardContent>

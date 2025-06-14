@@ -9,6 +9,18 @@ import { PeriodFilter } from "@/components/PeriodFilter";
 
 export function DashboardContent() {
   const [selectedPeriod, setSelectedPeriod] = useState("last-6-months");
+  const [customDateRange, setCustomDateRange] = useState<{
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startDate: null,
+    endDate: null,
+  });
+
+  const handleDateRangeChange = (startDate: Date | null, endDate: Date | null) => {
+    setCustomDateRange({ startDate, endDate });
+    console.log("Data range changed:", startDate, endDate);
+  };
 
   return (
     <div className="flex-1">
@@ -54,10 +66,11 @@ export function DashboardContent() {
           <PeriodFilter 
             selectedPeriod={selectedPeriod} 
             onPeriodChange={setSelectedPeriod}
+            onDateRangeChange={handleDateRangeChange}
           />
         </div>
 
-        <MetricsCards />
+        <MetricsCards selectedPeriod={selectedPeriod} />
         <ChartsSection selectedPeriod={selectedPeriod} />
       </main>
       
