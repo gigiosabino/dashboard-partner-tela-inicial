@@ -1,12 +1,11 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  PieChart,
+  Pie,
+  Cell,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -37,38 +36,47 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   const currentData = getDataByPeriod();
 
   return (
-    <Card className="h-[400px]">
+    <Card className="hover:shadow-lg transition-shadow duration-200">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-900">
           Propostas x Status
         </CardTitle>
       </CardHeader>
-      <CardContent className="h-[320px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={currentData}
-            layout="horizontal"
-            margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis type="number" />
-            <YAxis 
-              type="category" 
-              dataKey="name" 
-              width={75}
-              fontSize={11}
-            />
-            <Tooltip 
-              formatter={(value) => [value, "Propostas"]}
-              labelStyle={{ fontSize: '12px' }}
-            />
-            <Bar 
-              dataKey="value" 
-              fill="#3B82F6"
-              radius={[0, 4, 4, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+      <CardContent>
+        <div style={{ width: '100%', height: '320px' }}>
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={currentData}
+                dataKey="value"
+                nameKey="name"
+                cx="65%"
+                cy="50%"
+                outerRadius={80}
+                fill="#8884d8"
+              >
+                {currentData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip 
+                formatter={(value) => [value, "Propostas"]}
+                labelStyle={{ fontSize: '12px' }}
+              />
+              <Legend 
+                verticalAlign="middle" 
+                align="left"
+                layout="vertical"
+                iconSize={8}
+                wrapperStyle={{
+                  paddingRight: '20px',
+                  fontSize: '11px',
+                  lineHeight: '14px'
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
