@@ -36,7 +36,7 @@ const propostas = [
     nomeCliente: "João Silva Santos",
     documentoFederal: "123.456.789-00",
     valorSolicitado: "R$ 50.000,00",
-    prazo: "24 meses",
+    prazo: "24",
     situacao: "Aprovada",
     analista: "Maria Oliveira",
     tipoContrato: "Crédito Pessoal"
@@ -47,7 +47,7 @@ const propostas = [
     nomeCliente: "Ana Carolina Lima",
     documentoFederal: "987.654.321-00",
     valorSolicitado: "R$ 75.000,00",
-    prazo: "36 meses",
+    prazo: "36",
     situacao: "Em Análise",
     analista: "Carlos Santos",
     tipoContrato: "Financiamento"
@@ -58,7 +58,7 @@ const propostas = [
     nomeCliente: "Pedro Henrique Costa",
     documentoFederal: "456.789.123-00",
     valorSolicitado: "R$ 30.000,00",
-    prazo: "18 meses",
+    prazo: "18",
     situacao: "Rejeitada",
     analista: "Fernanda Rocha",
     tipoContrato: "Crédito Pessoal"
@@ -69,7 +69,7 @@ const propostas = [
     nomeCliente: "Mariana Ferreira",
     documentoFederal: "789.123.456-00",
     valorSolicitado: "R$ 100.000,00",
-    prazo: "48 meses",
+    prazo: "48",
     situacao: "Pendente",
     analista: "Roberto Silva",
     tipoContrato: "Financiamento"
@@ -80,7 +80,7 @@ const propostas = [
     nomeCliente: "Gabriel Almeida",
     documentoFederal: "321.654.987-00",
     valorSolicitado: "R$ 25.000,00",
-    prazo: "12 meses",
+    prazo: "12",
     situacao: "Aprovada",
     analista: "Juliana Mendes",
     tipoContrato: "Crédito Pessoal"
