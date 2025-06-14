@@ -1,4 +1,5 @@
 
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -425,14 +426,14 @@ export function PropostaDetalhesContent() {
             <Button 
               variant="outline"
               onClick={() => handleReenviarVia('WhatsApp')}
-              className="flex-1 justify-center border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-3 h-12"
+              className="flex-1 justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 h-12"
             >
               WHATSAPP
             </Button>
             <Button 
               variant="outline"
               onClick={() => handleReenviarVia('SMS')}
-              className="flex-1 justify-center border-2 border-orange-600 text-orange-600 hover:bg-orange-50 font-semibold py-3 h-12"
+              className="flex-1 justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 h-12"
             >
               SMS
             </Button>
@@ -447,3 +448,4 @@ export function PropostaDetalhesContent() {
     </div>
   );
 }
+
