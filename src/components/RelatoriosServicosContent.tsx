@@ -180,13 +180,6 @@ export function RelatoriosServicosContent() {
           )}
         </CardContent>
       </Card>
-
-      {/* Nota sobre visualização */}
-      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <p className="text-sm text-blue-800">
-          <strong>Nota:</strong> São exibidos apenas os dados correspondentes ao CNPJ da empresa logada.
-        </p>
-      </div>
     </div>
   );
 }
