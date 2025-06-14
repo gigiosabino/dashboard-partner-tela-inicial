@@ -30,7 +30,8 @@ const propostaDetalhes = {
   valorTotalDivida: "R$ 1.160,00"
 };
 
-const blocos = [
+// Blocos organizados em duas colunas
+const blocosColuna1 = [
   "Campos Adicionais",
   "Assinantes (CCB Digital)",
   "Complemento Loja",
@@ -39,7 +40,10 @@ const blocos = [
   "Boletos da Proposta",
   "Custos e Serviços Complementares",
   "Avalistas",
-  "Veículos",
+  "Veículos"
+];
+
+const blocosColuna2 = [
   "Dados do Cliente",
   "Endereço",
   "Profissional",
@@ -83,6 +87,38 @@ export function PropostaDetalhesContent() {
     navigate('/propostas');
   };
 
+  const renderBlocoColuna = (blocos: string[]) => (
+    <div className="space-y-4">
+      {blocos.map((bloco) => (
+        <div key={bloco} className="bg-white rounded-lg shadow overflow-hidden">
+          <Collapsible>
+            <CollapsibleTrigger
+              className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              onClick={() => toggleBloco(bloco)}
+            >
+              <span className="font-medium text-gray-900">{bloco}</span>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-blue-600 cursor-pointer">Atualizar</span>
+                <ChevronDown 
+                  className={`w-4 h-4 text-gray-500 transition-transform ${
+                    blocosAbertos[bloco] ? 'rotate-180' : ''
+                  }`} 
+                />
+              </div>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="px-6 pb-4">
+              <div className="border-t pt-4">
+                <p className="text-sm text-gray-600">
+                  Conteúdo de {bloco} será exibido aqui quando implementado.
+                </p>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="flex-1">
       {/* Header */}
@@ -91,7 +127,7 @@ export function PropostaDetalhesContent() {
           <div className="flex items-center space-x-4">
             <SidebarTrigger />
             <div className="text-sm text-gray-600">
-              <span>Propostas</span> > <span>Analisar Proposta</span>
+              <span>Propostas</span> &gt; <span>Analisar Proposta</span>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -186,35 +222,10 @@ export function PropostaDetalhesContent() {
           </div>
         </div>
 
-        {/* Blocos colapsáveis */}
-        <div className="space-y-4">
-          {blocos.map((bloco) => (
-            <div key={bloco} className="bg-white rounded-lg shadow overflow-hidden">
-              <Collapsible>
-                <CollapsibleTrigger
-                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-                  onClick={() => toggleBloco(bloco)}
-                >
-                  <span className="font-medium text-gray-900">{bloco}</span>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-blue-600 cursor-pointer">Atualizar</span>
-                    <ChevronDown 
-                      className={`w-4 h-4 text-gray-500 transition-transform ${
-                        blocosAbertos[bloco] ? 'rotate-180' : ''
-                      }`} 
-                    />
-                  </div>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="px-6 pb-4">
-                  <div className="border-t pt-4">
-                    <p className="text-sm text-gray-600">
-                      Conteúdo de {bloco} será exibido aqui quando implementado.
-                    </p>
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            </div>
-          ))}
+        {/* Blocos colapsáveis em duas colunas */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {renderBlocoColuna(blocosColuna1)}
+          {renderBlocoColuna(blocosColuna2)}
         </div>
       </main>
 
