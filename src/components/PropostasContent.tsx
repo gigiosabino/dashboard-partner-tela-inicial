@@ -1,4 +1,3 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +26,7 @@ import {
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { exportToCSV } from "@/utils/csvExport";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Dados mockados para demonstração
 const propostas = [
@@ -103,6 +103,7 @@ const getStatusColor = (status: string) => {
 };
 
 export function PropostasContent() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
   const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
@@ -111,7 +112,7 @@ export function PropostasContent() {
   const [filterContractType, setFilterContractType] = useState("");
 
   const handleVerDetalhes = (numeroProposta: string) => {
-    console.log("Ver detalhes da proposta:", numeroProposta);
+    navigate(`/propostas/${numeroProposta}`);
   };
 
   const handleRefresh = () => {
