@@ -1,14 +1,21 @@
+
 import { useState } from "react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Clock, User, RefreshCw } from "lucide-react";
+import { Search, Clock, User, RefreshCw, ChevronDown } from "lucide-react";
 import { MetricsCards } from "@/components/MetricsCards";
 import { ChartsSection } from "@/components/ChartsSection";
 import { RecentPendencies } from "@/components/RecentPendencies";
 import { PeriodFilter } from "@/components/PeriodFilter";
 import { FinancedValueChart } from "@/components/FinancedValueChart";
 import { MonthlyContractsChart } from "@/components/MonthlyContractsChart";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function DashboardContent() {
   const [selectedPeriod, setSelectedPeriod] = useState("last-6-months");
@@ -41,6 +48,14 @@ export function DashboardContent() {
     console.log("Dashboard atualizado!");
   };
 
+  const handleAlterarSenha = () => {
+    console.log("Alterar senha clicado");
+  };
+
+  const handleAlterarEmpresa = () => {
+    console.log("Alterar empresa clicado");
+  };
+
   return (
     <div className="flex-1">
       {/* Header */}
@@ -67,10 +82,23 @@ export function DashboardContent() {
               <span>59:51</span>
             </div>
             
-            <div className="flex items-center space-x-2">
-              <User className="w-4 h-4 text-gray-600" />
-              <span className="text-sm font-medium">PERFIL</span>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center space-x-2">
+                  <User className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm font-medium">PERFIL</span>
+                  <ChevronDown className="w-4 h-4 text-gray-600" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-white">
+                <DropdownMenuItem onClick={handleAlterarSenha}>
+                  Alterar senha
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAlterarEmpresa}>
+                  Alterar empresa
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
