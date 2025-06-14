@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -17,10 +16,10 @@ interface RelatorioItem {
 }
 
 export function RelatoriosServicosContent() {
-  const [mesInicial, setMesInicial] = useState("");
   const [anoInicial, setAnoInicial] = useState("");
-  const [mesFinal, setMesFinal] = useState("");
+  const [mesInicial, setMesInicial] = useState("");
   const [anoFinal, setAnoFinal] = useState("");
+  const [mesFinal, setMesFinal] = useState("");
   const [resultados, setResultados] = useState<RelatorioItem[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -45,7 +44,7 @@ export function RelatoriosServicosContent() {
   });
 
   const handleConsultar = async () => {
-    if (!mesInicial || !anoInicial || !mesFinal || !anoFinal) {
+    if (!anoInicial || !mesInicial || !anoFinal || !mesFinal) {
       toast({
         title: "Erro",
         description: "Por favor, preencha todos os campos de período.",
@@ -61,31 +60,37 @@ export function RelatoriosServicosContent() {
       const mockData: RelatorioItem[] = [
         {
           periodo: "Apr-25",
-          numeroTransacoes: 18,
+          numeroTransacoes: 15,
           criterio: "Consulta Padrão",
           bureau: "SCR"
         },
         {
           periodo: "Apr-25",
-          numeroTransacoes: 18,
+          numeroTransacoes: 8,
           criterio: "Consulta Padrão",
           bureau: "SCR"
         },
         {
           periodo: "May-25",
-          numeroTransacoes: 103,
+          numeroTransacoes: 45,
           criterio: "Consulta Padrão",
           bureau: "SCR"
         },
         {
           periodo: "May-25",
-          numeroTransacoes: 1,
+          numeroTransacoes: 23,
           criterio: "Consulta Padrão",
           bureau: "SCR"
         },
         {
           periodo: "Jun-25",
-          numeroTransacoes: 13,
+          numeroTransacoes: 67,
+          criterio: "Consulta Padrão",
+          bureau: "SCR"
+        },
+        {
+          periodo: "Jun-25",
+          numeroTransacoes: 12,
           criterio: "Consulta Padrão",
           bureau: "SCR"
         }
@@ -119,6 +124,17 @@ export function RelatoriosServicosContent() {
     console.log("Exportando para Excel:", resultados);
   };
 
+  // Reset mês quando ano for alterado
+  const handleAnoInicialChange = (value: string) => {
+    setAnoInicial(value);
+    setMesInicial(""); // Reset mês inicial quando ano inicial mudar
+  };
+
+  const handleAnoFinalChange = (value: string) => {
+    setAnoFinal(value);
+    setMesFinal(""); // Reset mês final quando ano final mudar
+  };
+
   return (
     <div className="flex-1 p-6">
       <div className="mb-6">
@@ -139,74 +155,92 @@ export function RelatoriosServicosContent() {
           <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
             <div>
               <Label htmlFor="bureau">Bureau</Label>
-              <Input 
-                id="bureau" 
-                value="SCR - Bacen" 
-                disabled 
-                className="bg-gray-100"
-              />
+              <Select value="SCR - Bacen" disabled>
+                <SelectTrigger className="bg-gray-100">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="SCR - Bacen">SCR - Bacen</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             
+            {/* Mês Inicial */}
             <div>
               <Label htmlFor="mesInicial">Mês Inicial</Label>
-              <Select value={mesInicial} onValueChange={setMesInicial}>
+              <Select 
+                value={anoInicial && mesInicial ? `${anoInicial}-${mesInicial}` : ""} 
+                onValueChange={(value) => {
+                  if (value.includes('-')) {
+                    const [ano, mes] = value.split('-');
+                    setAnoInicial(ano);
+                    setMesInicial(mes);
+                  } else {
+                    // Primeiro selecionando ano
+                    setAnoInicial(value);
+                    setMesInicial("");
+                  }
+                }}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione o mês" />
+                  <SelectValue placeholder="Selecione ano e mês" />
                 </SelectTrigger>
                 <SelectContent>
-                  {meses.map((mes) => (
-                    <SelectItem key={mes.value} value={mes.value}>
-                      {mes.label}
-                    </SelectItem>
-                  ))}
+                  {!anoInicial ? (
+                    // Mostrar anos primeiro
+                    anos.map((ano) => (
+                      <SelectItem key={ano.value} value={ano.value}>
+                        {ano.label}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    // Mostrar meses após selecionar ano
+                    meses.map((mes) => (
+                      <SelectItem key={`${anoInicial}-${mes.value}`} value={`${anoInicial}-${mes.value}`}>
+                        {mes.label} {anoInicial}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
             
-            <div>
-              <Label htmlFor="anoInicial">Ano Inicial</Label>
-              <Select value={anoInicial} onValueChange={setAnoInicial}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione o ano" />
-                </SelectTrigger>
-                <SelectContent>
-                  {anos.map((ano) => (
-                    <SelectItem key={ano.value} value={ano.value}>
-                      {ano.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
+            {/* Mês Final */}
             <div>
               <Label htmlFor="mesFinal">Mês Final</Label>
-              <Select value={mesFinal} onValueChange={setMesFinal}>
+              <Select 
+                value={anoFinal && mesFinal ? `${anoFinal}-${mesFinal}` : ""} 
+                onValueChange={(value) => {
+                  if (value.includes('-')) {
+                    const [ano, mes] = value.split('-');
+                    setAnoFinal(ano);
+                    setMesFinal(mes);
+                  } else {
+                    // Primeiro selecionando ano
+                    setAnoFinal(value);
+                    setMesFinal("");
+                  }
+                }}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione o mês" />
+                  <SelectValue placeholder="Selecione ano e mês" />
                 </SelectTrigger>
                 <SelectContent>
-                  {meses.map((mes) => (
-                    <SelectItem key={mes.value} value={mes.value}>
-                      {mes.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div>
-              <Label htmlFor="anoFinal">Ano Final</Label>
-              <Select value={anoFinal} onValueChange={setAnoFinal}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione o ano" />
-                </SelectTrigger>
-                <SelectContent>
-                  {anos.map((ano) => (
-                    <SelectItem key={ano.value} value={ano.value}>
-                      {ano.label}
-                    </SelectItem>
-                  ))}
+                  {!anoFinal ? (
+                    // Mostrar anos primeiro
+                    anos.map((ano) => (
+                      <SelectItem key={ano.value} value={ano.value}>
+                        {ano.label}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    // Mostrar meses após selecionar ano
+                    meses.map((mes) => (
+                      <SelectItem key={`${anoFinal}-${mes.value}`} value={`${anoFinal}-${mes.value}`}>
+                        {mes.label} {anoFinal}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
