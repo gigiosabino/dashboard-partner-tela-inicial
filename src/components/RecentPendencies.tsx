@@ -1,7 +1,8 @@
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, Clock } from "lucide-react";
+import { AlertCircle, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Pendency {
   id: string;
@@ -15,8 +16,11 @@ interface RecentPendenciesProps {
 }
 
 export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
-  // Mock data - em um cenário real, viria da API baseado no período selecionado
-  const pendencies: Pendency[] = [
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 3;
+
+  // Mock data expandido para 5 propostas
+  const allPendencies: Pendency[] = [
     {
       id: "1",
       proposalNumber: "#004935629",
@@ -34,19 +38,41 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
       proposalNumber: "#004935631",
       clientName: "MARIA OLIVEIRA LTDA",
       daysAgo: 5
+    },
+    {
+      id: "4",
+      proposalNumber: "#004935632",
+      clientName: "CARLOS PEREIRA & CIA",
+      daysAgo: 3
+    },
+    {
+      id: "5",
+      proposalNumber: "#004935633",
+      clientName: "ANA COSTA EMPRESAS",
+      daysAgo: 4
     }
   ];
 
+  const totalPages = Math.ceil(allPendencies.length / itemsPerPage);
+  const startIndex = currentPage * itemsPerPage;
+  const currentPendencies = allPendencies.slice(startIndex, startIndex + itemsPerPage);
+
   const handleNavigateToGuarantees = () => {
-    // Aqui será implementada a navegação para "Formalização de garantias"
     console.log("Navegando para Formalização de garantias");
-    // Exemplo: navigate('/formalizacao-garantias');
   };
 
   const getDaysColor = (days: number) => {
     if (days <= 1) return "text-orange-600 bg-orange-50 border-orange-200";
     if (days <= 3) return "text-yellow-600 bg-yellow-50 border-yellow-200";
     return "text-red-600 bg-red-50 border-red-200";
+  };
+
+  const goToPrevPage = () => {
+    setCurrentPage(prev => Math.max(0, prev - 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage(prev => Math.min(totalPages - 1, prev + 1));
   };
 
   return (
@@ -68,12 +94,37 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
         </Button>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600 mb-4">
-          Propostas que necessitam de atenção
-        </p>
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm text-gray-600">
+            Propostas que necessitam de atenção
+          </p>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={goToPrevPage}
+              disabled={currentPage === 0}
+              className="h-8 w-8 p-0"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+            <span className="text-xs text-gray-500">
+              {currentPage + 1} de {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={goToNextPage}
+              disabled={currentPage === totalPages - 1}
+              className="h-8 w-8 p-0"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
         
         <div className="space-y-3">
-          {pendencies.map((pendency) => (
+          {currentPendencies.map((pendency) => (
             <div
               key={pendency.id}
               className={`p-3 rounded-lg border-l-4 cursor-pointer hover:bg-gray-50 transition-colors ${getDaysColor(pendency.daysAgo)}`}
@@ -99,7 +150,7 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
           ))}
         </div>
         
-        {pendencies.length === 0 && (
+        {allPendencies.length === 0 && (
           <div className="text-center py-6 text-gray-500">
             <AlertCircle className="w-8 h-8 mx-auto mb-2 opacity-50" />
             <p className="text-sm">Nenhuma pendência no período selecionado</p>
