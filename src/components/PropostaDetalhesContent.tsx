@@ -1,5 +1,3 @@
-
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 // Dados mockados da proposta
 const propostaDetalhes = {
@@ -103,11 +102,13 @@ const getStatusColor = (status: string) => {
 export function PropostaDetalhesContent() {
   const { numero } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [blocosAbertos, setBlocosAbertos] = useState<Record<string, boolean>>({});
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [reenviarModalOpen, setReenviarModalOpen] = useState(false);
   const [emailEdit, setEmailEdit] = useState(assinante.email);
   const [celularEdit, setCelularEdit] = useState(assinante.celular);
+  const [isReenviando, setIsReenviando] = useState(false);
 
   const toggleBloco = (bloco: string) => {
     setBlocosAbertos(prev => ({
@@ -134,10 +135,49 @@ export function PropostaDetalhesContent() {
     setEditModalOpen(false);
   };
 
-  const handleReenviarVia = (metodo: string) => {
-    // Aqui seria implementada a lógica de reenvio
-    console.log('Reenviando via:', metodo);
-    setReenviarModalOpen(false);
+  const handleReenviarVia = async (metodo: string) => {
+    setIsReenviando(true);
+    
+    try {
+      // Simular chamada da API de reenvio
+      const response = await fetch(`/api/reenviar-link-assinatura`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          propostaNumero: numero,
+          assinanteId: assinante.identificador,
+          metodo: metodo.toLowerCase(),
+          email: assinante.email,
+          celular: assinante.celular
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro ao reenviar via ${metodo}`);
+      }
+
+      // Sucesso - mostrar toast e fechar modal
+      toast({
+        title: "Sucesso",
+        description: "Link de assinatura reenviado com sucesso",
+        variant: "default",
+      });
+      
+      setReenviarModalOpen(false);
+      
+    } catch (error) {
+      // Erro - mostrar toast de erro
+      console.error('Erro ao reenviar link:', error);
+      toast({
+        title: "Erro",
+        description: error instanceof Error ? error.message : "Erro ao reenviar link de assinatura",
+        variant: "destructive",
+      });
+    } finally {
+      setIsReenviando(false);
+    }
   };
 
   const renderBlocoLarguraTotal = (bloco: string) => (
@@ -418,28 +458,35 @@ export function PropostaDetalhesContent() {
           <div className="flex gap-4 py-6">
             <Button 
               variant="outline"
-              onClick={() => handleReenviarVia('E-mail')}
+              onClick={() => handleReenviarVia('Email')}
+              disabled={isReenviando}
               className="flex-1 justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 h-12"
             >
-              EMAIL
+              {isReenviando ? 'ENVIANDO...' : 'EMAIL'}
             </Button>
             <Button 
               variant="outline"
               onClick={() => handleReenviarVia('WhatsApp')}
+              disabled={isReenviando}
               className="flex-1 justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 h-12"
             >
-              WHATSAPP
+              {isReenviando ? 'ENVIANDO...' : 'WHATSAPP'}
             </Button>
             <Button 
               variant="outline"
               onClick={() => handleReenviarVia('SMS')}
+              disabled={isReenviando}
               className="flex-1 justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 h-12"
             >
-              SMS
+              {isReenviando ? 'ENVIANDO...' : 'SMS'}
             </Button>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setReenviarModalOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => setReenviarModalOpen(false)}
+              disabled={isReenviando}
+            >
               CANCELAR
             </Button>
           </DialogFooter>
@@ -448,4 +495,3 @@ export function PropostaDetalhesContent() {
     </div>
   );
 }
-

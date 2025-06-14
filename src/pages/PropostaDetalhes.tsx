@@ -2,6 +2,7 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { PropostaDetalhesContent } from "@/components/PropostaDetalhesContent";
+import { Toaster } from "@/components/ui/toaster";
 
 const PropostaDetalhes = () => {
   return (
@@ -12,6 +13,7 @@ const PropostaDetalhes = () => {
           <PropostaDetalhesContent />
         </main>
       </div>
+      <Toaster />
     </SidebarProvider>
   );
 };
