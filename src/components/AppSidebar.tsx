@@ -8,6 +8,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import {
@@ -20,17 +23,23 @@ import {
   BarChart3,
   FileSpreadsheet,
   BookOpen,
+  ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const menuItems = [
   {
     title: "Propostas",
     icon: FileText,
     items: [
-      { title: "Propostas", url: "#" },
-      { title: "Atualizar Dados Bancários", url: "#" },
-      { title: "Cancelar proposta", url: "#" },
+      { title: "Propostas", url: "/propostas" },
+      { title: "Atualizar Dados Bancários", url: "/atualizar-dados-bancarios" },
+      { title: "Cancelar proposta", url: "/cancelar-proposta" },
     ]
   },
   {
@@ -101,26 +110,51 @@ export function AppSidebar() {
                 </SidebarMenuItem>
                 {menuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="text-white hover:bg-gray-700">
-                      {item.url ? (
-                        item.external ? (
-                          <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    {item.items.length > 0 ? (
+                      <Collapsible>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton className="text-white hover:bg-gray-700 w-full">
                             <item.icon className="w-4 h-4" />
                             <span>{item.title}</span>
-                          </a>
+                            <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]:rotate-90" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {item.items.map((subItem) => (
+                              <SidebarMenuSubItem key={subItem.title}>
+                                <SidebarMenuSubButton asChild>
+                                  <Link to={subItem.url} className="text-gray-300 hover:text-white hover:bg-gray-700">
+                                    {subItem.title}
+                                  </Link>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    ) : (
+                      <SidebarMenuButton asChild className="text-white hover:bg-gray-700">
+                        {item.url ? (
+                          item.external ? (
+                            <a href={item.url} target="_blank" rel="noopener noreferrer">
+                              <item.icon className="w-4 h-4" />
+                              <span>{item.title}</span>
+                            </a>
+                          ) : (
+                            <Link to={item.url}>
+                              <item.icon className="w-4 h-4" />
+                              <span>{item.title}</span>
+                            </Link>
+                          )
                         ) : (
-                          <Link to={item.url}>
+                          <div>
                             <item.icon className="w-4 h-4" />
                             <span>{item.title}</span>
-                          </Link>
-                        )
-                      ) : (
-                        <div>
-                          <item.icon className="w-4 h-4" />
-                          <span>{item.title}</span>
-                        </div>
-                      )}
-                    </SidebarMenuButton>
+                          </div>
+                        )}
+                      </SidebarMenuButton>
+                    )}
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
