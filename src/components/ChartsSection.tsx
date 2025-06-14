@@ -53,89 +53,84 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   const currentData = getDataByPeriod();
 
   return (
-    <div className="space-y-8">
-      {/* Primeira linha - Distribuição por status */}
-      <div className="grid grid-cols-1">
-        <Card className="h-[500px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Distribuição por status
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[420px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={statusData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={140}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelLine={false}
-                  fontSize={12}
-                >
-                  {statusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => [value, "Propostas"]} />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
+    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+      {/* Distribuição por status */}
+      <Card className="h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            Distribuição por status
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="h-[320px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={statusData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                labelLine={false}
+                fontSize={10}
+              >
+                {statusData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => [value, "Propostas"]} />
+            </PieChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
-      {/* Segunda linha - Contratações e Valor financiado */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Contratações mensais */}
-        <Card className="h-[500px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Contratações mensais
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[420px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={currentData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value) => [value, "Propostas"]} />
-                <Bar dataKey="propostas" fill="#3B82F6" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+      {/* Contratações mensais */}
+      <Card className="h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            Contratações mensais
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="h-[320px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={currentData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip formatter={(value) => [value, "Propostas"]} />
+              <Bar dataKey="propostas" fill="#3B82F6" />
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
-        {/* Valor financiado mensal */}
-        <Card className="h-[500px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Valor financiado mensal
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[420px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={currentData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip 
-                  formatter={(value) => [`R$ ${value.toLocaleString()}`, "Valor financiado"]}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="valor"
-                  stroke="#10B981"
-                  strokeWidth={3}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Valor financiado mensal */}
+      <Card className="h-[400px]">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-900">
+            Valor financiado mensal
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="h-[320px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={currentData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip 
+                formatter={(value) => [`R$ ${value.toLocaleString()}`, "Valor financiado"]}
+              />
+              <Line
+                type="monotone"
+                dataKey="valor"
+                stroke="#10B981"
+                strokeWidth={3}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }
