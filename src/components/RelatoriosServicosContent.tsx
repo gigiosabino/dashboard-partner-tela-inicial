@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileSpreadsheet, Search, Download } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { MonthYearPicker } from "./MonthYearPicker";
 
 interface RelatorioItem {
   periodo: string;
@@ -21,42 +22,6 @@ export function RelatoriosServicosContent() {
   const [resultados, setResultados] = useState<RelatorioItem[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const meses = [
-    { value: "01", label: "Janeiro" },
-    { value: "02", label: "Fevereiro" },
-    { value: "03", label: "Março" },
-    { value: "04", label: "Abril" },
-    { value: "05", label: "Maio" },
-    { value: "06", label: "Junho" },
-    { value: "07", label: "Julho" },
-    { value: "08", label: "Agosto" },
-    { value: "09", label: "Setembro" },
-    { value: "10", label: "Outubro" },
-    { value: "11", label: "Novembro" },
-    { value: "12", label: "Dezembro" }
-  ];
-
-  const anos = Array.from({ length: 10 }, (_, i) => {
-    const ano = new Date().getFullYear() - i;
-    return { value: ano.toString(), label: ano.toString() };
-  });
-
-  // Gera opções de mês/ano
-  const gerarOpcoesData = () => {
-    const opcoes = [];
-    for (const ano of anos) {
-      for (const mes of meses) {
-        opcoes.push({
-          value: `${ano.value}-${mes.value}`,
-          label: `${mes.label} ${ano.value}`
-        });
-      }
-    }
-    return opcoes;
-  };
-
-  const opcoesData = gerarOpcoesData();
-
   // Validar se o intervalo é de no máximo 3 meses
   const validarIntervalo = (inicial: string, final: string) => {
     if (!inicial || !final) return true;
@@ -70,23 +35,6 @@ export function RelatoriosServicosContent() {
     const diffMeses = (dataFinal.getFullYear() - dataInicial.getFullYear()) * 12 + (dataFinal.getMonth() - dataInicial.getMonth());
     
     return diffMeses >= 0 && diffMeses <= 2; // máximo 3 meses (0, 1, 2)
-  };
-
-  // Filtrar opções finais baseado na seleção inicial
-  const getOpcoesFinais = () => {
-    if (!mesInicial) return opcoesData;
-    
-    const [anoIni, mesIni] = mesInicial.split('-').map(Number);
-    const dataInicial = new Date(anoIni, mesIni - 1);
-    
-    return opcoesData.filter(opcao => {
-      const [ano, mes] = opcao.value.split('-').map(Number);
-      const data = new Date(ano, mes - 1);
-      
-      const diffMeses = (data.getFullYear() - dataInicial.getFullYear()) * 12 + (data.getMonth() - dataInicial.getMonth());
-      
-      return diffMeses >= 0 && diffMeses <= 2;
-    });
   };
 
   const handleMesInicialChange = (value: string) => {
@@ -232,41 +180,21 @@ export function RelatoriosServicosContent() {
             
             <div>
               <Label htmlFor="mesInicial">Mês Inicial</Label>
-              <Select 
-                value={mesInicial} 
-                onValueChange={handleMesInicialChange}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione mês inicial" />
-                </SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {opcoesData.map((opcao) => (
-                    <SelectItem key={opcao.value} value={opcao.value}>
-                      {opcao.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <MonthYearPicker
+                value={mesInicial}
+                onSelect={handleMesInicialChange}
+                placeholder="Selecione mês inicial"
+              />
             </div>
             
             <div>
               <Label htmlFor="mesFinal">Mês Final</Label>
-              <Select 
-                value={mesFinal} 
-                onValueChange={handleMesFinalChange}
+              <MonthYearPicker
+                value={mesFinal}
+                onSelect={handleMesFinalChange}
+                placeholder="Selecione mês final"
                 disabled={!mesInicial}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione mês final" />
-                </SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {getOpcoesFinais().map((opcao) => (
-                    <SelectItem key={opcao.value} value={opcao.value}>
-                      {opcao.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              />
             </div>
             
             <div>
