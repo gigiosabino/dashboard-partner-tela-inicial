@@ -6,8 +6,23 @@ import { ChartsSection } from "./ChartsSection";
 import { RecentPendencies } from "./RecentPendencies";
 import { PeriodFilter } from "./PeriodFilter";
 import { ExternalLink } from "lucide-react";
+import { useState } from "react";
 
 export function DashboardContent() {
+  const [selectedPeriod, setSelectedPeriod] = useState("12months");
+  const [dateRange, setDateRange] = useState(null);
+
+  const handlePeriodChange = (period: string) => {
+    setSelectedPeriod(period);
+    if (period !== "custom") {
+      setDateRange(null);
+    }
+  };
+
+  const handleDateRangeChange = (range: any) => {
+    setDateRange(range);
+  };
+
   const handleDocsClick = () => {
     window.open("https://bmpdocs.moneyp.com.br/caas/sobre-o-caas", "_blank");
   };
@@ -21,9 +36,8 @@ export function DashboardContent() {
           <div className="flex-1" />
           <Button 
             onClick={handleDocsClick}
-            variant="outline"
+            className="gap-2 bg-blue-600 hover:bg-blue-700 text-white"
             size="sm"
-            className="gap-2"
           >
             <ExternalLink className="h-4 w-4" />
             Docs
@@ -35,12 +49,16 @@ export function DashboardContent() {
       <main className="flex-1 space-y-4 p-4 md:p-6">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-          <PeriodFilter />
+          <PeriodFilter 
+            onPeriodChange={handlePeriodChange}
+            onDateRangeChange={handleDateRangeChange}
+            selectedPeriod={selectedPeriod}
+          />
         </div>
         
-        <MetricsCards />
-        <ChartsSection />
-        <RecentPendencies />
+        <MetricsCards selectedPeriod={selectedPeriod} />
+        <ChartsSection selectedPeriod={selectedPeriod} />
+        <RecentPendencies selectedPeriod={selectedPeriod} />
       </main>
     </div>
   );
