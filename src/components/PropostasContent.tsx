@@ -2,7 +2,7 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Eye } from "lucide-react";
+import { Search, Eye, Filter, RefreshCw, Download } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -12,6 +12,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { exportToCSV } from "@/utils/csvExport";
+import { useState } from "react";
 
 // Dados mockados para demonstração
 const propostas = [
@@ -88,8 +98,46 @@ const getStatusColor = (status: string) => {
 };
 
 export function PropostasContent() {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const handleVerDetalhes = (numeroProposta: string) => {
     console.log("Ver detalhes da proposta:", numeroProposta);
+  };
+
+  const handleRefresh = () => {
+    console.log("Atualizando listagem de propostas...");
+    // Aqui você implementaria a lógica de atualização
+  };
+
+  const handleExportCSV = () => {
+    const headers = [
+      'numero',
+      'dataCriacao', 
+      'nomeCliente',
+      'documentoFederal',
+      'valorSolicitado',
+      'prazo',
+      'situacao',
+      'analista',
+      'tipoContrato'
+    ];
+    
+    exportToCSV(propostas, 'propostas.csv', headers);
+  };
+
+  const handleFilterByPeriod = (period: string) => {
+    console.log("Filtrar por período:", period);
+    // Implementar filtro por período
+  };
+
+  const handleFilterBySituation = (situation: string) => {
+    console.log("Filtrar por situação:", situation);
+    // Implementar filtro por situação
+  };
+
+  const handleFilterByContractType = (contractType: string) => {
+    console.log("Filtrar por tipo de contrato:", contractType);
+    // Implementar filtro por tipo de contrato
   };
 
   return (
@@ -115,14 +163,80 @@ export function PropostasContent() {
           </div>
         </div>
 
-        {/* Filtros */}
+        {/* Filtros e Ações */}
         <div className="bg-white p-4 rounded-lg shadow">
-          <div className="flex items-center space-x-4">
-            <div className="relative flex-1 max-w-sm">
+          <div className="flex items-center justify-between">
+            {/* Ações à esquerda */}
+            <div className="flex items-center space-x-2">
+              {/* Filtros */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Filter className="w-4 h-4 mr-2" />
+                    Filtros
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56 bg-white">
+                  <DropdownMenuLabel>Filtrar por período</DropdownMenuLabel>
+                  <DropdownMenuItem onClick={() => handleFilterByPeriod("ultima-semana")}>
+                    Última semana
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleFilterByPeriod("ultimo-mes")}>
+                    Último mês
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleFilterByPeriod("ultimos-3-meses")}>
+                    Últimos 3 meses
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuLabel>Filtrar por situação</DropdownMenuLabel>
+                  <DropdownMenuItem onClick={() => handleFilterBySituation("Aprovada")}>
+                    Aprovada
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleFilterBySituation("Em Análise")}>
+                    Em Análise
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleFilterBySituation("Rejeitada")}>
+                    Rejeitada
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleFilterBySituation("Pendente")}>
+                    Pendente
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuLabel>Filtrar por tipo de contrato</DropdownMenuLabel>
+                  <DropdownMenuItem onClick={() => handleFilterByContractType("Crédito Pessoal")}>
+                    Crédito Pessoal
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleFilterByContractType("Financiamento")}>
+                    Financiamento
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Botão de atualização */}
+              <Button variant="outline" size="sm" onClick={handleRefresh}>
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Atualizar
+              </Button>
+
+              {/* Botão de exportação */}
+              <Button variant="outline" size="sm" onClick={handleExportCSV}>
+                <Download className="w-4 h-4 mr-2" />
+                Exportar CSV
+              </Button>
+            </div>
+
+            {/* Campo de busca à direita */}
+            <div className="relative w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input 
                 placeholder="Buscar por número, cliente ou documento..." 
                 className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
