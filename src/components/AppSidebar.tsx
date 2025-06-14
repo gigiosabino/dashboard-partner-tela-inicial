@@ -19,6 +19,7 @@ import {
   MessageSquare,
   BarChart3,
   FileSpreadsheet,
+  Settings,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -62,6 +63,11 @@ const menuItems = [
     icon: FileSpreadsheet,
     items: [],
     url: "/relatorios-servicos"
+  },
+  {
+    title: "Outros serviços",
+    icon: Settings,
+    items: []
   },
 ];
 
