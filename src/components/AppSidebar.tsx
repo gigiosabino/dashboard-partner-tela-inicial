@@ -60,7 +60,8 @@ const menuItems = [
   {
     title: "Gestão de acessos",
     icon: Users,
-    items: []
+    items: [],
+    url: "/gestao-acessos"
   },
   {
     title: "Mensageria",
