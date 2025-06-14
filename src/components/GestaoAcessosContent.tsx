@@ -1,3 +1,4 @@
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -65,12 +66,33 @@ const usuarios = [
 // Perfis disponíveis
 const perfisDisponiveis = ["Manager", "Basic", "Auditoria", "Import", "Master", "Vendedor", "Report"];
 
+// Simulando o usuário logado - aqui seria obtido do contexto de autenticação
+const usuarioLogado = {
+  id: 1,
+  nome: "João Silva",
+  perfis: ["Manager"] // Pode ser alterado para "Master" para testar
+};
+
+// Função para obter perfis permitidos baseado no perfil do usuário criador
+const getPerfisPermitidos = (perfilUsuario: string[]) => {
+  if (perfilUsuario.includes("Manager")) {
+    return ["Manager", "Basic", "Auditoria", "Import"];
+  }
+  if (perfilUsuario.includes("Master")) {
+    return ["Master", "Vendedor", "Import", "Report"];
+  }
+  return [];
+};
+
 export function GestaoAcessosContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [usuarioEditando, setUsuarioEditando] = useState<any>(null);
   const [nomeEditando, setNomeEditando] = useState("");
   const [perfisEditando, setPerfisEditando] = useState<string[]>([]);
+
+  // Obter perfis permitidos para o usuário logado
+  const perfisPermitidos = getPerfisPermitidos(usuarioLogado.perfis);
 
   const handleEditarUsuario = (id: number) => {
     const usuario = usuarios.find(u => u.id === id);
@@ -142,7 +164,7 @@ export function GestaoAcessosContent() {
               Usuários do Portal
             </CardTitle>
             <div className="flex items-center gap-4">
-              <Button onClick={handleNovoUsuario} className="flex items-center gap-2 bg-blue-400 hover:bg-blue-500">
+              <Button onClick={handleNovoUsuario} className="flex items-center gap-2 bg-sky-400 hover:bg-sky-500">
                 <Plus className="w-4 h-4" />
                 Novo Usuário
               </Button>
@@ -254,7 +276,7 @@ export function GestaoAcessosContent() {
                     <SelectValue placeholder="Adicionar perfil" />
                   </SelectTrigger>
                   <SelectContent>
-                    {perfisDisponiveis
+                    {perfisPermitidos
                       .filter(perfil => !perfisEditando.includes(perfil))
                       .map((perfil) => (
                         <SelectItem key={perfil} value={perfil}>
