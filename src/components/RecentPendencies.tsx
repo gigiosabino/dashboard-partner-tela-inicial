@@ -17,7 +17,7 @@ interface RecentPendenciesProps {
 
 export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 5;
+  const itemsPerPage = 3; // Voltando para 3 itens por página
 
   // Mock data expandido para 5 propostas
   const allPendencies: Pendency[] = [
@@ -76,7 +76,7 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
   };
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200">
+    <Card className="h-[400px] hover:shadow-lg transition-shadow duration-200">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center space-x-2">
           <AlertCircle className="w-5 h-5 text-orange-600" />
@@ -93,7 +93,7 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
           Ver todas
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="h-[320px] flex flex-col">
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-gray-600">
             Propostas que necessitam de atenção
@@ -123,7 +123,7 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
           </div>
         </div>
         
-        <div className="space-y-3">
+        <div className="space-y-3 flex-1">
           {currentPendencies.map((pendency) => (
             <div
               key={pendency.id}

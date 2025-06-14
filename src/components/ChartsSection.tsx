@@ -36,47 +36,45 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   const currentData = getDataByPeriod();
 
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200">
+    <Card className="h-[400px] hover:shadow-lg transition-shadow duration-200">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-900">
           Propostas x Status
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div style={{ width: '100%', height: '320px' }}>
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie
-                data={currentData}
-                dataKey="value"
-                nameKey="name"
-                cx="65%"
-                cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-              >
-                {currentData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip 
-                formatter={(value) => [value, "Propostas"]}
-                labelStyle={{ fontSize: '12px' }}
-              />
-              <Legend 
-                verticalAlign="middle" 
-                align="left"
-                layout="vertical"
-                iconSize={8}
-                wrapperStyle={{
-                  paddingRight: '20px',
-                  fontSize: '11px',
-                  lineHeight: '14px'
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+      <CardContent className="h-[320px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={currentData}
+              dataKey="value"
+              nameKey="name"
+              cx="65%"
+              cy="50%"
+              outerRadius={80}
+              fill="#8884d8"
+            >
+              {currentData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <Tooltip 
+              formatter={(value) => [value, "Propostas"]}
+              labelStyle={{ fontSize: '12px' }}
+            />
+            <Legend 
+              verticalAlign="middle" 
+              align="left"
+              layout="vertical"
+              iconSize={8}
+              wrapperStyle={{
+                paddingRight: '20px',
+                fontSize: '11px',
+                lineHeight: '14px'
+              }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );
