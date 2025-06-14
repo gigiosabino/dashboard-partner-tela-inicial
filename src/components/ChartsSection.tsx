@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   PieChart,
@@ -59,7 +58,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     <Card className="h-[400px] hover:shadow-lg transition-shadow duration-200">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-900">
-          Propostas x Status
+          Monitor de Status de Propostas
         </CardTitle>
       </CardHeader>
       <CardContent className="h-[320px]">
