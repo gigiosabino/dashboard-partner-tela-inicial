@@ -19,7 +19,9 @@ import {
   Settings,
   MessageSquare,
   BarChart3,
+  FileSpreadsheet,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const menuItems = [
   {
@@ -61,6 +63,12 @@ const menuItems = [
     icon: MessageSquare,
     items: []
   },
+  {
+    title: "Relatórios de Serviços Integrados",
+    icon: FileSpreadsheet,
+    items: [],
+    url: "/relatorios-servicos"
+  },
 ];
 
 export function AppSidebar() {
@@ -82,16 +90,27 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton className="text-white hover:bg-gray-700 bg-blue-600">
-                    <BarChart3 className="w-4 h-4" />
-                    <span>Dashboard</span>
+                  <SidebarMenuButton asChild className="text-white hover:bg-gray-700 bg-blue-600">
+                    <Link to="/">
+                      <BarChart3 className="w-4 h-4" />
+                      <span>Dashboard</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
                 {menuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton className="text-white hover:bg-gray-700">
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.title}</span>
+                    <SidebarMenuButton asChild className="text-white hover:bg-gray-700">
+                      {item.url ? (
+                        <Link to={item.url}>
+                          <item.icon className="w-4 h-4" />
+                          <span>{item.title}</span>
+                        </Link>
+                      ) : (
+                        <div>
+                          <item.icon className="w-4 h-4" />
+                          <span>{item.title}</span>
+                        </div>
+                      )}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
