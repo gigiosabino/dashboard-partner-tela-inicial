@@ -1,4 +1,3 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,17 +29,19 @@ const propostaDetalhes = {
   valorTotalDivida: "R$ 1.160,00"
 };
 
+// Bloco que ficará em largura total
+const blocoLarguraTotal = "Assinantes (CCB Digital)";
+
 // Blocos organizados em duas colunas
 const blocosColuna1 = [
-  "Campos Adicionais",
-  "Assinantes (CCB Digital)",
   "Complemento Loja",
   "Observações do analista",
   "Itens da Análise",
   "Boletos da Proposta",
   "Custos e Serviços Complementares",
   "Avalistas",
-  "Veículos"
+  "Veículos",
+  "Campos Adicionais"
 ];
 
 const blocosColuna2 = [
@@ -86,6 +87,34 @@ export function PropostaDetalhesContent() {
   const handleVoltar = () => {
     navigate('/propostas');
   };
+
+  const renderBlocoLarguraTotal = (bloco: string) => (
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      <Collapsible>
+        <CollapsibleTrigger
+          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          onClick={() => toggleBloco(bloco)}
+        >
+          <span className="font-medium text-gray-900">{bloco}</span>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-blue-600 cursor-pointer">Atualizar</span>
+            <ChevronDown 
+              className={`w-4 h-4 text-gray-500 transition-transform ${
+                blocosAbertos[bloco] ? 'rotate-180' : ''
+              }`} 
+            />
+          </div>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="px-6 pb-4">
+          <div className="border-t pt-4">
+            <p className="text-sm text-gray-600">
+              Conteúdo de {bloco} será exibido aqui quando implementado.
+            </p>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
+  );
 
   const renderBlocoColuna = (blocos: string[]) => (
     <div className="space-y-4">
@@ -220,6 +249,11 @@ export function PropostaDetalhesContent() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Bloco de largura total */}
+        <div className="space-y-4">
+          {renderBlocoLarguraTotal(blocoLarguraTotal)}
         </div>
 
         {/* Blocos colapsáveis em duas colunas */}
