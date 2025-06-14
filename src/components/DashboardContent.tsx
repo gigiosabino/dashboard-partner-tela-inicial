@@ -1,101 +1,127 @@
-
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { MetricsCards } from "./MetricsCards";
-import { ChartsSection } from "./ChartsSection";
-import { RecentPendencies } from "./RecentPendencies";
-import { PeriodFilter } from "./PeriodFilter";
-import { ExternalLink, Search, User, Clock } from "lucide-react";
 import { useState } from "react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search, Clock, User, RefreshCw } from "lucide-react";
+import { MetricsCards } from "@/components/MetricsCards";
+import { ChartsSection } from "@/components/ChartsSection";
+import { RecentPendencies } from "@/components/RecentPendencies";
+import { PeriodFilter } from "@/components/PeriodFilter";
+import { FinancedValueChart } from "@/components/FinancedValueChart";
+import { MonthlyContractsChart } from "@/components/MonthlyContractsChart";
 
 export function DashboardContent() {
-  const [selectedPeriod, setSelectedPeriod] = useState("12months");
-  const [dateRange, setDateRange] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState("last-6-months");
+  const [customDateRange, setCustomDateRange] = useState<{
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startDate: null,
+    endDate: null,
+  });
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const handlePeriodChange = (period: string) => {
-    setSelectedPeriod(period);
-    if (period !== "custom") {
-      setDateRange(null);
-    }
+  const handleDateRangeChange = (startDate: Date | null, endDate: Date | null) => {
+    setCustomDateRange({ startDate, endDate });
+    console.log("Data range changed:", startDate, endDate);
   };
 
-  const handleDateRangeChange = (range: any) => {
-    setDateRange(range);
-  };
-
-  const handleDocsClick = () => {
-    window.open("https://bmpdocs.moneyp.com.br/caas/sobre-o-caas", "_blank");
-  };
-
-  // Função para calcular tempo restante da sessão (exemplo: 30 minutos)
-  const getSessionTimeRemaining = () => {
-    const now = new Date();
-    const sessionEnd = new Date(now.getTime() + 30 * 60000); // 30 minutos
-    const remaining = Math.floor((sessionEnd.getTime() - now.getTime()) / 60000);
-    return `${remaining}min`;
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    console.log("Atualizando dashboard...");
+    
+    // Simula um delay de carregamento
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Força a re-renderização de todos os componentes filhos
+    setRefreshKey(prev => prev + 1);
+    setIsRefreshing(false);
+    
+    console.log("Dashboard atualizado!");
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex-1">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="flex h-14 items-center gap-4 px-4 lg:px-6">
-          <SidebarTrigger className="-ml-1" />
-          
-          {/* Campo de busca */}
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Buscar..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <SidebarTrigger />
+            <div className="text-sm text-gray-600">
+              <span>Dashboard</span>
+            </div>
           </div>
-
-          <div className="flex items-center gap-4">
-            {/* Tempo restante da sessão */}
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Clock className="h-4 w-4" />
-              <span>{getSessionTimeRemaining()}</span>
+          
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input 
+                placeholder="Search" 
+                className="pl-10 w-64"
+              />
             </div>
-
-            {/* Perfil do usuário */}
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <User className="h-4 w-4" />
-              <span>Usuário Admin</span>
+            
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <Clock className="w-4 h-4" />
+              <span>59:51</span>
             </div>
-
-            {/* Botão Docs */}
-            <Button 
-              onClick={handleDocsClick}
-              className="gap-2 bg-blue-600 hover:bg-blue-700 text-white"
-              size="sm"
-            >
-              <ExternalLink className="h-4 w-4" />
-              Docs
-            </Button>
+            
+            <div className="flex items-center space-x-2">
+              <User className="w-4 h-4 text-gray-600" />
+              <span className="text-sm font-medium">PERFIL</span>
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 space-y-4 p-4 md:p-6">
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+      <main className="p-6 space-y-6">
+        <div className="flex justify-between items-start">
+          <div className="flex items-center space-x-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Dashboard de parceiros</h1>
+              <p className="text-gray-600">Visualize as principais métricas e indicadores do seu negócio</p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center space-x-2"
+            >
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span>{isRefreshing ? 'Atualizando...' : 'Atualizar'}</span>
+            </Button>
+          </div>
           <PeriodFilter 
-            onPeriodChange={handlePeriodChange}
+            selectedPeriod={selectedPeriod} 
+            onPeriodChange={setSelectedPeriod}
             onDateRangeChange={handleDateRangeChange}
-            selectedPeriod={selectedPeriod}
           />
         </div>
+
+        <MetricsCards key={`metrics-${refreshKey}`} selectedPeriod={selectedPeriod} />
         
-        <MetricsCards selectedPeriod={selectedPeriod} />
-        <ChartsSection selectedPeriod={selectedPeriod} />
-        <RecentPendencies selectedPeriod={selectedPeriod} />
+        <div className="space-y-6">
+          {/* Primeira linha - Propostas x Status e Pendências */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
+          </div>
+          
+          {/* Segunda linha - Contratações mensais e Valor financiado mensal */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <MonthlyContractsChart key={`contracts-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            <FinancedValueChart key={`financed-${refreshKey}`} selectedPeriod={selectedPeriod} />
+          </div>
+        </div>
       </main>
+      
+      {/* Footer */}
+      <footer className="border-t border-gray-200 px-6 py-4 mt-auto">
+        <p className="text-sm text-gray-500">© 2025</p>
+      </footer>
     </div>
   );
 }
