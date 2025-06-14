@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { FileSpreadsheet, Search } from "lucide-react";
+import { FileSpreadsheet, Search, Download } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface RelatorioItem {
@@ -36,22 +36,63 @@ export function RelatoriosServicosContent() {
 
     setLoading(true);
     
-    // Simular consulta - em produção seria uma chamada real à API
+    // Simular consulta com dados de exemplo similares à imagem
     setTimeout(() => {
       const mockData: RelatorioItem[] = [
         {
-          documento: "12.345.678/0001-90",
-          nome: "Empresa Exemplo LTDA",
-          periodo: `${dataInicial} - ${dataFinal}`,
-          numeroTransacoes: 150,
-          criterio: "Consulta Automática",
-          bureau: "SCR - Bacen",
-          origem: "Partner Portal"
+          documento: "11.581.339/0001-45",
+          nome: "MONEY PLUS SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR",
+          periodo: "Apr-25",
+          numeroTransacoes: 18,
+          criterio: "Consulta Padrão",
+          bureau: "SCR",
+          origem: "BMP Digital"
+        },
+        {
+          documento: "11.581.339/0001-45",
+          nome: "MONEY PLUS SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR",
+          periodo: "Apr-25",
+          numeroTransacoes: 18,
+          criterio: "Consulta Padrão",
+          bureau: "SCR",
+          origem: "DBS"
+        },
+        {
+          documento: "11.581.339/0001-45",
+          nome: "MONEY PLUS SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR",
+          periodo: "May-25",
+          numeroTransacoes: 103,
+          criterio: "Consulta Padrão",
+          bureau: "SCR",
+          origem: "DBS"
+        },
+        {
+          documento: "11.581.339/0001-45",
+          nome: "MONEY PLUS SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR",
+          periodo: "May-25",
+          numeroTransacoes: 1,
+          criterio: "Consulta Padrão",
+          bureau: "SCR",
+          origem: "BMP Cred"
+        },
+        {
+          documento: "11.581.339/0001-45",
+          nome: "MONEY PLUS SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR",
+          periodo: "Jun-25",
+          numeroTransacoes: 13,
+          criterio: "Consulta Padrão",
+          bureau: "SCR",
+          origem: "DBS"
         }
       ];
       
       setResultados(mockData);
       setLoading(false);
+      
+      toast({
+        title: "Consulta realizada",
+        description: `${mockData.length} registros encontrados.`,
+      });
     }, 1000);
   };
 
@@ -63,6 +104,16 @@ export function RelatoriosServicosContent() {
     
     // Aqui seria implementada a lógica real de envio do e-mail com o relatório
     console.log("Enviando relatório detalhado para:", item);
+  };
+
+  const handleExportToExcel = () => {
+    toast({
+      title: "Exportar para Excel",
+      description: "Exportando dados para Excel...",
+    });
+    
+    // Aqui seria implementada a lógica real de exportação
+    console.log("Exportando para Excel:", resultados);
   };
 
   return (
@@ -129,48 +180,72 @@ export function RelatoriosServicosContent() {
 
       {/* Resultados */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg">Resultados</CardTitle>
+          {resultados.length > 0 && (
+            <Button 
+              variant="outline" 
+              onClick={handleExportToExcel}
+              className="flex items-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              Export to Excel
+            </Button>
+          )}
         </CardHeader>
         <CardContent>
           {resultados.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Documento</TableHead>
-                  <TableHead>Nome</TableHead>
-                  <TableHead>Período</TableHead>
-                  <TableHead>Nº Transações</TableHead>
-                  <TableHead>Critério</TableHead>
-                  <TableHead>Bureau</TableHead>
-                  <TableHead>Origem</TableHead>
-                  <TableHead>Ação</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {resultados.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">{item.documento}</TableCell>
-                    <TableCell>{item.nome}</TableCell>
-                    <TableCell>{item.periodo}</TableCell>
-                    <TableCell>{item.numeroTransacoes}</TableCell>
-                    <TableCell>{item.criterio}</TableCell>
-                    <TableCell>{item.bureau}</TableCell>
-                    <TableCell>{item.origem}</TableCell>
-                    <TableCell>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleRelatorioDetalhado(item)}
-                      >
-                        <FileSpreadsheet className="w-4 h-4 mr-2" />
-                        Relatório detalhado
-                      </Button>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="font-semibold">Documento</TableHead>
+                    <TableHead className="font-semibold">Nome</TableHead>
+                    <TableHead className="font-semibold text-center">Período</TableHead>
+                    <TableHead className="font-semibold text-center">Nº Tran.</TableHead>
+                    <TableHead className="font-semibold">Critério</TableHead>
+                    <TableHead className="font-semibold text-center">Bureau</TableHead>
+                    <TableHead className="font-semibold">Origem</TableHead>
+                    <TableHead className="font-semibold text-center">Ação</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {resultados.map((item, index) => (
+                    <TableRow key={index} className="hover:bg-gray-50">
+                      <TableCell className="font-medium text-blue-600">
+                        {item.documento}
+                      </TableCell>
+                      <TableCell className="max-w-xs">
+                        <div className="truncate" title={item.nome}>
+                          {item.nome}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center">{item.periodo}</TableCell>
+                      <TableCell className="text-center">{item.numeroTransacoes}</TableCell>
+                      <TableCell>{item.criterio}</TableCell>
+                      <TableCell className="text-center">{item.bureau}</TableCell>
+                      <TableCell>{item.origem}</TableCell>
+                      <TableCell className="text-center">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleRelatorioDetalhado(item)}
+                          className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
+                        >
+                          <FileSpreadsheet className="w-4 h-4 mr-1" />
+                          Relatório detalhado
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              
+              {/* Paginação info */}
+              <div className="mt-4 text-sm text-gray-500 text-right">
+                Exibindo itens 1 - {resultados.length} de {resultados.length}
+              </div>
+            </div>
           ) : (
             <div className="text-center py-8 text-gray-500">
               <FileSpreadsheet className="w-12 h-12 mx-auto mb-4 text-gray-300" />
