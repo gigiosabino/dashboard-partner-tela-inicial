@@ -16,9 +16,7 @@ interface RelatorioItem {
 }
 
 export function RelatoriosServicosContent() {
-  const [anoInicial, setAnoInicial] = useState("");
   const [mesInicial, setMesInicial] = useState("");
-  const [anoFinal, setAnoFinal] = useState("");
   const [mesFinal, setMesFinal] = useState("");
   const [resultados, setResultados] = useState<RelatorioItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -43,11 +41,89 @@ export function RelatoriosServicosContent() {
     return { value: ano.toString(), label: ano.toString() };
   });
 
+  // Gera opções de mês/ano
+  const gerarOpcoesData = () => {
+    const opcoes = [];
+    for (const ano of anos) {
+      for (const mes of meses) {
+        opcoes.push({
+          value: `${ano.value}-${mes.value}`,
+          label: `${mes.label} ${ano.value}`
+        });
+      }
+    }
+    return opcoes;
+  };
+
+  const opcoesData = gerarOpcoesData();
+
+  // Validar se o intervalo é de no máximo 3 meses
+  const validarIntervalo = (inicial: string, final: string) => {
+    if (!inicial || !final) return true;
+    
+    const [anoIni, mesIni] = inicial.split('-').map(Number);
+    const [anoFin, mesFin] = final.split('-').map(Number);
+    
+    const dataInicial = new Date(anoIni, mesIni - 1);
+    const dataFinal = new Date(anoFin, mesFin - 1);
+    
+    const diffMeses = (dataFinal.getFullYear() - dataInicial.getFullYear()) * 12 + (dataFinal.getMonth() - dataInicial.getMonth());
+    
+    return diffMeses >= 0 && diffMeses <= 2; // máximo 3 meses (0, 1, 2)
+  };
+
+  // Filtrar opções finais baseado na seleção inicial
+  const getOpcoesFinais = () => {
+    if (!mesInicial) return opcoesData;
+    
+    const [anoIni, mesIni] = mesInicial.split('-').map(Number);
+    const dataInicial = new Date(anoIni, mesIni - 1);
+    
+    return opcoesData.filter(opcao => {
+      const [ano, mes] = opcao.value.split('-').map(Number);
+      const data = new Date(ano, mes - 1);
+      
+      const diffMeses = (data.getFullYear() - dataInicial.getFullYear()) * 12 + (data.getMonth() - dataInicial.getMonth());
+      
+      return diffMeses >= 0 && diffMeses <= 2;
+    });
+  };
+
+  const handleMesInicialChange = (value: string) => {
+    setMesInicial(value);
+    
+    // Reset mês final se não for válido
+    if (mesFinal && !validarIntervalo(value, mesFinal)) {
+      setMesFinal("");
+    }
+  };
+
+  const handleMesFinalChange = (value: string) => {
+    if (validarIntervalo(mesInicial, value)) {
+      setMesFinal(value);
+    } else {
+      toast({
+        title: "Erro",
+        description: "O intervalo máximo permitido é de 3 meses.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleConsultar = async () => {
-    if (!anoInicial || !mesInicial || !anoFinal || !mesFinal) {
+    if (!mesInicial || !mesFinal) {
       toast({
         title: "Erro",
         description: "Por favor, preencha todos os campos de período.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!validarIntervalo(mesInicial, mesFinal)) {
+      toast({
+        title: "Erro",
+        description: "O intervalo máximo permitido é de 3 meses.",
         variant: "destructive"
       });
       return;
@@ -124,17 +200,6 @@ export function RelatoriosServicosContent() {
     console.log("Exportando para Excel:", resultados);
   };
 
-  // Reset mês quando ano for alterado
-  const handleAnoInicialChange = (value: string) => {
-    setAnoInicial(value);
-    setMesInicial(""); // Reset mês inicial quando ano inicial mudar
-  };
-
-  const handleAnoFinalChange = (value: string) => {
-    setAnoFinal(value);
-    setMesFinal(""); // Reset mês final quando ano final mudar
-  };
-
   return (
     <div className="flex-1 p-6">
       <div className="mb-6">
@@ -152,7 +217,7 @@ export function RelatoriosServicosContent() {
           <CardTitle className="text-lg">Filtros</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div>
               <Label htmlFor="bureau">Bureau</Label>
               <Select value="SCR - Bacen" disabled>
@@ -165,82 +230,41 @@ export function RelatoriosServicosContent() {
               </Select>
             </div>
             
-            {/* Mês Inicial */}
             <div>
               <Label htmlFor="mesInicial">Mês Inicial</Label>
               <Select 
-                value={anoInicial && mesInicial ? `${anoInicial}-${mesInicial}` : ""} 
-                onValueChange={(value) => {
-                  if (value.includes('-')) {
-                    const [ano, mes] = value.split('-');
-                    setAnoInicial(ano);
-                    setMesInicial(mes);
-                  } else {
-                    // Primeiro selecionando ano
-                    setAnoInicial(value);
-                    setMesInicial("");
-                  }
-                }}
+                value={mesInicial} 
+                onValueChange={handleMesInicialChange}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione ano e mês" />
+                  <SelectValue placeholder="Selecione mês inicial" />
                 </SelectTrigger>
-                <SelectContent>
-                  {!anoInicial ? (
-                    // Mostrar anos primeiro
-                    anos.map((ano) => (
-                      <SelectItem key={ano.value} value={ano.value}>
-                        {ano.label}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    // Mostrar meses após selecionar ano
-                    meses.map((mes) => (
-                      <SelectItem key={`${anoInicial}-${mes.value}`} value={`${anoInicial}-${mes.value}`}>
-                        {mes.label} {anoInicial}
-                      </SelectItem>
-                    ))
-                  )}
+                <SelectContent className="max-h-60">
+                  {opcoesData.map((opcao) => (
+                    <SelectItem key={opcao.value} value={opcao.value}>
+                      {opcao.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             
-            {/* Mês Final */}
             <div>
               <Label htmlFor="mesFinal">Mês Final</Label>
               <Select 
-                value={anoFinal && mesFinal ? `${anoFinal}-${mesFinal}` : ""} 
-                onValueChange={(value) => {
-                  if (value.includes('-')) {
-                    const [ano, mes] = value.split('-');
-                    setAnoFinal(ano);
-                    setMesFinal(mes);
-                  } else {
-                    // Primeiro selecionando ano
-                    setAnoFinal(value);
-                    setMesFinal("");
-                  }
-                }}
+                value={mesFinal} 
+                onValueChange={handleMesFinalChange}
+                disabled={!mesInicial}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione ano e mês" />
+                  <SelectValue placeholder="Selecione mês final" />
                 </SelectTrigger>
-                <SelectContent>
-                  {!anoFinal ? (
-                    // Mostrar anos primeiro
-                    anos.map((ano) => (
-                      <SelectItem key={ano.value} value={ano.value}>
-                        {ano.label}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    // Mostrar meses após selecionar ano
-                    meses.map((mes) => (
-                      <SelectItem key={`${anoFinal}-${mes.value}`} value={`${anoFinal}-${mes.value}`}>
-                        {mes.label} {anoFinal}
-                      </SelectItem>
-                    ))
-                  )}
+                <SelectContent className="max-h-60">
+                  {getOpcoesFinais().map((opcao) => (
+                    <SelectItem key={opcao.value} value={opcao.value}>
+                      {opcao.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
