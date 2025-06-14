@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -110,9 +111,11 @@ export function RelatoriosServicosContent() {
       setResultados(mockData);
       setLoading(false);
       
+      // Toast com fundo verde para sucesso
       toast({
         title: "Consulta realizada",
         description: `${mockData.length} registros encontrados.`,
+        className: "bg-green-500 border-green-500 text-white"
       });
     }, 1000);
   };
