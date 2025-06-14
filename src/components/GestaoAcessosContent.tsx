@@ -89,7 +89,7 @@ export function GestaoAcessosContent() {
               Usuários do Portal
             </CardTitle>
             <div className="flex items-center gap-4">
-              <Button onClick={handleNovoUsuario} className="flex items-center gap-2">
+              <Button onClick={handleNovoUsuario} className="flex items-center gap-2 bg-blue-400 hover:bg-blue-500">
                 <Plus className="w-4 h-4" />
                 Novo Usuário
               </Button>
