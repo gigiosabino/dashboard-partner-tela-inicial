@@ -62,9 +62,9 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
   };
 
   const getDaysColor = (days: number) => {
-    if (days <= 1) return "text-orange-600 bg-orange-50 border-orange-200";
-    if (days <= 3) return "text-yellow-600 bg-yellow-50 border-yellow-200";
-    return "text-red-600 bg-red-50 border-red-200";
+    if (days <= 1) return "text-orange-600 bg-blue-50 border-blue-200";
+    if (days <= 3) return "text-yellow-600 bg-blue-50 border-blue-200";
+    return "text-red-600 bg-blue-50 border-blue-200";
   };
 
   const goToPrevPage = () => {
@@ -127,7 +127,7 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
           {currentPendencies.map((pendency) => (
             <div
               key={pendency.id}
-              className={`p-3 rounded-lg border-l-4 cursor-pointer hover:bg-gray-50 transition-colors ${getDaysColor(pendency.daysAgo)}`}
+              className={`p-3 rounded-lg border-l-4 cursor-pointer hover:bg-blue-100 transition-colors ${getDaysColor(pendency.daysAgo)}`}
               onClick={handleNavigateToGuarantees}
             >
               <div className="flex justify-between items-start">
