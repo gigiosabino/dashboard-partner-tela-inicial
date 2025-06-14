@@ -29,7 +29,7 @@ const monthlyData = [
 ];
 
 const statusData = [
-  { name: "Em analise", value: 145, color: "#F59E0B" },
+  { name: "Em análise", value: 145, color: "#F59E0B" },
   { name: "Aprovada", value: 234, color: "#3B82F6" },
   { name: "Finalizada", value: 189, color: "#059669" },
   { name: "Liberada", value: 167, color: "#6366F1" },
@@ -68,7 +68,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">
-            Contratações Mensais
+            Contratações mensais
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -88,7 +88,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">
-            Valor Financiado Mensal
+            Valor financiado mensal
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -98,7 +98,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
               <XAxis dataKey="month" />
               <YAxis />
               <Tooltip 
-                formatter={(value) => [`R$ ${value.toLocaleString()}`, "Valor Financiado"]}
+                formatter={(value) => [`R$ ${value.toLocaleString()}`, "Valor financiado"]}
               />
               <Line
                 type="monotone"
@@ -115,7 +115,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">
-            Distribuição por Status
+            Distribuição por status
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -146,7 +146,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900">
-            Propostas por Dia da Semana
+            Propostas por dia da semana
           </CardTitle>
         </CardHeader>
         <CardContent>

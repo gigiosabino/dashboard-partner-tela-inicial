@@ -55,7 +55,7 @@ export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
         <div className="flex items-center space-x-2">
           <AlertCircle className="w-5 h-5 text-orange-600" />
           <CardTitle className="text-lg font-semibold text-gray-900">
-            Pendências Recentes
+            Pendências recentes
           </CardTitle>
         </div>
         <Button

@@ -53,17 +53,6 @@ export function DashboardContent() {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className="flex items-center space-x-2"
-            >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              <span>{isRefreshing ? 'Atualizando...' : 'Atualizar'}</span>
-            </Button>
-            
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input 
@@ -88,9 +77,21 @@ export function DashboardContent() {
       {/* Main Content */}
       <main className="p-6 space-y-6">
         <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Dashboard de Parceiros</h1>
-            <p className="text-gray-600">Visualize as principais métricas e indicadores do seu negócio</p>
+          <div className="flex items-center space-x-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Dashboard de parceiros</h1>
+              <p className="text-gray-600">Visualize as principais métricas e indicadores do seu negócio</p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center space-x-2"
+            >
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              <span>{isRefreshing ? 'Atualizando...' : 'Atualizar'}</span>
+            </Button>
           </div>
           <PeriodFilter 
             selectedPeriod={selectedPeriod} 

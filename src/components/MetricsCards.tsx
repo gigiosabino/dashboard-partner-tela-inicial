@@ -30,7 +30,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
 
   const metrics = [
     {
-      title: "Valor Total Financiado",
+      title: "Valor total financiado",
       value: "R$ 12.456.789",
       subtitle: "no período selecionado",
       icon: DollarSign,
@@ -39,7 +39,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       exportable: false,
     },
     {
-      title: "Propostas Criadas",
+      title: "Propostas criadas",
       value: "1,234",
       subtitle: "no período selecionado",
       icon: FileText,
@@ -49,7 +49,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "criadas",
     },
     {
-      title: "Propostas Aprovadas",
+      title: "Propostas aprovadas",
       value: "987",
       subtitle: "no período selecionado",
       icon: ThumbsUp,
@@ -59,7 +59,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "aprovadas",
     },
     {
-      title: "Propostas Finalizadas",
+      title: "Propostas finalizadas",
       value: "789",
       subtitle: "no período selecionado",
       icon: FileCheck,
@@ -69,7 +69,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "finalizadas",
     },
     {
-      title: "Propostas Liberadas",
+      title: "Propostas liberadas",
       value: "567",
       subtitle: "no período selecionado",
       icon: Unlock,
@@ -79,7 +79,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "liberadas",
     },
     {
-      title: "Propostas Pagas",
+      title: "Propostas pagas",
       value: "856",
       subtitle: "no período selecionado",
       icon: CheckCircle,
@@ -89,7 +89,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "pagas",
     },
     {
-      title: "Pendente Pagamento",
+      title: "Pendente pagamento",
       value: "89",
       subtitle: "tempo real",
       icon: Clock,
@@ -99,7 +99,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "pendente-pagamento",
     },
     {
-      title: "Propostas Cedidas",
+      title: "Propostas cedidas",
       value: "423",
       subtitle: "no período selecionado",
       icon: ArrowRightLeft,
@@ -109,7 +109,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "cedidas",
     },
     {
-      title: "Ticket Médio",
+      title: "Ticket médio",
       value: "R$ 10.089",
       subtitle: "valor médio por proposta",
       icon: TrendingUp,
@@ -118,7 +118,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       exportable: false,
     },
     {
-      title: "Taxa Média de Juros",
+      title: "Taxa média de juros",
       value: "3,45%",
       subtitle: "taxa média cobrada",
       icon: Percent,
