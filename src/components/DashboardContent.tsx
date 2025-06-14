@@ -102,12 +102,15 @@ export function DashboardContent() {
 
         <MetricsCards key={`metrics-${refreshKey}`} selectedPeriod={selectedPeriod} />
         
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          <div className="xl:col-span-3">
-            <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
-          </div>
-          <div>
-            <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
+        <div className="space-y-6">
+          {/* Primeira linha - Propostas x Status e Pendências */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div>
+              <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            </div>
+            <div>
+              <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            </div>
           </div>
         </div>
       </main>

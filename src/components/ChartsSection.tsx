@@ -54,13 +54,13 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
 
   return (
     <div className="space-y-6">
-      {/* Primeira linha - 2 gráficos */}
+      {/* Primeira linha - Propostas x Status */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Distribuição por status */}
+        {/* Propostas x Status */}
         <Card className="h-[400px]">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-900">
-              Distribuição por status
+              Propostas x Status
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[320px]">
@@ -86,7 +86,10 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+      </div>
 
+      {/* Segunda linha - Contratações mensais e Valor financiado mensal */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Contratações mensais */}
         <Card className="h-[400px]">
           <CardHeader>
@@ -106,10 +109,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
             </ResponsiveContainer>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Segunda linha - 2 gráficos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Valor financiado mensal */}
         <Card className="h-[400px]">
           <CardHeader>
