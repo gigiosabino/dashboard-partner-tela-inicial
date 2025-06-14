@@ -1,3 +1,4 @@
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -397,7 +398,10 @@ export function PropostaDetalhesContent() {
             <Button variant="outline" onClick={() => setEditModalOpen(false)}>
               Cancelar
             </Button>
-            <Button onClick={handleSalvarEdicao}>
+            <Button 
+              onClick={handleSalvarEdicao}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
               Salvar alterações
             </Button>
           </DialogFooter>
@@ -417,21 +421,21 @@ export function PropostaDetalhesContent() {
             <Button 
               variant="outline" 
               onClick={() => handleReenviarVia('SMS')}
-              className="justify-start"
+              className="justify-start hover:bg-blue-50 hover:border-blue-600"
             >
               Reenviar via SMS
             </Button>
             <Button 
               variant="outline" 
               onClick={() => handleReenviarVia('WhatsApp')}
-              className="justify-start"
+              className="justify-start hover:bg-blue-50 hover:border-blue-600"
             >
               Reenviar via WhatsApp
             </Button>
             <Button 
               variant="outline" 
               onClick={() => handleReenviarVia('E-mail')}
-              className="justify-start"
+              className="justify-start hover:bg-blue-50 hover:border-blue-600"
             >
               Reenviar via E-mail
             </Button>
