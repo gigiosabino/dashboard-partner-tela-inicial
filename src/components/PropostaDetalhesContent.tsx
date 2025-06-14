@@ -411,37 +411,34 @@ export function PropostaDetalhesContent() {
       <Dialog open={reenviarModalOpen} onOpenChange={setReenviarModalOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Reenviar Link de Assinatura</DialogTitle>
-            <DialogDescription>
-              Escolha como deseja reenviar o link de assinatura para {assinante.nome}
-            </DialogDescription>
+            <DialogTitle>Notificar Assinante</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-3 py-4">
+          <div className="flex gap-3 py-4">
             <Button 
               variant="outline" 
-              onClick={() => handleReenviarVia('SMS')}
+              onClick={() => handleReenviarVia('E-mail')}
               className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
             >
-              Reenviar via SMS
+              EMAIL
             </Button>
             <Button 
               variant="outline" 
               onClick={() => handleReenviarVia('WhatsApp')}
               className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
             >
-              Reenviar via WhatsApp
+              WHATSAPP
             </Button>
             <Button 
               variant="outline" 
-              onClick={() => handleReenviarVia('E-mail')}
+              onClick={() => handleReenviarVia('SMS')}
               className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
             >
-              Reenviar via E-mail
+              SMS
             </Button>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setReenviarModalOpen(false)}>
-              Cancelar
+              CANCELAR
             </Button>
           </DialogFooter>
         </DialogContent>
