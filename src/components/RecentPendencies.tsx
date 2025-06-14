@@ -17,7 +17,7 @@ interface RecentPendenciesProps {
 
 export function RecentPendencies({ selectedPeriod }: RecentPendenciesProps) {
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
 
   // Mock data expandido para 5 propostas
   const allPendencies: Pendency[] = [
