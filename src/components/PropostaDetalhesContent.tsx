@@ -17,6 +17,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 // Dados mockados da proposta
 const propostaDetalhes = {
@@ -35,6 +44,15 @@ const propostaDetalhes = {
   cetAm: "0% / 0%",
   parcelas: "2 / R$ 580,00",
   valorTotalDivida: "R$ 1.160,00"
+};
+
+// Dados do assinante
+const assinante = {
+  nome: "TESTE 2",
+  email: "giovanni.carlo@moneyp.com.br",
+  documento: "419.854.578-22",
+  celular: "(11) 99225-3437",
+  identificador: "4198457822"
 };
 
 // Bloco que ficará em largura total
@@ -84,6 +102,10 @@ export function PropostaDetalhesContent() {
   const { numero } = useParams();
   const navigate = useNavigate();
   const [blocosAbertos, setBlocosAbertos] = useState<Record<string, boolean>>({});
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [reenviarModalOpen, setReenviarModalOpen] = useState(false);
+  const [emailEdit, setEmailEdit] = useState(assinante.email);
+  const [celularEdit, setCelularEdit] = useState(assinante.celular);
 
   const toggleBloco = (bloco: string) => {
     setBlocosAbertos(prev => ({
@@ -94,6 +116,26 @@ export function PropostaDetalhesContent() {
 
   const handleVoltar = () => {
     navigate('/propostas');
+  };
+
+  const handleEditarAssinante = () => {
+    setEditModalOpen(true);
+  };
+
+  const handleReenviarLink = () => {
+    setReenviarModalOpen(true);
+  };
+
+  const handleSalvarEdicao = () => {
+    // Aqui seria implementada a lógica de salvar
+    console.log('Salvando:', { email: emailEdit, celular: celularEdit });
+    setEditModalOpen(false);
+  };
+
+  const handleReenviarVia = (metodo: string) => {
+    // Aqui seria implementada a lógica de reenvio
+    console.log('Reenviando via:', metodo);
+    setReenviarModalOpen(false);
   };
 
   const renderBlocoLarguraTotal = (bloco: string) => (
@@ -125,12 +167,31 @@ export function PropostaDetalhesContent() {
                       <TableHead>Documento</TableHead>
                       <TableHead>Celular</TableHead>
                       <TableHead>Identificador</TableHead>
+                      <TableHead className="text-center">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center text-gray-500 py-8">
-                        Nenhum assinante cadastrado
+                      <TableCell>{assinante.nome}</TableCell>
+                      <TableCell>{assinante.email}</TableCell>
+                      <TableCell>{assinante.documento}</TableCell>
+                      <TableCell>{assinante.celular}</TableCell>
+                      <TableCell>{assinante.identificador}</TableCell>
+                      <TableCell className="text-center space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={handleEditarAssinante}
+                        >
+                          EDITAR
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={handleReenviarLink}
+                        >
+                          REENVIAR LINK DE ASSINATURA
+                        </Button>
                       </TableCell>
                     </TableRow>
                   </TableBody>
@@ -298,6 +359,90 @@ export function PropostaDetalhesContent() {
       <footer className="border-t border-gray-200 px-6 py-4 mt-auto">
         <p className="text-sm text-gray-500">© 2025</p>
       </footer>
+
+      {/* Modal para editar assinante */}
+      <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Editar Assinante</DialogTitle>
+            <DialogDescription>
+              Altere os dados do assinante {assinante.nome}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="email" className="text-right font-medium">
+                E-mail
+              </label>
+              <Input
+                id="email"
+                value={emailEdit}
+                onChange={(e) => setEmailEdit(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="celular" className="text-right font-medium">
+                Celular
+              </label>
+              <Input
+                id="celular"
+                value={celularEdit}
+                onChange={(e) => setCelularEdit(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditModalOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleSalvarEdicao}>
+              Salvar alterações
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal para reenviar link */}
+      <Dialog open={reenviarModalOpen} onOpenChange={setReenviarModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Reenviar Link de Assinatura</DialogTitle>
+            <DialogDescription>
+              Escolha como deseja reenviar o link de assinatura para {assinante.nome}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-3 py-4">
+            <Button 
+              variant="outline" 
+              onClick={() => handleReenviarVia('SMS')}
+              className="justify-start"
+            >
+              Reenviar via SMS
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => handleReenviarVia('WhatsApp')}
+              className="justify-start"
+            >
+              Reenviar via WhatsApp
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => handleReenviarVia('E-mail')}
+              className="justify-start"
+            >
+              Reenviar via E-mail
+            </Button>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setReenviarModalOpen(false)}>
+              Cancelar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
