@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Clock, User } from "lucide-react";
 import { MetricsCards } from "@/components/MetricsCards";
 import { ChartsSection } from "@/components/ChartsSection";
+import { RecentPendencies } from "@/components/RecentPendencies";
 import { PeriodFilter } from "@/components/PeriodFilter";
 
 export function DashboardContent() {
@@ -71,7 +72,15 @@ export function DashboardContent() {
         </div>
 
         <MetricsCards selectedPeriod={selectedPeriod} />
-        <ChartsSection selectedPeriod={selectedPeriod} />
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <ChartsSection selectedPeriod={selectedPeriod} />
+          </div>
+          <div>
+            <RecentPendencies selectedPeriod={selectedPeriod} />
+          </div>
+        </div>
       </main>
       
       {/* Footer */}
