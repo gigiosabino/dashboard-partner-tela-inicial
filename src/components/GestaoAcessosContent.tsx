@@ -12,7 +12,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Trash2, Plus, Search } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Edit, Trash2, Plus, Search, X } from "lucide-react";
 import { useState } from "react";
 
 // Dados mockados dos usuários com perfis atualizados
@@ -49,12 +63,56 @@ const usuarios = [
   }
 ];
 
+// Perfis disponíveis
+const perfisDisponiveis = ["Manager", "Basic", "Auditoria", "Import", "Master", "Vendedor", "Report"];
+
 export function GestaoAcessosContent() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [usuarioEditando, setUsuarioEditando] = useState<any>(null);
+  const [nomeEditando, setNomeEditando] = useState("");
+  const [emailEditando, setEmailEditando] = useState("");
+  const [perfisEditando, setPerfisEditando] = useState<string[]>([]);
 
   const handleEditarUsuario = (id: number) => {
-    console.log('Editar usuário:', id);
-    // Aqui seria implementada a lógica de edição
+    const usuario = usuarios.find(u => u.id === id);
+    if (usuario) {
+      setUsuarioEditando(usuario);
+      setNomeEditando(usuario.nome);
+      setEmailEditando(usuario.email);
+      setPerfisEditando([...usuario.perfis]);
+      setIsEditModalOpen(true);
+    }
+  };
+
+  const handleSalvarEdicao = () => {
+    console.log('Salvando edição:', {
+      id: usuarioEditando.id,
+      nome: nomeEditando,
+      email: emailEditando,
+      perfis: perfisEditando
+    });
+    // Aqui seria implementada a lógica para salvar as alterações
+    setIsEditModalOpen(false);
+    setUsuarioEditando(null);
+  };
+
+  const handleFecharModal = () => {
+    setIsEditModalOpen(false);
+    setUsuarioEditando(null);
+    setNomeEditando("");
+    setEmailEditando("");
+    setPerfisEditando([]);
+  };
+
+  const handleAdicionarPerfil = (perfil: string) => {
+    if (!perfisEditando.includes(perfil)) {
+      setPerfisEditando([...perfisEditando, perfil]);
+    }
+  };
+
+  const handleRemoverPerfil = (perfil: string) => {
+    setPerfisEditando(perfisEditando.filter(p => p !== perfil));
   };
 
   const handleExcluirUsuario = (id: number) => {
@@ -161,6 +219,89 @@ export function GestaoAcessosContent() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Modal de Edição */}
+      <Dialog open={isEditModalOpen} onOpenChange={handleFecharModal}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Editar Usuário</DialogTitle>
+          </DialogHeader>
+          
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="nome" className="text-right text-sm font-medium">
+                Nome
+              </label>
+              <Input
+                id="nome"
+                value={nomeEditando}
+                onChange={(e) => setNomeEditando(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="email" className="text-right text-sm font-medium">
+                Email
+              </label>
+              <Input
+                id="email"
+                type="email"
+                value={emailEditando}
+                onChange={(e) => setEmailEditando(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            
+            <div className="grid grid-cols-4 items-start gap-4">
+              <label className="text-right text-sm font-medium mt-2">
+                Perfis
+              </label>
+              <div className="col-span-3 space-y-3">
+                <Select onValueChange={handleAdicionarPerfil}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Adicionar perfil" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {perfisDisponiveis
+                      .filter(perfil => !perfisEditando.includes(perfil))
+                      .map((perfil) => (
+                        <SelectItem key={perfil} value={perfil}>
+                          {perfil}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                
+                <div className="flex flex-wrap gap-2">
+                  {perfisEditando.map((perfil) => (
+                    <Badge key={perfil} variant="secondary" className="flex items-center gap-1">
+                      {perfil}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-4 w-4 p-0 hover:bg-transparent"
+                        onClick={() => handleRemoverPerfil(perfil)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={handleFecharModal}>
+              Cancelar
+            </Button>
+            <Button onClick={handleSalvarEdicao}>
+              Salvar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
