@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -79,46 +78,34 @@ export function RelatoriosServicosContent() {
 
     setLoading(true);
     
-    // Simular consulta com dados de exemplo
+    // Simular consulta com 1 registro por mês
     setTimeout(() => {
-      const mockData: RelatorioItem[] = [
-        {
-          periodo: "Apr-25",
-          numeroTransacoes: 15,
+      const [anoIni, mesIni] = mesInicial.split('-').map(Number);
+      const [anoFin, mesFin] = mesFinal.split('-').map(Number);
+      
+      const mockData: RelatorioItem[] = [];
+      
+      // Gerar 1 linha por mês no intervalo
+      let currentYear = anoIni;
+      let currentMonth = mesIni;
+      
+      while (currentYear < anoFin || (currentYear === anoFin && currentMonth <= mesFin)) {
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const periodo = `${monthNames[currentMonth - 1]}-${currentYear.toString().slice(-2)}`;
+        
+        mockData.push({
+          periodo,
+          numeroTransacoes: Math.floor(Math.random() * 100) + 20, // Entre 20 e 119 transações
           criterio: "Consulta Padrão",
           bureau: "SCR"
-        },
-        {
-          periodo: "Apr-25",
-          numeroTransacoes: 8,
-          criterio: "Consulta Padrão",
-          bureau: "SCR"
-        },
-        {
-          periodo: "May-25",
-          numeroTransacoes: 45,
-          criterio: "Consulta Padrão",
-          bureau: "SCR"
-        },
-        {
-          periodo: "May-25",
-          numeroTransacoes: 23,
-          criterio: "Consulta Padrão",
-          bureau: "SCR"
-        },
-        {
-          periodo: "Jun-25",
-          numeroTransacoes: 67,
-          criterio: "Consulta Padrão",
-          bureau: "SCR"
-        },
-        {
-          periodo: "Jun-25",
-          numeroTransacoes: 12,
-          criterio: "Consulta Padrão",
-          bureau: "SCR"
+        });
+        
+        currentMonth++;
+        if (currentMonth > 12) {
+          currentMonth = 1;
+          currentYear++;
         }
-      ];
+      }
       
       setResultados(mockData);
       setLoading(false);
