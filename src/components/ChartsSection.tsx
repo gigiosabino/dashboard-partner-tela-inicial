@@ -42,16 +42,6 @@ const statusData = [
   { name: "Recusada", value: 67, color: "#DC2626" },
 ];
 
-const weeklyData = [
-  { day: "Seg", propostas: 45 },
-  { day: "Ter", propostas: 52 },
-  { day: "Qua", propostas: 38 },
-  { day: "Qui", propostas: 67 },
-  { day: "Sex", propostas: 71 },
-  { day: "Sab", propostas: 23 },
-  { day: "Dom", propostas: 18 },
-];
-
 export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   // Simular mudança de dados baseado no período selecionado
   const getDataByPeriod = () => {
@@ -63,17 +53,50 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   const currentData = getDataByPeriod();
 
   return (
-    <div className="space-y-6">
-      {/* Primeira linha - Gráficos principais */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Contratações Mensais */}
-        <Card className="h-[420px]">
+    <div className="space-y-8">
+      {/* Primeira linha - Distribuição por status */}
+      <div className="grid grid-cols-1">
+        <Card className="h-[500px]">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-gray-900">
+              Distribuição por status
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="h-[420px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={statusData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={140}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  labelLine={false}
+                  fontSize={12}
+                >
+                  {statusData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value) => [value, "Propostas"]} />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Segunda linha - Contratações e Valor financiado */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Contratações mensais */}
+        <Card className="h-[500px]">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-900">
               Contratações mensais
             </CardTitle>
           </CardHeader>
-          <CardContent className="h-[340px]">
+          <CardContent className="h-[420px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={currentData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -86,14 +109,14 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
           </CardContent>
         </Card>
 
-        {/* Valor Financiado Mensal */}
-        <Card className="h-[420px]">
+        {/* Valor financiado mensal */}
+        <Card className="h-[500px]">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-900">
               Valor financiado mensal
             </CardTitle>
           </CardHeader>
-          <CardContent className="h-[340px]">
+          <CardContent className="h-[420px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={currentData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -109,60 +132,6 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
                   strokeWidth={3}
                 />
               </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Segunda linha - Gráfico de pizza e barras semanais */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Status das Propostas */}
-        <Card className="lg:col-span-2 h-[420px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Distribuição por status
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[340px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={statusData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={120}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelLine={false}
-                  fontSize={11}
-                >
-                  {statusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip formatter={(value) => [value, "Propostas"]} />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Propostas por Dia da Semana */}
-        <Card className="h-[420px]">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-gray-900">
-              Propostas por dia da semana
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[340px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weeklyData} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="day" type="category" width={40} />
-                <Tooltip formatter={(value) => [value, "Propostas"]} />
-                <Bar dataKey="propostas" fill="#6366F1" />
-              </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
