@@ -1,4 +1,3 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -421,21 +420,21 @@ export function PropostaDetalhesContent() {
             <Button 
               variant="outline" 
               onClick={() => handleReenviarVia('SMS')}
-              className="justify-start hover:bg-blue-50 hover:border-blue-600"
+              className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
             >
               Reenviar via SMS
             </Button>
             <Button 
               variant="outline" 
               onClick={() => handleReenviarVia('WhatsApp')}
-              className="justify-start hover:bg-blue-50 hover:border-blue-600"
+              className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
             >
               Reenviar via WhatsApp
             </Button>
             <Button 
               variant="outline" 
               onClick={() => handleReenviarVia('E-mail')}
-              className="justify-start hover:bg-blue-50 hover:border-blue-600"
+              className="flex-1 justify-center hover:bg-blue-50 hover:border-blue-600"
             >
               Reenviar via E-mail
             </Button>
