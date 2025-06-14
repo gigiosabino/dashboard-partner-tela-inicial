@@ -1,9 +1,11 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  PieChart,
-  Pie,
-  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
@@ -13,17 +15,17 @@ interface ChartsSectionProps {
 }
 
 const statusData = [
-  { name: "Em análise", value: 145, color: "#F59E0B" },
+  { name: "Paga", value: 256, color: "#10B981" },
   { name: "Aprovada", value: 234, color: "#3B82F6" },
   { name: "Finalizada", value: 189, color: "#059669" },
   { name: "Liberada", value: 167, color: "#6366F1" },
   { name: "Cedida", value: 156, color: "#8B5CF6" },
-  { name: "Paga", value: 256, color: "#10B981" },
-  { name: "Pendente pagamento", value: 89, color: "#EF4444" },
-  { name: "Cancelada", value: 45, color: "#6B7280" },
-  { name: "Conferida", value: 78, color: "#14B8A6" },
+  { name: "Em análise", value: 145, color: "#F59E0B" },
   { name: "Pendente", value: 123, color: "#F97316" },
+  { name: "Pendente pagamento", value: 89, color: "#EF4444" },
+  { name: "Conferida", value: 78, color: "#14B8A6" },
   { name: "Recusada", value: 67, color: "#DC2626" },
+  { name: "Cancelada", value: 45, color: "#6B7280" },
 ];
 
 export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
@@ -43,24 +45,29 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
       </CardHeader>
       <CardContent className="h-[320px]">
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={currentData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              labelLine={false}
-              fontSize={10}
-            >
-              {currentData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip formatter={(value) => [value, "Propostas"]} />
-          </PieChart>
+          <BarChart
+            data={currentData}
+            layout="horizontal"
+            margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis type="number" />
+            <YAxis 
+              type="category" 
+              dataKey="name" 
+              width={75}
+              fontSize={11}
+            />
+            <Tooltip 
+              formatter={(value) => [value, "Propostas"]}
+              labelStyle={{ fontSize: '12px' }}
+            />
+            <Bar 
+              dataKey="value" 
+              fill="#3B82F6"
+              radius={[0, 4, 4, 0]}
+            />
+          </BarChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
