@@ -82,6 +82,18 @@ export function FormalizacaoDetalhesContent() {
     console.log("Salvando pendências...");
   };
 
+  const handlePendenciasClienteChange = (checked: boolean | "indeterminate") => {
+    setPossuiPendenciasCliente(checked === true);
+  };
+
+  const handlePendenciasPropostaChange = (checked: boolean | "indeterminate") => {
+    setPossuiPendenciasProposta(checked === true);
+  };
+
+  const handleMaloteEntregueChange = (checked: boolean | "indeterminate") => {
+    setMaloteEntregue(checked === true);
+  };
+
   return (
     <div className="flex-1 bg-gray-50">
       {/* Header */}
@@ -179,21 +191,21 @@ export function FormalizacaoDetalhesContent() {
             <div className="flex items-center space-x-2">
               <Checkbox
                 checked={possuiPendenciasCliente}
-                onCheckedChange={setPossuiPendenciasCliente}
+                onCheckedChange={handlePendenciasClienteChange}
               />
               <label className="text-sm">Possui pendências por parte dos documentos do cliente?</label>
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox
                 checked={possuiPendenciasProposta}
-                onCheckedChange={setPossuiPendenciasProposta}
+                onCheckedChange={handlePendenciasPropostaChange}
               />
               <label className="text-sm">Possui pendências por parte dos documentos da proposta?</label>
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox
                 checked={maloteEntregue}
-                onCheckedChange={setMaloteEntregue}
+                onCheckedChange={handleMaloteEntregueChange}
               />
               <label className="text-sm">Malote entregue na BMP?</label>
             </div>
