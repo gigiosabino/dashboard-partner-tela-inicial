@@ -1,8 +1,7 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Eye, Filter, RefreshCw, Download, Plus } from "lucide-react";
+import { Search, Eye, Filter, RefreshCw, Download } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -173,16 +172,6 @@ export function PropostasContent() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Button className="bg-green-600 hover:bg-green-700 text-white">
-                <Plus className="w-4 h-4 mr-2" />
-                Nova Proposta
-              </Button>
-              
-              <Button variant="outline" onClick={handleRefresh} className="border-gray-300 hover:bg-gray-50">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Atualizar
-              </Button>
-              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
@@ -231,6 +220,11 @@ export function PropostasContent() {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
+              
+              <Button variant="outline" onClick={handleRefresh} className="border-gray-300 hover:bg-gray-50">
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Atualizar
+              </Button>
 
               <Button variant="outline" onClick={handleExportCSV} className="border-gray-300 hover:bg-gray-50">
                 <Download className="w-4 h-4 mr-2" />

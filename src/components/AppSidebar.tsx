@@ -45,7 +45,11 @@ const menuItems = [
   {
     title: "Gestão de callback",
     icon: Phone,
-    items: []
+    items: [
+      { title: "Histórico de envio", url: "/historico-envio" },
+      { title: "Reenvio de callbacks", url: "/reenvio-callbacks" },
+      { title: "Configuração de callbacks", url: "/configuracao-callbacks" },
+    ]
   },
   {
     title: "Gestão de contratos",
@@ -55,7 +59,8 @@ const menuItems = [
   {
     title: "Formalização de garantias",
     icon: Shield,
-    items: []
+    items: [],
+    url: "/formalizacao-garantias"
   },
   {
     title: "Gestão de acessos",
@@ -66,7 +71,8 @@ const menuItems = [
   {
     title: "Mensageria",
     icon: MessageSquare,
-    items: []
+    items: [],
+    url: "/mensageria"
   },
   {
     title: "Relatórios de Serviços Integrados",
@@ -132,7 +138,7 @@ export function AppSidebar() {
                               <SidebarMenuSubItem key={subItem.title}>
                                 <SidebarMenuSubButton asChild className="text-white hover:text-white hover:bg-gray-700 text-sm">
                                   <Link to={subItem.url} className="block py-2 px-4 rounded">
-                                    <span className="whitespace-normal leading-tight">{subItem.title}</span>
+                                    <span className="whitespace-normal leading-tight break-words">{subItem.title}</span>
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>

@@ -12,6 +12,12 @@ import PropostaDetalhes from "./pages/PropostaDetalhes";
 import GestaoAcessos from "./pages/GestaoAcessos";
 import RelatoriosCaas from "./pages/RelatoriosCaas";
 import AtualizarDadosBancarios from "./pages/AtualizarDadosBancarios";
+import HistoricoEnvio from "./pages/HistoricoEnvio";
+import ReenvioCallbacks from "./pages/ReenvioCallbacks";
+import ConfiguracaoCallbacks from "./pages/ConfiguracaoCallbacks";
+import FormalizacaoGarantias from "./pages/FormalizacaoGarantias";
+import FormalizacaoDetalhes from "./pages/FormalizacaoDetalhes";
+import Mensageria from "./pages/Mensageria";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +36,12 @@ const App = () => (
           <Route path="/gestao-acessos" element={<GestaoAcessos />} />
           <Route path="/relatorios-caas" element={<RelatoriosCaas />} />
           <Route path="/atualizar-dados-bancarios" element={<AtualizarDadosBancarios />} />
+          <Route path="/historico-envio" element={<HistoricoEnvio />} />
+          <Route path="/reenvio-callbacks" element={<ReenvioCallbacks />} />
+          <Route path="/configuracao-callbacks" element={<ConfiguracaoCallbacks />} />
+          <Route path="/formalizacao-garantias" element={<FormalizacaoGarantias />} />
+          <Route path="/formalizacao-garantias/:numero" element={<FormalizacaoDetalhes />} />
+          <Route path="/mensageria" element={<Mensageria />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
