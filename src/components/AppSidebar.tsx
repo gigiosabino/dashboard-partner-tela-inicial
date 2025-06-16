@@ -34,10 +34,10 @@ import {
 
 const menuItems = [
   {
-    title: "Propostas",
+    title: "Propostas contratadas",
     icon: FileText,
     items: [
-      { title: "Propostas", url: "/propostas" },
+      { title: "Propostas contratadas", url: "/propostas" },
       { title: "Atualizar Dados Bancários", url: "/atualizar-dados-bancarios" },
       { title: "Cancelar Proposta", url: "/cancelar-proposta" },
     ]
@@ -127,8 +127,8 @@ export function AppSidebar() {
                       <Collapsible>
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton className="text-white hover:bg-gray-700 w-full">
-                            <item.icon className="w-4 h-4" />
-                            <span className="truncate">{item.title}</span>
+                            <item.icon className="w-4 h-4 flex-shrink-0" />
+                            <span className="text-left break-words leading-tight whitespace-normal flex-1">{item.title}</span>
                             <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]:rotate-90 flex-shrink-0" />
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
@@ -150,20 +150,20 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild className="text-white hover:bg-gray-700">
                         {item.url ? (
                           item.external ? (
-                            <a href={item.url} target="_blank" rel="noopener noreferrer">
-                              <item.icon className="w-4 h-4" />
-                              <span>{item.title}</span>
+                            <a href={item.url} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                              <item.icon className="w-4 h-4 flex-shrink-0" />
+                              <span className="whitespace-normal leading-tight break-words flex-1">{item.title}</span>
                             </a>
                           ) : (
-                            <Link to={item.url}>
-                              <item.icon className="w-4 h-4" />
-                              <span>{item.title}</span>
+                            <Link to={item.url} className="flex items-center">
+                              <item.icon className="w-4 h-4 flex-shrink-0" />
+                              <span className="whitespace-normal leading-tight break-words flex-1">{item.title}</span>
                             </Link>
                           )
                         ) : (
-                          <div>
-                            <item.icon className="w-4 h-4" />
-                            <span>{item.title}</span>
+                          <div className="flex items-center">
+                            <item.icon className="w-4 h-4 flex-shrink-0" />
+                            <span className="whitespace-normal leading-tight break-words flex-1">{item.title}</span>
                           </div>
                         )}
                       </SidebarMenuButton>

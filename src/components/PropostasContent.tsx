@@ -1,3 +1,4 @@
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -95,13 +95,13 @@ const propostas = [
 const getStatusColor = (status: string) => {
   switch (status) {
     case "Cedida":
-      return "bg-green-100 text-green-800";
+      return "bg-green-500";
     case "Em Análise":
-      return "bg-yellow-100 text-yellow-800";
+      return "bg-yellow-500";
     case "Cancelada":
-      return "bg-red-100 text-red-800";
+      return "bg-red-500";
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-500";
   }
 };
 
@@ -160,7 +160,7 @@ export function PropostasContent() {
           <div className="flex items-center space-x-4">
             <SidebarTrigger />
             <div className="text-sm text-gray-600">
-              <span>Propostas</span>
+              <span>Propostas Contratadas</span>
             </div>
           </div>
         </div>
@@ -270,9 +270,10 @@ export function PropostasContent() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge className={getStatusColor(proposta.situacao)}>
-                      {proposta.situacao}
-                    </Badge>
+                    <div className="flex items-center space-x-2">
+                      <div className={`w-3 h-3 rounded-full ${getStatusColor(proposta.situacao)}`}></div>
+                      <span className="text-sm">{proposta.situacao}</span>
+                    </div>
                   </TableCell>
                   <TableCell className="text-sm text-gray-600">-</TableCell>
                   <TableCell className="text-sm">{proposta.analista}</TableCell>
