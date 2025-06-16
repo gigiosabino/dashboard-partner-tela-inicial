@@ -75,6 +75,12 @@ const menuItems = [
     url: "/relatorios-servicos"
   },
   {
+    title: "Relatórios CAAS",
+    icon: BarChart3,
+    items: [],
+    url: "/relatorios-caas"
+  },
+  {
     title: "Docs",
     icon: BookOpen,
     items: [],
