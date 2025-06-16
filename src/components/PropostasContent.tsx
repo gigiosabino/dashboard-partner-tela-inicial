@@ -1,7 +1,8 @@
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Eye, Filter, RefreshCw, Download } from "lucide-react";
+import { Search, Eye, Filter, RefreshCw, Download, Plus } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -37,9 +38,10 @@ const propostas = [
     documentoFederal: "123.456.789-00",
     valorSolicitado: "R$ 50.000,00",
     prazo: "24",
-    situacao: "Aprovada",
+    situacao: "Cedida",
     analista: "Maria Oliveira",
-    tipoContrato: "Crédito Pessoal"
+    tipoContrato: "Crédito Pessoal",
+    valorAprovado: "R$ 50.000,00"
   },
   {
     numero: "004935630",
@@ -50,7 +52,8 @@ const propostas = [
     prazo: "36",
     situacao: "Em Análise",
     analista: "Carlos Santos",
-    tipoContrato: "Financiamento"
+    tipoContrato: "Financiamento",
+    valorAprovado: "R$ 0,00"
   },
   {
     numero: "004935631",
@@ -59,9 +62,10 @@ const propostas = [
     documentoFederal: "456.789.123-00",
     valorSolicitado: "R$ 30.000,00",
     prazo: "18",
-    situacao: "Rejeitada",
+    situacao: "Cancelada",
     analista: "Fernanda Rocha",
-    tipoContrato: "Crédito Pessoal"
+    tipoContrato: "Crédito Pessoal",
+    valorAprovado: "R$ 0,00"
   },
   {
     numero: "004935632",
@@ -70,9 +74,10 @@ const propostas = [
     documentoFederal: "789.123.456-00",
     valorSolicitado: "R$ 100.000,00",
     prazo: "48",
-    situacao: "Pendente",
+    situacao: "Cedida",
     analista: "Roberto Silva",
-    tipoContrato: "Financiamento"
+    tipoContrato: "Financiamento",
+    valorAprovado: "R$ 100.000,00"
   },
   {
     numero: "004935633",
@@ -81,22 +86,21 @@ const propostas = [
     documentoFederal: "321.654.987-00",
     valorSolicitado: "R$ 25.000,00",
     prazo: "12",
-    situacao: "Aprovada",
+    situacao: "Cedida",
     analista: "Juliana Mendes",
-    tipoContrato: "Crédito Pessoal"
+    tipoContrato: "Crédito Pessoal",
+    valorAprovado: "R$ 25.000,00"
   }
 ];
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case "Aprovada":
+    case "Cedida":
       return "bg-green-100 text-green-800";
     case "Em Análise":
       return "bg-yellow-100 text-yellow-800";
-    case "Rejeitada":
+    case "Cancelada":
       return "bg-red-100 text-red-800";
-    case "Pendente":
-      return "bg-blue-100 text-blue-800";
     default:
       return "bg-gray-100 text-gray-800";
   }
@@ -117,7 +121,6 @@ export function PropostasContent() {
 
   const handleRefresh = () => {
     console.log("Atualizando listagem de propostas...");
-    // Aqui você implementaria a lógica de atualização
   };
 
   const handleExportCSV = () => {
@@ -151,7 +154,7 @@ export function PropostasContent() {
   };
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -165,23 +168,24 @@ export function PropostasContent() {
       </header>
 
       {/* Main Content */}
-      <main className="p-6 space-y-6">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Propostas</h1>
-            <p className="text-gray-600">Visualize e gerencie todas as propostas do sistema</p>
-          </div>
-        </div>
-
-        {/* Filtros e Ações */}
-        <div className="bg-white p-4 rounded-lg shadow">
+      <main className="p-6">
+        {/* Top Section - Action Buttons */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
           <div className="flex items-center justify-between">
-            {/* Ações à esquerda */}
-            <div className="flex items-center space-x-2">
-              {/* Filtros */}
+            <div className="flex items-center space-x-3">
+              <Button className="bg-green-600 hover:bg-green-700 text-white">
+                <Plus className="w-4 h-4 mr-2" />
+                Nova Proposta
+              </Button>
+              
+              <Button variant="outline" onClick={handleRefresh} className="border-gray-300 hover:bg-gray-50">
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Atualizar
+              </Button>
+              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
                     <Filter className="w-4 h-4 mr-2" />
                     Filtros
                   </Button>
@@ -209,26 +213,9 @@ export function PropostasContent() {
                           <SelectValue placeholder="Selecione a situação" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Aprovada">Aprovada</SelectItem>
+                          <SelectItem value="Cedida">Cedida</SelectItem>
                           <SelectItem value="Em Análise">Em Análise</SelectItem>
-                          <SelectItem value="Rejeitada">Rejeitada</SelectItem>
-                          <SelectItem value="Pendente">Pendente</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Tipo de Contrato</label>
-                      <Select value={filterContractType} onValueChange={setFilterContractType}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o tipo de contrato" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="CG">CG - Crédito Geral</SelectItem>
-                          <SelectItem value="CDC">CDC - Crédito Direto ao Consumidor</SelectItem>
-                          <SelectItem value="EP">EP - Empréstimo Pessoal</SelectItem>
-                          <SelectItem value="Crédito Pessoal">Crédito Pessoal</SelectItem>
-                          <SelectItem value="Financiamento">Financiamento</SelectItem>
+                          <SelectItem value="Cancelada">Cancelada</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -237,7 +224,7 @@ export function PropostasContent() {
                       <Button variant="outline" size="sm" onClick={handleClearFilters}>
                         Limpar
                       </Button>
-                      <Button size="sm">
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                         Aplicar Filtros
                       </Button>
                     </div>
@@ -245,25 +232,18 @@ export function PropostasContent() {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* Botão de atualização */}
-              <Button variant="outline" size="sm" onClick={handleRefresh}>
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Atualizar
-              </Button>
-
-              {/* Botão de exportação */}
-              <Button variant="outline" size="sm" onClick={handleExportCSV}>
+              <Button variant="outline" onClick={handleExportCSV} className="border-gray-300 hover:bg-gray-50">
                 <Download className="w-4 h-4 mr-2" />
-                Exportar CSV
+                Exportar
               </Button>
             </div>
 
-            {/* Campo de busca à direita */}
+            {/* Campo de busca */}
             <div className="relative w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input 
-                placeholder="Buscar por número, cliente ou documento..." 
-                className="pl-10"
+                placeholder="Pesquisar" 
+                className="pl-10 border-gray-300"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -272,47 +252,63 @@ export function PropostasContent() {
         </div>
 
         {/* Tabela de propostas */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Número da Proposta</TableHead>
-                <TableHead>Data de Criação</TableHead>
-                <TableHead>Nome do Cliente</TableHead>
-                <TableHead>Documento Federal</TableHead>
-                <TableHead>Valor Solicitado</TableHead>
-                <TableHead>Prazo</TableHead>
-                <TableHead>Situação</TableHead>
-                <TableHead>Analista</TableHead>
-                <TableHead>Tipo de Contrato</TableHead>
-                <TableHead>Ações</TableHead>
+              <TableRow className="bg-gray-50">
+                <TableHead className="font-semibold text-gray-700">#</TableHead>
+                <TableHead className="font-semibold text-gray-700">Situação</TableHead>
+                <TableHead className="font-semibold text-gray-700">Rev.</TableHead>
+                <TableHead className="font-semibold text-gray-700">Vendedor</TableHead>
+                <TableHead className="font-semibold text-gray-700">Cliente</TableHead>
+                <TableHead className="font-semibold text-gray-700">Solicitado</TableHead>
+                <TableHead className="font-semibold text-gray-700">Aprovado</TableHead>
+                <TableHead className="font-semibold text-gray-700">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {propostas.map((proposta) => (
-                <TableRow key={proposta.numero}>
-                  <TableCell className="font-medium">{proposta.numero}</TableCell>
-                  <TableCell>{proposta.dataCriacao}</TableCell>
-                  <TableCell>{proposta.nomeCliente}</TableCell>
-                  <TableCell>{proposta.documentoFederal}</TableCell>
-                  <TableCell>{proposta.valorSolicitado}</TableCell>
-                  <TableCell>{proposta.prazo}</TableCell>
+                <TableRow key={proposta.numero} className="hover:bg-gray-50">
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">#{proposta.numero}</div>
+                      <div className="text-sm text-gray-500">{proposta.dataCriacao}</div>
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <Badge className={getStatusColor(proposta.situacao)}>
                       {proposta.situacao}
                     </Badge>
                   </TableCell>
-                  <TableCell>{proposta.analista}</TableCell>
-                  <TableCell>{proposta.tipoContrato}</TableCell>
+                  <TableCell className="text-sm text-gray-600">-</TableCell>
+                  <TableCell className="text-sm">{proposta.analista}</TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{proposta.nomeCliente}</div>
+                      <div className="text-sm text-gray-500">{proposta.documentoFederal}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{proposta.valorSolicitado}</div>
+                      <div className="text-sm text-gray-500">Em {proposta.prazo} parcelas</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{proposta.valorAprovado}</div>
+                      <div className="text-sm text-gray-500">Em {proposta.prazo} parcelas</div>
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleVerDetalhes(proposta.numero)}
-                      className="flex items-center space-x-1"
+                      className="border-blue-600 text-blue-600 hover:bg-blue-50"
                     >
-                      <Eye className="w-4 h-4" />
-                      <span>Detalhes</span>
+                      <Eye className="w-4 h-4 mr-1" />
+                      Detalhes
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -321,11 +317,6 @@ export function PropostasContent() {
           </Table>
         </div>
       </main>
-      
-      {/* Footer */}
-      <footer className="border-t border-gray-200 px-6 py-4 mt-auto">
-        <p className="text-sm text-gray-500">© 2025</p>
-      </footer>
     </div>
   );
 }

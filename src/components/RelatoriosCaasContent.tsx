@@ -1,12 +1,20 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CalendarIcon, Download } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { CalendarIcon, Download, Search, Info } from "lucide-react";
 import { DatePickerWithRange } from "@/components/DatePickerWithRange";
 import { exportToCSV } from "@/utils/csvExport";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface FieldConfig {
   id: string;
@@ -90,8 +98,21 @@ const fieldsConfig: FieldConfig[] = [
 export function RelatoriosCaasContent() {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [dateRange, setDateRange] = useState<any>(null);
+  const [reportType, setReportType] = useState("padrao");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const categories = Array.from(new Set(fieldsConfig.map(field => field.category)));
+
+  const filteredFields = fieldsConfig.filter(field => 
+    field.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredCategories = categories.filter(category =>
+    fieldsConfig.some(field => 
+      field.category === category && 
+      field.label.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   const handleFieldToggle = (fieldId: string, checked: boolean) => {
     if (checked) {
@@ -129,8 +150,8 @@ export function RelatoriosCaasContent() {
   };
 
   const handleGenerateReport = () => {
-    if (selectedFields.length === 0) {
-      alert("Selecione pelo menos um campo para gerar o relatório");
+    if (reportType === "personalizado" && selectedFields.length === 0) {
+      alert("Selecione pelo menos um campo para gerar o relatório personalizado");
       return;
     }
 
@@ -145,27 +166,45 @@ export function RelatoriosCaasContent() {
       }
     ];
 
-    const selectedFieldLabels = fieldsConfig
-      .filter(field => selectedFields.includes(field.id))
-      .map(field => field.label);
-
-    exportToCSV(mockData, "relatorio-caas.csv", selectedFields);
+    if (reportType === "padrao") {
+      // Campos padrão
+      const defaultFields = ["nro_proposta", "data_criacao", "situacao", "cpf", "nome", "valor_solicitado", "valor_tc", "valor_iof", "prazo", "taxa_mensal", "valor_parcela", "valor_total_divida"];
+      exportToCSV(mockData, "relatorio-caas-padrao.csv", defaultFields);
+    } else {
+      exportToCSV(mockData, "relatorio-caas-personalizado.csv", selectedFields);
+    }
   };
 
   return (
-    <div className="flex-1 p-6">
+    <div className="flex-1 p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900">Relatórios CAAS</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Filtros de Data */}
+          {/* Filtros e Configurações */}
           <Card className="lg:col-span-1">
             <CardHeader>
-              <CardTitle className="text-lg">Filtros</CardTitle>
+              <CardTitle className="text-lg">Configurações do Relatório</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
+              {/* Tipo de Relatório */}
+              <div className="space-y-3">
+                <Label className="text-sm font-medium">Tipo de Relatório</Label>
+                <RadioGroup value={reportType} onValueChange={setReportType}>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="padrao" id="padrao" />
+                    <Label htmlFor="padrao" className="text-sm">Relatório Padrão</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="personalizado" id="personalizado" />
+                    <Label htmlFor="personalizado" className="text-sm">Relatório Personalizado</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              {/* Filtro de Data */}
               <div className="space-y-2">
                 <Label>Período</Label>
                 <DatePickerWithRange 
@@ -174,70 +213,101 @@ export function RelatoriosCaasContent() {
                 />
               </div>
               
-              <div className="pt-4">
+              {/* Botão de Gerar Relatório */}
+              <div className="pt-4 space-y-2">
                 <Button 
                   onClick={handleGenerateReport}
-                  className="w-full"
-                  disabled={selectedFields.length === 0}
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  disabled={reportType === "personalizado" && selectedFields.length === 0}
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Gerar relatório
                 </Button>
+                
+                {/* Tooltip */}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center justify-center text-sm text-gray-500 cursor-help">
+                        <Info className="w-4 h-4 mr-1" />
+                        Informações sobre o relatório padrão
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="text-sm">
+                        Relatório padrão inclui: nº proposta, data, status, CPF, nome, valor solicitado, TC, IOF, prazo, taxa/mês, parcela e dívida total.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </CardContent>
           </Card>
 
-          {/* Seleção de Campos */}
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle className="text-lg">Selecionar Campos do Relatório</CardTitle>
-              <p className="text-sm text-gray-600">
-                Escolha os campos que deseja incluir no relatório ({selectedFields.length} selecionados)
-              </p>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-96 overflow-y-auto">
-                {categories.map((category) => (
-                  <div key={category} className="space-y-3">
-                    <div className="flex items-center space-x-2 border-b pb-2">
-                      <Checkbox
-                        id={`category-${category}`}
-                        checked={isCategorySelected(category)}
-                        onCheckedChange={(checked) => handleCategoryToggle(category, checked as boolean)}
-                        className={isCategoryPartiallySelected(category) ? "data-[state=checked]:bg-blue-500" : ""}
-                      />
-                      <Label 
-                        htmlFor={`category-${category}`}
-                        className="font-semibold text-gray-900 cursor-pointer"
-                      >
-                        {category}
-                      </Label>
+          {/* Seleção de Campos - apenas se personalizado */}
+          {reportType === "personalizado" && (
+            <Card className="lg:col-span-2">
+              <CardHeader>
+                <CardTitle className="text-lg">Selecionar Campos do Relatório</CardTitle>
+                <p className="text-sm text-gray-600">
+                  Escolha os campos que deseja incluir no relatório ({selectedFields.length} selecionados)
+                </p>
+                
+                {/* Campo de busca */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input 
+                    placeholder="Buscar campos..." 
+                    className="pl-10"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-96 overflow-y-auto">
+                  {filteredCategories.map((category) => (
+                    <div key={category} className="space-y-3">
+                      <div className="flex items-center space-x-2 border-b pb-2">
+                        <Checkbox
+                          id={`category-${category}`}
+                          checked={isCategorySelected(category)}
+                          onCheckedChange={(checked) => handleCategoryToggle(category, checked as boolean)}
+                          className={isCategoryPartiallySelected(category) ? "data-[state=checked]:bg-blue-500" : ""}
+                        />
+                        <Label 
+                          htmlFor={`category-${category}`}
+                          className="font-semibold text-gray-900 cursor-pointer"
+                        >
+                          {category}
+                        </Label>
+                      </div>
+                      
+                      <div className="space-y-2 pl-6">
+                        {filteredFields
+                          .filter(field => field.category === category)
+                          .map((field) => (
+                            <div key={field.id} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={field.id}
+                                checked={selectedFields.includes(field.id)}
+                                onCheckedChange={(checked) => handleFieldToggle(field.id, checked as boolean)}
+                              />
+                              <Label 
+                                htmlFor={field.id}
+                                className="text-sm text-gray-700 cursor-pointer"
+                              >
+                                {field.label}
+                              </Label>
+                            </div>
+                          ))}
+                      </div>
                     </div>
-                    
-                    <div className="space-y-2 pl-6">
-                      {fieldsConfig
-                        .filter(field => field.category === category)
-                        .map((field) => (
-                          <div key={field.id} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={field.id}
-                              checked={selectedFields.includes(field.id)}
-                              onCheckedChange={(checked) => handleFieldToggle(field.id, checked as boolean)}
-                            />
-                            <Label 
-                              htmlFor={field.id}
-                              className="text-sm text-gray-700 cursor-pointer"
-                            >
-                              {field.label}
-                            </Label>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

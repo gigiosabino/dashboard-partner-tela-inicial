@@ -39,7 +39,7 @@ const menuItems = [
     items: [
       { title: "Propostas", url: "/propostas" },
       { title: "Atualizar Dados Bancários", url: "/atualizar-dados-bancarios" },
-      { title: "Cancelar proposta", url: "/cancelar-proposta" },
+      { title: "Cancelar Proposta", url: "/cancelar-proposta" },
     ]
   },
   {
@@ -122,17 +122,17 @@ export function AppSidebar() {
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton className="text-white hover:bg-gray-700 w-full">
                             <item.icon className="w-4 h-4" />
-                            <span>{item.title}</span>
-                            <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]:rotate-90" />
+                            <span className="truncate">{item.title}</span>
+                            <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]:rotate-90 flex-shrink-0" />
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <SidebarMenuSub>
                             {item.items.map((subItem) => (
                               <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild>
-                                  <Link to={subItem.url} className="text-gray-300 hover:text-white hover:bg-gray-700">
-                                    {subItem.title}
+                                <SidebarMenuSubButton asChild className="text-white hover:text-white hover:bg-gray-700 text-sm">
+                                  <Link to={subItem.url} className="block py-2 px-4 rounded">
+                                    <span className="whitespace-normal leading-tight">{subItem.title}</span>
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
