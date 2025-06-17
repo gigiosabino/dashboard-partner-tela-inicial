@@ -1,3 +1,4 @@
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -387,56 +388,72 @@ export function AtualizarDadosBancariosContent() {
                     </TableCell>
                   </TableRow>
                   
-                  {/* Expanded Splits Row */}
+                  {/* Expanded Splits Row - Melhor segregação */}
                   {expandedRows.includes(proposta.numero) && splits[proposta.numero as keyof typeof splits] && (
                     <TableRow>
-                      <TableCell colSpan={9} className="bg-gray-50 p-0">
-                        <div className="p-4">
-                          <h4 className="font-semibold mb-3 text-gray-700">Splits da Proposta</h4>
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                                <TableHead className="text-xs">Campo ID</TableHead>
-                                <TableHead className="text-xs">Previsão Pagamento</TableHead>
-                                <TableHead className="text-xs">Situação</TableHead>
-                                <TableHead className="text-xs">Valor</TableHead>
-                                <TableHead className="text-xs">Banco</TableHead>
-                                <TableHead className="text-xs">Agência</TableHead>
-                                <TableHead className="text-xs">Conta</TableHead>
-                                <TableHead className="text-xs">Dig</TableHead>
-                                <TableHead className="text-xs">Favorecido</TableHead>
-                                <TableHead className="text-xs">Cód. Barras</TableHead>
-                                <TableHead className="text-xs">Ações</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              {splits[proposta.numero as keyof typeof splits].map((split, index) => (
-                                <TableRow key={index} className="text-sm">
-                                  <TableCell className="font-medium">{split.campoId}</TableCell>
-                                  <TableCell>{split.previsaoPagamento}</TableCell>
-                                  <TableCell className={getSplitStatusColor(split.situacao)}>
-                                    {split.situacao}
-                                  </TableCell>
-                                  <TableCell>{split.valor}</TableCell>
-                                  <TableCell>{split.banco}</TableCell>
-                                  <TableCell>{split.agencia}</TableCell>
-                                  <TableCell>{split.conta}</TableCell>
-                                  <TableCell>{split.dig}</TableCell>
-                                  <TableCell>{split.favorecido}</TableCell>
-                                  <TableCell className="font-mono text-xs">
-                                    {split.codBarras !== "-" ? split.codBarras : "-"}
-                                  </TableCell>
-                                  <TableCell>
-                                    {split.situacao === "Pendente pagamento" && (
-                                      <Button size="sm" variant="outline" className="text-xs">
-                                        Atualizar
-                                      </Button>
-                                    )}
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
+                      <TableCell colSpan={9} className="p-0">
+                        <div className="bg-blue-50 border-l-4 border-blue-500 mx-4 my-2 rounded-r-lg">
+                          <div className="p-6">
+                            <div className="flex items-center mb-4">
+                              <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium mr-3">
+                                Proposta #{proposta.numero}
+                              </div>
+                              <h4 className="font-semibold text-gray-800">Splits Vinculados</h4>
+                            </div>
+                            
+                            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                              <Table>
+                                <TableHeader>
+                                  <TableRow className="bg-gray-100">
+                                    <TableHead className="text-xs font-semibold">Campo ID</TableHead>
+                                    <TableHead className="text-xs font-semibold">Previsão Pagamento</TableHead>
+                                    <TableHead className="text-xs font-semibold">Situação</TableHead>
+                                    <TableHead className="text-xs font-semibold">Valor</TableHead>
+                                    <TableHead className="text-xs font-semibold">Banco</TableHead>
+                                    <TableHead className="text-xs font-semibold">Agência</TableHead>
+                                    <TableHead className="text-xs font-semibold">Conta</TableHead>
+                                    <TableHead className="text-xs font-semibold">Dig</TableHead>
+                                    <TableHead className="text-xs font-semibold">Favorecido</TableHead>
+                                    <TableHead className="text-xs font-semibold">Cód. Barras</TableHead>
+                                    <TableHead className="text-xs font-semibold">Ações</TableHead>
+                                  </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                  {splits[proposta.numero as keyof typeof splits].map((split, index) => (
+                                    <TableRow key={index} className="text-sm hover:bg-gray-50">
+                                      <TableCell>
+                                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+                                          {split.campoId}
+                                        </span>
+                                      </TableCell>
+                                      <TableCell>{split.previsaoPagamento}</TableCell>
+                                      <TableCell>
+                                        <span className={`font-medium ${getSplitStatusColor(split.situacao)}`}>
+                                          {split.situacao}
+                                        </span>
+                                      </TableCell>
+                                      <TableCell className="font-medium">{split.valor}</TableCell>
+                                      <TableCell>{split.banco}</TableCell>
+                                      <TableCell>{split.agencia}</TableCell>
+                                      <TableCell>{split.conta}</TableCell>
+                                      <TableCell>{split.dig}</TableCell>
+                                      <TableCell className="max-w-[200px] truncate">{split.favorecido}</TableCell>
+                                      <TableCell className="font-mono text-xs max-w-[150px] truncate">
+                                        {split.codBarras !== "-" ? split.codBarras : "-"}
+                                      </TableCell>
+                                      <TableCell>
+                                        {split.situacao === "Pendente pagamento" && (
+                                          <Button size="sm" variant="outline" className="text-xs border-orange-600 text-orange-600 hover:bg-orange-50">
+                                            Atualizar
+                                          </Button>
+                                        )}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </div>
+                          </div>
                         </div>
                       </TableCell>
                     </TableRow>

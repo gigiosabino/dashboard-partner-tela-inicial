@@ -132,10 +132,14 @@ export function DashboardContent() {
         <MetricsCards key={`metrics-${refreshKey}`} selectedPeriod={selectedPeriod} />
         
         <div className="space-y-6">
-          {/* Primeira linha - Propostas x Status e Pendências */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
-            <RecentPendencies key={`pendencies-${refreshKey}`} selectedPeriod={selectedPeriod} />
+          {/* Primeira linha - Propostas x Status e Pendências com mesma altura */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-stretch">
+            <div className="h-[500px]">
+              <ChartsSection key={`charts-${refreshKey}`} selectedPeriod={selectedPeriod} />
+            </div>
+            <div className="h-[500px]">
+              <RecentPendencies key={`pendencies-${refreshKey}`} />
+            </div>
           </div>
           
           {/* Segunda linha - Valor financiado mensal e Contratações mensais */}

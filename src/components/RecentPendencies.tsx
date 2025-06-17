@@ -54,29 +54,31 @@ const getStatusVariant = (status: string) => {
 
 export function RecentPendencies() {
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">Propostas Recentes</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {recentPropostas.map((proposta) => (
-          <div key={proposta.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-            <div className="flex-1">
-              <div className="flex items-center space-x-2 mb-1">
-                <span className="font-medium text-sm">#{proposta.id}</span>
-                <Badge variant={getStatusVariant(proposta.status)} className="text-xs">
-                  {proposta.status}
-                </Badge>
-              </div>
-              <p className="text-sm font-medium text-gray-900">{proposta.cliente}</p>
-              <p className="text-xs text-gray-500">{proposta.cpf}</p>
-              <div className="flex items-center justify-between mt-2">
-                <span className="text-sm font-medium text-green-600">{proposta.valor}</span>
-                <span className="text-xs text-gray-400">{proposta.tempo}</span>
+      <CardContent className="flex-1 overflow-y-auto">
+        <div className="space-y-4">
+          {recentPropostas.map((proposta) => (
+            <div key={proposta.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex-1">
+                <div className="flex items-center space-x-2 mb-1">
+                  <span className="font-medium text-sm">#{proposta.id}</span>
+                  <Badge variant={getStatusVariant(proposta.status)} className="text-xs">
+                    {proposta.status}
+                  </Badge>
+                </div>
+                <p className="text-sm font-medium text-gray-900">{proposta.cliente}</p>
+                <p className="text-xs text-gray-500">{proposta.cpf}</p>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-sm font-medium text-green-600">{proposta.valor}</span>
+                  <span className="text-xs text-gray-400">{proposta.tempo}</span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </CardContent>
     </Card>
   );
