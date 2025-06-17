@@ -39,7 +39,7 @@ const propostas = [
     prazo: "24",
     situacao: "Cedida",
     analista: "Maria Oliveira",
-    tipoContrato: "Crédito Pessoal",
+    tipoContrato: "CG",
     valorAprovado: "R$ 50.000,00"
   },
   {
@@ -51,7 +51,7 @@ const propostas = [
     prazo: "36",
     situacao: "Em Análise",
     analista: "Carlos Santos",
-    tipoContrato: "Financiamento",
+    tipoContrato: "CDC",
     valorAprovado: "R$ 0,00"
   },
   {
@@ -63,7 +63,7 @@ const propostas = [
     prazo: "18",
     situacao: "Cancelada",
     analista: "Fernanda Rocha",
-    tipoContrato: "Crédito Pessoal",
+    tipoContrato: "EP",
     valorAprovado: "R$ 0,00"
   },
   {
@@ -75,7 +75,7 @@ const propostas = [
     prazo: "48",
     situacao: "Cedida",
     analista: "Roberto Silva",
-    tipoContrato: "Financiamento",
+    tipoContrato: "CG",
     valorAprovado: "R$ 100.000,00"
   },
   {
@@ -87,7 +87,7 @@ const propostas = [
     prazo: "12",
     situacao: "Cedida",
     analista: "Juliana Mendes",
-    tipoContrato: "Crédito Pessoal",
+    tipoContrato: "CDC",
     valorAprovado: "R$ 25.000,00"
   }
 ];
@@ -250,9 +250,9 @@ export function PropostasContent() {
           <Table>
             <TableHeader>
               <TableRow className="bg-gray-50">
-                <TableHead className="font-semibold text-gray-700">#</TableHead>
+                <TableHead className="font-semibold text-gray-700">Número CCB</TableHead>
                 <TableHead className="font-semibold text-gray-700">Situação</TableHead>
-                <TableHead className="font-semibold text-gray-700">Rev.</TableHead>
+                <TableHead className="font-semibold text-gray-700">Tipo de contrato</TableHead>
                 <TableHead className="font-semibold text-gray-700">Vendedor</TableHead>
                 <TableHead className="font-semibold text-gray-700">Cliente</TableHead>
                 <TableHead className="font-semibold text-gray-700">Solicitado</TableHead>
@@ -275,7 +275,7 @@ export function PropostasContent() {
                       <span className="text-sm">{proposta.situacao}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm text-gray-600">-</TableCell>
+                  <TableCell className="text-sm text-gray-600">{proposta.tipoContrato}</TableCell>
                   <TableCell className="text-sm">{proposta.analista}</TableCell>
                   <TableCell>
                     <div>

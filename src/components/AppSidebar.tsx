@@ -34,12 +34,12 @@ import {
 
 const menuItems = [
   {
-    title: "Propostas contratadas",
+    title: "Gestão de propostas",
     icon: FileText,
     items: [
       { title: "Propostas contratadas", url: "/propostas" },
-      { title: "Atualizar Dados Bancários", url: "/atualizar-dados-bancarios" },
-      { title: "Cancelar Proposta", url: "/cancelar-proposta" },
+      { title: "Atualização de dados bancários", url: "/atualizar-dados-bancarios" },
+      { title: "Cancelamento de proposta", url: "/cancelar-proposta" },
     ]
   },
   {
@@ -128,7 +128,7 @@ export function AppSidebar() {
                         <CollapsibleTrigger asChild>
                           <SidebarMenuButton className="text-white hover:bg-gray-700 w-full">
                             <item.icon className="w-4 h-4 flex-shrink-0" />
-                            <span className="text-left break-words leading-tight whitespace-normal flex-1">{item.title}</span>
+                            <span className="text-left break-words leading-tight whitespace-normal flex-1 min-w-0">{item.title}</span>
                             <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]:rotate-90 flex-shrink-0" />
                           </SidebarMenuButton>
                         </CollapsibleTrigger>
@@ -138,7 +138,7 @@ export function AppSidebar() {
                               <SidebarMenuSubItem key={subItem.title}>
                                 <SidebarMenuSubButton asChild className="text-white hover:text-white hover:bg-gray-700 text-sm">
                                   <Link to={subItem.url} className="block py-2 px-4 rounded">
-                                    <span className="whitespace-normal leading-tight break-words">{subItem.title}</span>
+                                    <span className="whitespace-normal leading-tight break-words min-w-0 flex-1">{subItem.title}</span>
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
@@ -152,18 +152,18 @@ export function AppSidebar() {
                           item.external ? (
                             <a href={item.url} target="_blank" rel="noopener noreferrer" className="flex items-center">
                               <item.icon className="w-4 h-4 flex-shrink-0" />
-                              <span className="whitespace-normal leading-tight break-words flex-1">{item.title}</span>
+                              <span className="whitespace-normal leading-tight break-words flex-1 min-w-0">{item.title}</span>
                             </a>
                           ) : (
                             <Link to={item.url} className="flex items-center">
                               <item.icon className="w-4 h-4 flex-shrink-0" />
-                              <span className="whitespace-normal leading-tight break-words flex-1">{item.title}</span>
+                              <span className="whitespace-normal leading-tight break-words flex-1 min-w-0">{item.title}</span>
                             </Link>
                           )
                         ) : (
                           <div className="flex items-center">
                             <item.icon className="w-4 h-4 flex-shrink-0" />
-                            <span className="whitespace-normal leading-tight break-words flex-1">{item.title}</span>
+                            <span className="whitespace-normal leading-tight break-words flex-1 min-w-0">{item.title}</span>
                           </div>
                         )}
                       </SidebarMenuButton>
