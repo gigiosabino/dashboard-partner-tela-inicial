@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 
 interface ChartsSectionProps {
@@ -73,11 +74,11 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
                 return item ? `${item.name} (${code})` : code;
               }}
             />
-            <Bar 
-              dataKey="value" 
-              fill={(entry) => entry.color}
-              radius={[4, 4, 0, 0]}
-            />
+            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+              {currentData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
