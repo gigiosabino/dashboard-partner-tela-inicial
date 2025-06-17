@@ -1,0 +1,180 @@
+
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search, Filter, RefreshCw, Download, Eye } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useState } from "react";
+
+const propostas = [
+  {
+    numero: "056939510",
+    dataCriacao: "11/06/2025",
+    vendedor: "Jonathan Marks Nevis",
+    cliente: "IZABELA MARIA PEREIRA DE AZEVEDO",
+    documento: "077.445.417-23",
+    valorSolicitado: "R$ 20.000,00",
+    valorAprovado: "R$ 20.000,00",
+    parcelas: "36",
+    situacao: "Cedida",
+    tipoContrato: "CG"
+  },
+  {
+    numero: "056441261",
+    dataCriacao: "05/06/2025",
+    vendedor: "Willian Buthi",
+    cliente: "BMP MONEY PLUS",
+    documento: "123.983.910-35",
+    valorSolicitado: "R$ 1.000,00",
+    valorAprovado: "R$ 0,00",
+    parcelas: "4",
+    situacao: "Cancelada",
+    tipoContrato: "CDC"
+  }
+];
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Cedida":
+      return "bg-green-500";
+    case "Em Análise":
+      return "bg-yellow-500";
+    case "Cancelada":
+      return "bg-red-500";
+    default:
+      return "bg-gray-500";
+  }
+};
+
+export function CancelarPropostaContent() {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleRefresh = () => {
+    console.log("Atualizando listagem...");
+  };
+
+  return (
+    <div className="flex-1 bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <SidebarTrigger />
+            <div className="text-sm text-gray-600">
+              <span>Cancelamento de Proposta</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="p-6">
+        {/* Top Section - Action Buttons */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                <Filter className="w-4 h-4 mr-2" />
+                Filtros
+              </Button>
+              
+              <Button variant="outline" onClick={handleRefresh} className="border-gray-300 hover:bg-gray-50">
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Atualizar
+              </Button>
+
+              <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                <Download className="w-4 h-4 mr-2" />
+                Exportar
+              </Button>
+            </div>
+
+            {/* Campo de busca */}
+            <div className="relative w-80">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input 
+                placeholder="Pesquisar" 
+                className="pl-10 border-gray-300"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Tabela */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-gray-50">
+                <TableHead className="font-semibold text-gray-700">Número CCB</TableHea d>
+                <TableHead className="font-semibold text-gray-700">Situação</TableHead>
+                <TableHead className="font-semibold text-gray-700">Tipo de contrato</TableHead>
+                <TableHead className="font-semibold text-gray-700">Vendedor</TableHead>
+                <TableHead className="font-semibold text-gray-700">Cliente</TableHead>
+                <TableHead className="font-semibold text-gray-700">Solicitado</TableHead>
+                <TableHead className="font-semibold text-gray-700">Aprovado</TableHead>
+                <TableHead className="font-semibold text-gray-700">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {propostas.map((proposta) => (
+                <TableRow key={proposta.numero} className="hover:bg-gray-50">
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">#{proposta.numero}</div>
+                      <div className="text-sm text-gray-500">{proposta.dataCriacao}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-2">
+                      <div className={`w-3 h-3 rounded-full ${getStatusColor(proposta.situacao)}`}></div>
+                      <span className="text-sm">{proposta.situacao}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-sm text-gray-600">{proposta.tipoContrato}</TableCell>
+                  <TableCell className="text-sm">{proposta.vendedor}</TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{proposta.cliente}</div>
+                      <div className="text-sm text-gray-500">{proposta.documento}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{proposta.valorSolicitado}</div>
+                      <div className="text-sm text-gray-500">Em {proposta.parcelas} parcelas</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium">{proposta.valorAprovado}</div>
+                      <div className="text-sm text-gray-500">Em {proposta.parcelas} parcelas</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      Detalhes
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </main>
+    </div>
+  );
+}

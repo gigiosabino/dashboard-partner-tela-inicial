@@ -46,9 +46,6 @@ export function MensageriaContent() {
                 onChange={(e) => setNumeroRemover(e.target.value)}
                 className="w-full"
               />
-              <p className="text-sm text-gray-500 mt-1">
-                Digite o número no formato: 11987654321
-              </p>
             </div>
 
             <Button 

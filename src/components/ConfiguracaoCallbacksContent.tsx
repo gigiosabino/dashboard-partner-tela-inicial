@@ -11,6 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 import { History } from "lucide-react";
 
@@ -47,14 +54,19 @@ const historico = [
     dataHora: "17/06/2024 - 19:27",
     url: "https://webhook.site/111111-111111-111111-111?propostas={PROPOSTA}&situacao={SITUACAO}&identificador={IDENTIFICADOR}",
     metodo: "POST",
-    autenticacao: "Authorization",
+    autenticacao: "Authorization",  
     chave: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     status: "Aprovada, Finalizada, Liberada, Paga, Cedida"
   }
 ];
 
 export function ConfiguracaoCallbacksContent() {
-  const [urlFinal, setUrlFinal] = useState("https://webhook.site:443/b33b59bf-1ca6-4fcd-ad19-fca898847585?proposta={PROPOSTA}&situacao={SITUACAO}&identificador={IDENTIFICADOR}");
+  const [integracao, setIntegracao] = useState("TESTE G");
+  const [metodo, setMetodo] = useState("POST");
+  const [url, setUrl] = useState("https://webhook.site:443/b33b59bf-1ca6-4fcd-ad19-fca898847585");
+  const [parametros, setParametros] = useState("proposta={PROPOSTA}&situacao={SITUACAO}&identificador={IDENTIFICADOR}");
+  const [tipoAutenticacao, setTipoAutenticacao] = useState("Authorization");
+  const [chaveAutenticacao, setChaveAutenticacao] = useState("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6...");
   const [eventosSelecionados, setEventosSelecionados] = useState(eventos);
 
   const handleEventoChange = (index: number, checked: boolean) => {
@@ -64,6 +76,7 @@ export function ConfiguracaoCallbacksContent() {
   };
 
   const totalSelecionados = eventosSelecionados.filter(evento => evento.selecionado).length;
+  const urlFinal = `${url}?${parametros}`;
 
   return (
     <div className="flex-1 bg-gray-50">
@@ -81,47 +94,96 @@ export function ConfiguracaoCallbacksContent() {
 
       {/* Main Content */}
       <main className="p-6 space-y-6">
-        {/* Configuração */}
+        {/* Configuração Principal */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold mb-4">Resumo da Configuração</h2>
-          <div className="grid grid-cols-4 gap-4 mb-6">
+          <h2 className="text-lg font-semibold mb-6">Configuração do Callback</h2>
+          
+          <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tipo:</label>
-              <p className="text-sm">Propostas</p>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Integração:</label>
+              <Select value={integracao} onValueChange={setIntegracao}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="TESTE G">TESTE G</SelectItem>
+                  <SelectItem value="TESTE A">TESTE A</SelectItem>
+                  <SelectItem value="TESTE B">TESTE B</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Integração:</label>
-              <p className="text-sm">TESTE G</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Método:</label>
-              <p className="text-sm">POST</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Eventos:</label>
-              <p className="text-sm">{totalSelecionados} selecionados</p>
-            </div>
-          </div>
 
-          <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">URL final:</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Método:</label>
+              <Select value={metodo} onValueChange={setMetodo}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="POST">POST</SelectItem>
+                  <SelectItem value="GET">GET</SelectItem>
+                  <SelectItem value="PUT">PUT</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">URL:</label>
               <Input
-                value={urlFinal}
-                onChange={(e) => setUrlFinal(e.target.value)}
-                className="w-full"
-                readOnly
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="URL do endpoint"
               />
             </div>
 
-            <div className="flex justify-between items-center">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                Salvar Configuração
-              </Button>
-              <Button variant="outline" className="border-gray-300">
-                Testar Webhook
-              </Button>
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Parâmetros:</label>
+              <Input
+                value={parametros}
+                onChange={(e) => setParametros(e.target.value)}
+                placeholder="Parâmetros da URL"
+              />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Autenticação:</label>
+              <Select value={tipoAutenticacao} onValueChange={setTipoAutenticacao}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Authorization">Authorization</SelectItem>
+                  <SelectItem value="API Key">API Key</SelectItem>
+                  <SelectItem value="Basic Auth">Basic Auth</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Chave de Autenticação:</label>
+              <Input
+                value={chaveAutenticacao}
+                onChange={(e) => setChaveAutenticacao(e.target.value)}
+                placeholder="Chave de autenticação"
+                type="password"
+              />
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <label className="block text-sm font-medium text-gray-700 mb-2">URL Final:</label>
+            <div className="text-sm text-gray-600 break-all font-mono bg-white p-2 rounded border">
+              {urlFinal}
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center mt-6">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+              Salvar Configuração
+            </Button>
+            <Button variant="outline" className="border-gray-300">
+              Testar Webhook
+            </Button>
           </div>
         </div>
 
@@ -142,7 +204,7 @@ export function ConfiguracaoCallbacksContent() {
                 />
                 <div className="flex-1">
                   <span className="text-sm font-medium">{evento.nome}</span>
-                  <span className="ml-2 text-xs text-gray-500">{evento.quantidade}</span>
+                  <span className="ml-2 text-xs text-gray-500">({evento.quantidade})</span>
                 </div>
               </div>
             ))}
@@ -156,32 +218,34 @@ export function ConfiguracaoCallbacksContent() {
             <h2 className="text-lg font-semibold">Histórico de Edições</h2>
           </div>
 
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Usuário</TableHead>
-                <TableHead>Data e hora</TableHead>
-                <TableHead>URL</TableHead>
-                <TableHead>Método</TableHead>
-                <TableHead>Autenticação</TableHead>
-                <TableHead>Chave</TableHead>
-                <TableHead>Status selecionado</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {historico.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell className="font-medium">{item.usuario}</TableCell>
-                  <TableCell>{item.dataHora}</TableCell>
-                  <TableCell className="max-w-xs truncate">{item.url}</TableCell>
-                  <TableCell>{item.metodo}</TableCell>
-                  <TableCell>{item.autenticacao}</TableCell>
-                  <TableCell className="max-w-xs truncate">{item.chave}</TableCell>
-                  <TableCell>{item.status}</TableCell>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Usuário</TableHead>
+                  <TableHead>Data e hora</TableHead>
+                  <TableHead>URL</TableHead>
+                  <TableHead>Método</TableHead>
+                  <TableHead>Autenticação</TableHead>
+                  <TableHead>Chave</TableHead>
+                  <TableHead>Status selecionado</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {historico.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">{item.usuario}</TableCell>
+                    <TableCell>{item.dataHora}</TableCell>
+                    <TableCell className="max-w-xs truncate font-mono text-xs">{item.url}</TableCell>
+                    <TableCell>{item.metodo}</TableCell>
+                    <TableCell>{item.autenticacao}</TableCell>
+                    <TableCell className="max-w-xs truncate font-mono text-xs">{item.chave}</TableCell>
+                    <TableCell>{item.status}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </main>
     </div>

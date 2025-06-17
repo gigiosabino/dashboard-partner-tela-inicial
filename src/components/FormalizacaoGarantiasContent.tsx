@@ -2,7 +2,7 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Calendar } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -11,6 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { DateRangePicker } from "@/components/DateRangePicker";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -41,9 +47,60 @@ const propostas = [
 export function FormalizacaoGarantiasContent() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
+  const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
+  const [filterProposalNumber, setFilterProposalNumber] = useState("");
+  const [filterCpf, setFilterCpf] = useState("");
+  const [filteredPro postas, setFilteredPropostas] = useState(propostas);
 
   const handlePendencias = (numeroProposta: string) => {
     navigate(`/formalizacao-garantias/${numeroProposta}`);
+  };
+
+  const handleDateRangeChange = (startDate: Date | null, endDate: Date | null) => {
+    setFilterStartDate(startDate);
+    setFilterEndDate(endDate);
+    applyFilters(startDate, endDate, filterProposalNumber, filterCpf);
+  };
+
+  const applyFilters = (startDate: Date | null, endDate: Date | null, proposalNumber: string, cpf: string) => {
+    let filtered = propostas;
+
+    // Filtro por número da proposta
+    if (proposalNumber.trim()) {
+      filtered = filtered.filter(p => p.numero.includes(proposalNumber.trim()));
+    }
+
+    // Filtro por CPF
+    if (cpf.trim()) {
+      filtered = filtered.filter(p => p.documento.includes(cpf.trim()));
+    }
+
+    // Filtro por data (exemplo - em uma implementação real seria comparado com as datas)
+    if (startDate || endDate) {
+      // Implementar lógica de filtro por data aqui
+      console.log("Filtrando por período:", { startDate, endDate });
+    }
+
+    setFilteredPropostas(filtered);
+  };
+
+  const handleClearFilters = () => {
+    setFilterStartDate(null);
+    setFilterEndDate(null);
+    setFilterProposalNumber("");
+    setFilterCpf("");
+    setFilteredPropostas(propostas);
+  };
+
+  const handleFilterProposalNumber = (value: string) => {
+    setFilterProposalNumber(value);
+    applyFilters(filterStartDate, filterEndDate, value, filterCpf);
+  };
+
+  const handleFilterCpf = (value: string) => {
+    setFilterCpf(value);
+    applyFilters(filterStartDate, filterEndDate, filterProposalNumber, value);
   };
 
   return (
@@ -67,11 +124,51 @@ export function FormalizacaoGarantiasContent() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
-                <Filter className="w-4 h-4 mr-2" />
-                Filtros
-              </Button>
-              <span className="text-sm text-gray-600">3 proposta(s) encontrada(s)</span>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                    <Filter className="w-4 h-4 mr-2" />
+                    Filtros
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-96 bg-white p-4">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Período</label>
+                      <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Número da Proposta</label>
+                      <Input
+                        placeholder="Digite o número da proposta"
+                        value={filterProposalNumber}
+                        onChange={(e) => handleFilterProposalNumber(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">CPF do Emitente</label>
+                      <Input
+                        placeholder="Digite o CPF do emitente"
+                        value={filterCpf}
+                        onChange={(e) => handleFilterCpf(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="flex justify-end space-x-2 pt-2">
+                      <Button variant="outline" size="sm" onClick={handleClearFilters}>
+                        Limpar
+                      </Button>
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                        Aplicar Filtros
+                      </Button>
+                    </div>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
+              <span className="text-sm text-gray-600">{filteredPropostas.length} proposta(s) encontrada(s)</span>
             </div>
 
             <div className="relative w-80">
@@ -104,7 +201,7 @@ export function FormalizacaoGarantiasContent() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {propostas.map((proposta) => (
+              {filteredPropostas.map((proposta) => (
                 <TableRow key={proposta.numero} className="hover:bg-gray-50">
                   <TableCell>
                     <span className="text-blue-600 font-medium">#{proposta.numero}</span>

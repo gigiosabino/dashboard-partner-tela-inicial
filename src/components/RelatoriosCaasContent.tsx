@@ -1,315 +1,295 @@
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CalendarIcon, Download, Search, Info } from "lucide-react";
-import { DatePickerWithRange } from "@/components/DatePickerWithRange";
-import { exportToCSV } from "@/utils/csvExport";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Plus, Settings, Download, Edit2, Trash2 } from "lucide-react";
+import { useState } from "react";
 
-interface FieldConfig {
-  id: string;
-  label: string;
-  category: string;
-}
+const padroesSalvos = [
+  {
+    id: 1,
+    nome: "Padrão CAAS",
+    descricao: "Relatório padrão com dados principais do CAAS",
+    campos: ["Número CCB", "Cliente", "Valor", "Situação", "Data"],
+    ativo: true
+  },
+  {
+    id: 2,
+    nome: "Padrão FGTS",
+    descricao: "Relatório específico para dados do FGTS",
+    campos: ["Número CCB", "CPF", "Valor FGTS", "Status FGTS", "Data Liberação"],
+    ativo: true
+  },
+  {
+    id: 3,
+    nome: "Padrão Financeiro",
+    descricao: "Relatório com foco em dados financeiros",
+    campos: ["Número CCB", "Valor Solicitado", "Valor Aprovado", "Juros", "Parcelas"],
+    ativo: false
+  }
+];
 
-const fieldsConfig: FieldConfig[] = [
-  // Proposta
-  { id: "nro_proposta", label: "Nro proposta", category: "Proposta" },
-  { id: "nome_empresa", label: "Nome da empresa", category: "Proposta" },
-  { id: "nome_parceiro", label: "Nome do parceiro correspondente", category: "Proposta" },
-  { id: "vendedor", label: "Vendedor", category: "Proposta" },
-  { id: "produto", label: "Produto", category: "Proposta" },
-  { id: "cnpj_empresa", label: "CNPJ Empresa", category: "Proposta" },
-  { id: "cnpj_parceiro", label: "CNPJ Parceiro correspondente", category: "Proposta" },
-  { id: "tipo_contrato", label: "Tipo de contrato", category: "Proposta" },
-  
-  // Valores
-  { id: "valor_solicitado", label: "Valor solicitado", category: "Valores" },
-  { id: "valor_financiado", label: "Valor financiado", category: "Valores" },
-  { id: "valor_total_divida", label: "Valor total da dívida", category: "Valores" },
-  { id: "prazo", label: "Prazo", category: "Valores" },
-  { id: "valor_aprovado", label: "Valor aprovado", category: "Valores" },
-  { id: "valor_parcela", label: "Valor da parcela", category: "Valores" },
-  { id: "taxa_juros_am", label: "Taxa de juros A.M", category: "Valores" },
-  { id: "taxa_juros_aa", label: "Taxa de juros A.A", category: "Valores" },
-  { id: "cet_am", label: "CET A.M", category: "Valores" },
-  { id: "cet_aa", label: "CET A.A", category: "Valores" },
-  { id: "valor_tc", label: "Valor TC", category: "Valores" },
-  { id: "valor_iof", label: "Valor IOF", category: "Valores" },
-  { id: "valor_outros_servicos", label: "Valor outros serviços", category: "Valores" },
-  { id: "valor_outras_despesas", label: "Valor outras despesas", category: "Valores" },
-  
-  // Datas
-  { id: "data_criacao", label: "Data de criação", category: "Datas" },
-  { id: "data_pendencia", label: "Data da pendência", category: "Datas" },
-  { id: "data_pagamento", label: "Data de pagamento", category: "Datas" },
-  { id: "data_aprovacao", label: "Data de aprovação", category: "Datas" },
-  { id: "data_liberacao", label: "Data de liberação", category: "Datas" },
-  { id: "data_ultima_alteracao", label: "Data da última alteração de status", category: "Datas" },
-  { id: "data_finalizacao", label: "Data de finalização", category: "Datas" },
-  { id: "data_cessao", label: "Data de Cessão", category: "Datas" },
-  { id: "data_pendencia_pagamento", label: "Data da pendência de pagamento", category: "Datas" },
-  
-  // Parcela
-  { id: "valor_principal", label: "Valor principal", category: "Parcela" },
-  { id: "valor_encargos", label: "Valor de encargos", category: "Parcela" },
-  { id: "linha_digitavel", label: "Linha digitável", category: "Parcela" },
-  { id: "data_vencimento", label: "Data de vencimento", category: "Parcela" },
-  { id: "numero_parcela", label: "Número da parcela", category: "Parcela" },
-  { id: "primeiro_vencimento", label: "Primeiro vencimento", category: "Parcela" },
-  
-  // Desembolso
-  { id: "valor_desembolsado", label: "Valor desembolsado", category: "Desembolso" },
-  { id: "numero_banco", label: "Número do banco", category: "Desembolso" },
-  { id: "conta", label: "Conta", category: "Desembolso" },
-  { id: "data_pagamento_desembolso", label: "Data de Pagamento", category: "Desembolso" },
-  { id: "agencia", label: "Agência", category: "Desembolso" },
-  { id: "conta_digito", label: "Conta dígito", category: "Desembolso" },
-  { id: "tipo_conta", label: "Tipo de conta", category: "Desembolso" },
-  { id: "agencia_digito", label: "Agência dígito", category: "Desembolso" },
-  { id: "cpf_cnpj_beneficiario", label: "CPF/CNPJ do beneficiário", category: "Desembolso" },
-  
-  // Split
-  { id: "valor_transacao", label: "Valor transação", category: "Split" },
-  { id: "banco", label: "Banco", category: "Split" },
-  { id: "agencia_digito_split", label: "Agência Dígito", category: "Split" },
-  { id: "cpf_cnpj_beneficiario_split", label: "CPF/CNPJ do beneficiário", category: "Split" },
-  { id: "nome_cedente", label: "Nome do Cedente", category: "Split" },
-  { id: "data_pagamento_split", label: "Data de Pagamento", category: "Split" },
-  { id: "tipo_conta_split", label: "Tipo de conta", category: "Split" },
-  { id: "conta_split", label: "Conta", category: "Split" },
-  { id: "nome_beneficiario", label: "Nome do beneficiário", category: "Split" },
-  { id: "linha_digitavel_split", label: "Linha digitável", category: "Split" },
-  { id: "agencia_split", label: "Agência", category: "Split" },
-  { id: "conta_digito_split", label: "Conta dígito", category: "Split" },
-  { id: "cpf_cnpj_cedente", label: "CPF/CNPJ do Cedente", category: "Split" },
+const camposDisponiveis = [
+  "Número CCB",
+  "Cliente",
+  "CPF/CNPJ",
+  "Valor Solicitado",
+  "Valor Aprovado",
+  "Situação",
+  "Data Criação",
+  "Data Aprovação",
+  "Vendedor",
+  "Tipo Contrato",
+  "Parcelas",
+  "Taxa Juros",
+  "Valor FGTS",
+  "Status FGTS",
+  "Data Liberação"
 ];
 
 export function RelatoriosCaasContent() {
-  const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [dateRange, setDateRange] = useState<any>(null);
-  const [reportType, setReportType] = useState("padrao");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [tipoRelatorio, setTipoRelatorio] = useState("padrao");
+  const [padraoSelecionado, setPadraoSelecionado] = useState("");
+  const [novoPadraoNome, setNovoPadraoNome] = useState("");
+  const [novoPadraoDescricao, setNovoPadraoDescricao] = useState("");
+  const [camposSelecionados, setCamposSelecionados] = useState<string[]>([]);
 
-  const categories = Array.from(new Set(fieldsConfig.map(field => field.category)));
+  const handleCampoToggle = (campo: string) => {
+    setCamposSelecionados(prev =>
+      prev.includes(campo)
+        ? prev.filter(c => c !== campo)
+        : [...prev, campo]
+    );
+  };
 
-  const filteredFields = fieldsConfig.filter(field => 
-    field.label.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleSalvarPadrao = () => {
+    if (novoPadraoNome && camposSelecionados.length > 0) {
+      console.log("Salvando novo padrão:", {
+        nome: novoPadraoNome,
+        descricao: novoPadraoDescricao,
+        campos: camposSelecionados
+      });
+      // Aqui seria a lógica para salvar o padrão
+      setNovoPadraoNome("");
+      setNovoPadraoDescricao("");
+      setCamposSelecionados([]);
+    }
+  };
+
+  const NovoPadraoModal = () => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="bg-green-600 hover:bg-green-700">
+          <Plus className="w-4 h-4 mr-2" />
+          Criar Novo Padrão
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Criar Novo Padrão</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Nome do Padrão:</label>
+            <Input
+              placeholder="Ex: Padrão Consignado"
+              value={novoPadraoNome}
+              onChange={(e) => setNovoPadraoNome(e.target.value)}
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-2">Descrição:</label>
+            <Input
+              placeholder="Descrição do padrão"
+              value={novoPadraoDescricao}
+              onChange={(e) => setNovoPadraoDescricao(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Campos do Relatório:</label>
+            <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto border rounded p-3">
+              {camposDisponiveis.map((campo) => (
+                <label key={campo} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={camposSelecionados.includes(campo)}
+                    onChange={() => handleCampoToggle(campo)}
+                    className="rounded"
+                  />
+                  <span className="text-sm">{campo}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              {camposSelecionados.length} campo(s) selecionado(s)
+            </p>
+          </div>
+
+          <div className="flex justify-end space-x-2 pt-4">
+            <Button variant="outline">Cancelar</Button>
+            <Button 
+              onClick={handleSalvarPadrao}
+              disabled={!novoPadraoNome || camposSelecionados.length === 0}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Salvar Padrão
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
-
-  const filteredCategories = categories.filter(category =>
-    fieldsConfig.some(field => 
-      field.category === category && 
-      field.label.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
-
-  const handleFieldToggle = (fieldId: string, checked: boolean) => {
-    if (checked) {
-      setSelectedFields(prev => [...prev, fieldId]);
-    } else {
-      setSelectedFields(prev => prev.filter(id => id !== fieldId));
-    }
-  };
-
-  const handleCategoryToggle = (category: string, checked: boolean) => {
-    const categoryFields = fieldsConfig
-      .filter(field => field.category === category)
-      .map(field => field.id);
-    
-    if (checked) {
-      setSelectedFields(prev => [...new Set([...prev, ...categoryFields])]);
-    } else {
-      setSelectedFields(prev => prev.filter(id => !categoryFields.includes(id)));
-    }
-  };
-
-  const isCategorySelected = (category: string) => {
-    const categoryFields = fieldsConfig
-      .filter(field => field.category === category)
-      .map(field => field.id);
-    return categoryFields.every(fieldId => selectedFields.includes(fieldId));
-  };
-
-  const isCategoryPartiallySelected = (category: string) => {
-    const categoryFields = fieldsConfig
-      .filter(field => field.category === category)
-      .map(field => field.id);
-    return categoryFields.some(fieldId => selectedFields.includes(fieldId)) && 
-           !categoryFields.every(fieldId => selectedFields.includes(fieldId));
-  };
-
-  const handleGenerateReport = () => {
-    if (reportType === "personalizado" && selectedFields.length === 0) {
-      alert("Selecione pelo menos um campo para gerar o relatório personalizado");
-      return;
-    }
-
-    // Mock data for demonstration
-    const mockData = [
-      {
-        nro_proposta: "PROP-001",
-        nome_empresa: "Empresa Exemplo LTDA",
-        valor_solicitado: "R$ 50.000,00",
-        data_criacao: "2024-01-15",
-        // Add more mock fields as needed
-      }
-    ];
-
-    if (reportType === "padrao") {
-      // Campos padrão
-      const defaultFields = ["nro_proposta", "data_criacao", "situacao", "cpf", "nome", "valor_solicitado", "valor_tc", "valor_iof", "prazo", "taxa_mensal", "valor_parcela", "valor_total_divida"];
-      exportToCSV(mockData, "relatorio-caas-padrao.csv", defaultFields);
-    } else {
-      exportToCSV(mockData, "relatorio-caas-personalizado.csv", selectedFields);
-    }
-  };
 
   return (
-    <div className="flex-1 p-6 bg-gray-50">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="flex-1 bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Relatórios CAAS</h1>
+          <div className="flex items-center space-x-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900">Relatórios CAAS</h1>
+              <p className="text-sm text-gray-600">Gere relatórios personalizados com padrões pré-definidos</p>
+            </div>
+          </div>
         </div>
+      </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Filtros e Configurações */}
-          <Card className="lg:col-span-1">
-            <CardHeader>
-              <CardTitle className="text-lg">Configurações do Relatório</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Tipo de Relatório */}
-              <div className="space-y-3">
-                <Label className="text-sm font-medium">Tipo de Relatório</Label>
-                <RadioGroup value={reportType} onValueChange={setReportType}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="padrao" id="padrao" />
-                    <Label htmlFor="padrao" className="text-sm">Relatório Padrão</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="personalizado" id="personalizado" />
-                    <Label htmlFor="personalizado" className="text-sm">Relatório Personalizado</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              {/* Filtro de Data */}
-              <div className="space-y-2">
-                <Label>Período</Label>
-                <DatePickerWithRange 
-                  date={dateRange} 
-                  setDate={setDateRange}
+      {/* Main Content */}
+      <main className="p-6 space-y-6">
+        {/* Tipo de Relatório */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Tipo de Relatório</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex space-x-4">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="tipoRelatorio"
+                  value="padrao"
+                  checked={tipoRelatorio === "padrao"}
+                  onChange={(e) => setTipoRelatorio(e.target.value)}
                 />
-              </div>
-              
-              {/* Botão de Gerar Relatório */}
-              <div className="pt-4 space-y-2">
-                <Button 
-                  onClick={handleGenerateReport}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  disabled={reportType === "personalizado" && selectedFields.length === 0}
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Gerar relatório
-                </Button>
-                
-                {/* Tooltip */}
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center justify-center text-sm text-gray-500 cursor-help">
-                        <Info className="w-4 h-4 mr-1" />
-                        Informações sobre o relatório padrão
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p className="text-sm">
-                        Relatório padrão inclui: nº proposta, data, status, CPF, nome, valor solicitado, TC, IOF, prazo, taxa/mês, parcela e dívida total.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </CardContent>
-          </Card>
+                <span>Usar Padrão Existente</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="tipoRelatorio"
+                  value="personalizado"
+                  checked={tipoRelatorio === "personalizado"}
+                  onChange={(e) => setTipoRelatorio(e.target.value)}
+                />
+                <span>Personalizado</span>
+              </label>
+            </div>
 
-          {/* Seleção de Campos - apenas se personalizado */}
-          {reportType === "personalizado" && (
-            <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="text-lg">Selecionar Campos do Relatório</CardTitle>
-                <p className="text-sm text-gray-600">
-                  Escolha os campos que deseja incluir no relatório ({selectedFields.length} selecionados)
-                </p>
-                
-                {/* Campo de busca */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input 
-                    placeholder="Buscar campos..." 
-                    className="pl-10"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-96 overflow-y-auto">
-                  {filteredCategories.map((category) => (
-                    <div key={category} className="space-y-3">
-                      <div className="flex items-center space-x-2 border-b pb-2">
-                        <Checkbox
-                          id={`category-${category}`}
-                          checked={isCategorySelected(category)}
-                          onCheckedChange={(checked) => handleCategoryToggle(category, checked as boolean)}
-                          className={isCategoryPartiallySelected(category) ? "data-[state=checked]:bg-blue-500" : ""}
-                        />
-                        <Label 
-                          htmlFor={`category-${category}`}
-                          className="font-semibold text-gray-900 cursor-pointer"
-                        >
-                          {category}
-                        </Label>
-                      </div>
-                      
-                      <div className="space-y-2 pl-6">
-                        {filteredFields
-                          .filter(field => field.category === category)
-                          .map((field) => (
-                            <div key={field.id} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={field.id}
-                                checked={selectedFields.includes(field.id)}
-                                onCheckedChange={(checked) => handleFieldToggle(field.id, checked as boolean)}
-                              />
-                              <Label 
-                                htmlFor={field.id}
-                                className="text-sm text-gray-700 cursor-pointer"
-                              >
-                                {field.label}
-                              </Label>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
+            {tipoRelatorio === "padrao" && (
+              <div>
+                <label className="block text-sm font-medium mb-2">Selecione um Padrão:</label>
+                <Select value={padraoSelecionado} onValueChange={setPadraoSelecionado}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Escolha um padrão salvo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {padroesSalvos.filter(p => p.ativo).map((padrao) => (
+                      <SelectItem key={padrao.id} value={padrao.id.toString()}>
+                        {padrao.nome}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            {tipoRelatorio === "personalizado" && (
+              <div>
+                <label className="block text-sm font-medium mb-2">Campos do Relatório:</label>
+                <div className="grid grid-cols-3 gap-2 max-h-40 overflow-y-auto border rounded p-3">
+                  {camposDisponiveis.map((campo) => (
+                    <label key={campo} className="flex items-center space-x-2 cursor-pointer text-sm">
+                      <input
+                        type="checkbox"
+                        checked={camposSelecionados.includes(campo)}
+                        onChange={() => handleCampoToggle(campo)}
+                        className="rounded"
+                      />
+                      <span>{campo}</span>
+                    </label>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </div>
+              </div>
+            )}
+
+            <div className="flex justify-between items-center pt-4">
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Download className="w-4 h-4 mr-2" />
+                Gerar Relatório
+              </Button>
+              
+              {tipoRelatorio === "personalizado" && (
+                <NovoPadraoModal />
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Padrões Salvos */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Padrões Salvos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4">
+              {padroesSalvos.map((padrao) => (
+                <div key={padrao.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <h3 className="font-medium">{padrao.nome}</h3>
+                      <Badge variant={padrao.ativo ? "default" : "secondary"}>
+                        {padrao.ativo ? "Ativo" : "Inativo"}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2">{padrao.descricao}</p>
+                    <p className="text-xs text-gray-500">
+                      {padrao.campos.length} campos: {padrao.campos.slice(0, 3).join(", ")}
+                      {padrao.campos.length > 3 && "..."}
+                    </p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="sm">
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </main>
     </div>
   );
 }
