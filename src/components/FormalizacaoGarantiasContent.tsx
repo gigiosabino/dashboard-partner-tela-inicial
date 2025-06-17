@@ -1,4 +1,3 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,7 +50,7 @@ export function FormalizacaoGarantiasContent() {
   const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
   const [filterProposalNumber, setFilterProposalNumber] = useState("");
   const [filterCpf, setFilterCpf] = useState("");
-  const [filteredPro postas, setFilteredPropostas] = useState(propostas);
+  const [filteredPropostas, setFilteredPropostas] = useState(propostas);
 
   const handlePendencias = (numeroProposta: string) => {
     navigate(`/formalizacao-garantias/${numeroProposta}`);
