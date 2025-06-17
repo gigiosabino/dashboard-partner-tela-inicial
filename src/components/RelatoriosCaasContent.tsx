@@ -1,4 +1,3 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +17,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Settings, Download, Edit2, Trash2 } from "lucide-react";
+import {
+  Alert,
+  AlertDescription,
+} from "@/components/ui/alert";
+import { Plus, Settings, Download, Edit2, Trash2, Search, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 
 const padroesSalvos = [
@@ -69,6 +72,9 @@ export function RelatoriosCaasContent() {
   const [novoPadraoNome, setNovoPadraoNome] = useState("");
   const [novoPadraoDescricao, setNovoPadraoDescricao] = useState("");
   const [camposSelecionados, setCamposSelecionados] = useState<string[]>([]);
+  const [editingPadrao, setEditingPadrao] = useState<any>(null);
+  const [deletingPadrao, setDeletingPadrao] = useState<any>(null);
+  const [searchCampos, setSearchCampos] = useState("");
 
   const handleCampoToggle = (campo: string) => {
     setCamposSelecionados(prev =>
@@ -91,6 +97,37 @@ export function RelatoriosCaasContent() {
       setCamposSelecionados([]);
     }
   };
+
+  const handleEditPadrao = (padrao: any) => {
+    setEditingPadrao(padrao);
+    setNovoPadraoNome(padrao.nome);
+    setNovoPadraoDescricao(padrao.descricao);
+    setCamposSelecionados([...padrao.campos]);
+  };
+
+  const handleSalvarEdicao = () => {
+    if (novoPadraoNome && camposSelecionados.length > 0) {
+      console.log("Salvando edição do padrão:", {
+        id: editingPadrao.id,
+        nome: novoPadraoNome,
+        descricao: novoPadraoDescricao,
+        campos: camposSelecionados
+      });
+      setEditingPadrao(null);
+      setNovoPadraoNome("");
+      setNovoPadraoDescricao("");
+      setCamposSelecionados([]);
+    }
+  };
+
+  const handleConfirmarExclusao = () => {
+    console.log("Excluindo padrão:", deletingPadrao);
+    setDeletingPadrao(null);
+  };
+
+  const camposFiltrados = camposDisponiveis.filter(campo =>
+    campo.toLowerCase().includes(searchCampos.toLowerCase())
+  );
 
   const NovoPadraoModal = () => (
     <Dialog>
@@ -125,8 +162,17 @@ export function RelatoriosCaasContent() {
 
           <div>
             <label className="block text-sm font-medium mb-2">Campos do Relatório:</label>
+            <div className="relative mb-3">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Buscar campos..."
+                value={searchCampos}
+                onChange={(e) => setSearchCampos(e.target.value)}
+                className="pl-10"
+              />
+            </div>
             <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto border rounded p-3">
-              {camposDisponiveis.map((campo) => (
+              {camposFiltrados.map((campo) => (
                 <label key={campo} className="flex items-center space-x-2 cursor-pointer">
                   <input
                     type="checkbox"
@@ -151,6 +197,106 @@ export function RelatoriosCaasContent() {
               className="bg-blue-600 hover:bg-blue-700"
             >
               Salvar Padrão
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+
+  const EditarPadraoModal = () => (
+    <Dialog open={!!editingPadrao} onOpenChange={() => setEditingPadrao(null)}>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Editar Padrão</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Nome do Padrão:</label>
+            <Input
+              placeholder="Ex: Padrão Consignado"
+              value={novoPadraoNome}
+              onChange={(e) => setNovoPadraoNome(e.target.value)}
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-2">Descrição:</label>
+            <Input
+              placeholder="Descrição do padrão"
+              value={novoPadraoDescricao}
+              onChange={(e) => setNovoPadraoDescricao(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Campos do Relatório:</label>
+            <div className="relative mb-3">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Buscar campos..."
+                value={searchCampos}
+                onChange={(e) => setSearchCampos(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto border rounded p-3">
+              {camposFiltrados.map((campo) => (
+                <label key={campo} className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={camposSelecionados.includes(campo)}
+                    onChange={() => handleCampoToggle(campo)}
+                    className="rounded"
+                  />
+                  <span className="text-sm">{campo}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              {camposSelecionados.length} campo(s) selecionado(s)
+            </p>
+          </div>
+
+          <div className="flex justify-end space-x-2 pt-4">
+            <Button variant="outline" onClick={() => setEditingPadrao(null)}>Cancelar</Button>
+            <Button 
+              onClick={handleSalvarEdicao}
+              disabled={!novoPadraoNome || camposSelecionados.length === 0}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Salvar Alterações
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+
+  const ExcluirPadraoModal = () => (
+    <Dialog open={!!deletingPadrao} onOpenChange={() => setDeletingPadrao(null)}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Confirmar Exclusão</DialogTitle>
+        </DialogHeader>
+        <div className="py-4">
+          <Alert>
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              Tem certeza que deseja excluir o padrão "{deletingPadrao?.nome}"? 
+              Esta ação não pode ser desfeita.
+            </AlertDescription>
+          </Alert>
+          
+          <div className="flex justify-end space-x-2 mt-6">
+            <Button variant="outline" onClick={() => setDeletingPadrao(null)}>
+              Cancelar
+            </Button>
+            <Button 
+              onClick={handleConfirmarExclusao}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Excluir Padrão
             </Button>
           </div>
         </div>
@@ -225,8 +371,17 @@ export function RelatoriosCaasContent() {
             {tipoRelatorio === "personalizado" && (
               <div>
                 <label className="block text-sm font-medium mb-2">Campos do Relatório:</label>
+                <div className="relative mb-3">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    placeholder="Buscar campos..."
+                    value={searchCampos}
+                    onChange={(e) => setSearchCampos(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
                 <div className="grid grid-cols-3 gap-2 max-h-40 overflow-y-auto border rounded p-3">
-                  {camposDisponiveis.map((campo) => (
+                  {camposFiltrados.map((campo) => (
                     <label key={campo} className="flex items-center space-x-2 cursor-pointer text-sm">
                       <input
                         type="checkbox"
@@ -238,6 +393,9 @@ export function RelatoriosCaasContent() {
                     </label>
                   ))}
                 </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  {camposSelecionados.length} campo(s) selecionado(s)
+                </p>
               </div>
             )}
 
@@ -277,10 +435,19 @@ export function RelatoriosCaasContent() {
                     </p>
                   </div>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleEditPadrao(padrao)}
+                    >
                       <Edit2 className="w-4 h-4" />
                     </Button>
-                    <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-red-600 hover:text-red-700"
+                      onClick={() => setDeletingPadrao(padrao)}
+                    >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
@@ -289,6 +456,10 @@ export function RelatoriosCaasContent() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Modais */}
+        <EditarPadraoModal />
+        <ExcluirPadraoModal />
       </main>
     </div>
   );

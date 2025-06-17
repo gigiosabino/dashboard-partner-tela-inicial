@@ -1,11 +1,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  PieChart,
-  Pie,
-  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -35,69 +36,49 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
 
   const currentData = getDataByPeriod();
 
-  // Função personalizada para renderizar a legenda
-  const renderCustomLegend = (props: any) => {
-    const { payload } = props;
-    return (
-      <ul className="space-y-1 text-xs">
-        {payload.map((entry: any, index: number) => (
-          <li key={`item-${index}`} className="flex items-center space-x-2">
-            <span
-              className="w-2 h-2 rounded-full flex-shrink-0"
-              style={{ backgroundColor: entry.color }}
-            />
-            <span className="text-gray-700 truncate">
-              {entry.payload.name} ({entry.payload.code})
-            </span>
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
   return (
-    <Card className="h-[400px] hover:shadow-lg transition-shadow duration-200">
+    <Card className="h-full hover:shadow-lg transition-shadow duration-200">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-900">
           Monitoramento de propostas por status
         </CardTitle>
       </CardHeader>
-      <CardContent className="h-[320px]">
+      <CardContent className="flex-1">
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={currentData}
-              dataKey="value"
-              nameKey="name"
-              cx="65%"
-              cy="50%"
-              outerRadius={80}
-              fill="#8884d8"
-            >
-              {currentData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
+          <BarChart
+            data={currentData}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 60,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis 
+              dataKey="code" 
+              angle={-45}
+              textAnchor="end"
+              height={80}
+              fontSize={12}
+            />
+            <YAxis fontSize={12} />
             <Tooltip 
               formatter={(value, name, props) => [
                 value, 
                 `${props.payload.name} (${props.payload.code})`
               ]}
-              labelStyle={{ fontSize: '12px' }}
-            />
-            <Legend 
-              content={renderCustomLegend}
-              verticalAlign="middle" 
-              align="left"
-              layout="vertical"
-              wrapperStyle={{
-                paddingRight: '20px',
-                fontSize: '11px',
-                lineHeight: '14px',
-                width: '180px'
+              labelFormatter={(code) => {
+                const item = currentData.find(d => d.code === code);
+                return item ? `${item.name} (${code})` : code;
               }}
             />
-          </PieChart>
+            <Bar 
+              dataKey="value" 
+              fill={(entry) => entry.color}
+              radius={[4, 4, 0, 0]}
+            />
+          </BarChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>

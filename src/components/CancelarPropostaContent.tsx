@@ -2,54 +2,60 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Textarea } from "@/components/ui/textarea";
+import { Search, X } from "lucide-react";
 import { useState } from "react";
 
-const propostas = [
-  {
-    numero: "004935629",
-    dataEnv: "05/06/2025",
-    nomeCliente: "TESTE LUCCA",
-    documento: "422.817.188-59",
-    valorSolicitado: "R$ 500,00",
-    status: "Ativa"
-  },
-  {
-    numero: "004935630",
-    dataEnv: "04/06/2025",
-    nomeCliente: "JOÃO SILVA SANTOS",
-    documento: "123.456.789-00",
-    valorSolicitado: "R$ 1.200,00",
-    status: "Ativa"
-  },
-  {
-    numero: "004935631",
-    dataEnv: "03/06/2025",
-    nomeCliente: "MARIA OLIVEIRA LTDA",
-    documento: "12.345.678/0001-90",
-    valorSolicitado: "R$ 2.500,00",
-    status: "Ativa"
-  }
-];
-
 export function CancelarPropostaContent() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [numeroProposta, setNumeroProposta] = useState("");
+  const [propostaEncontrada, setPropostaEncontrada] = useState<any>(null);
+  const [motivoCancelamento, setMotivoCancelamento] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
-  const handleCancelar = (numeroProposta: string) => {
-    console.log("Cancelando proposta:", numeroProposta);
+  const handleBuscarProposta = async () => {
+    if (!numeroProposta.trim()) {
+      return;
+    }
+
+    setIsSearching(true);
+    console.log("Buscando proposta:", numeroProposta);
+    
+    // Simular busca da proposta
+    setTimeout(() => {
+      // Simular proposta encontrada ou não encontrada
+      if (numeroProposta === "004935629") {
+        setPropostaEncontrada({
+          numero: "004935629",
+          cliente: "TESTE LUCCA",
+          cpf: "422.817.188-59",
+          valor: "R$ 500,00",
+          status: "Ativa"
+        });
+      } else {
+        setPropostaEncontrada(null);
+        alert("Proposta não encontrada!");
+      }
+      setIsSearching(false);
+    }, 1000);
+  };
+
+  const handleCancelarProposta = () => {
+    if (!motivoCancelamento.trim()) {
+      alert("O motivo do cancelamento é obrigatório!");
+      return;
+    }
+
+    console.log("Cancelando proposta:", {
+      proposta: propostaEncontrada,
+      motivo: motivoCancelamento
+    });
+    
+    alert("Proposta cancelada com sucesso!");
+    
+    // Limpar formulário
+    setNumeroProposta("");
+    setPropostaEncontrada(null);
+    setMotivoCancelamento("");
   };
 
   return (
@@ -60,8 +66,7 @@ export function CancelarPropostaContent() {
           <div className="flex items-center space-x-4">
             <SidebarTrigger />
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">Cancelamento de Proposta</h1>
-              <p className="text-sm text-gray-600">Gerencie o cancelamento de propostas ativas</p>
+              <h1 className="text-xl font-semibold text-gray-900">Cancelar proposta</h1>
             </div>
           </div>
         </div>
@@ -69,101 +74,71 @@ export function CancelarPropostaContent() {
 
       {/* Main Content */}
       <main className="p-6">
-        {/* Filtros */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
-                    <Filter className="w-4 h-4 mr-2" />
-                    Filtros
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-96 bg-white p-4">
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Status</label>
-                      <select className="w-full border border-gray-300 rounded-md px-3 py-2">
-                        <option>Todas</option>
-                        <option>Ativa</option>
-                        <option>Cancelada</option>
-                      </select>
-                    </div>
-                    
-                    <div className="flex justify-end space-x-2 pt-2">
-                      <Button variant="outline" size="sm">
-                        Limpar
-                      </Button>
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                        Aplicar Filtros
-                      </Button>
-                    </div>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              
-              <span className="text-sm text-gray-600">{propostas.length} proposta(s) encontrada(s)</span>
+        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="space-y-6">
+            {/* Número da Proposta */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Número da proposta
+              </label>
+              <div className="flex space-x-2">
+                <Input
+                  placeholder="Digite o número da proposta"
+                  value={numeroProposta}
+                  onChange={(e) => setNumeroProposta(e.target.value)}
+                  className="flex-1"
+                />
+                <Button
+                  onClick={handleBuscarProposta}
+                  disabled={!numeroProposta.trim() || isSearching}
+                  variant="outline"
+                  className="px-3"
+                >
+                  <Search className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
-            <div className="relative w-80">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input 
-                placeholder="Buscar por CPF, CNPJ ou número da proposta" 
-                className="pl-10 border-gray-300"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+            {/* Informações da Proposta Encontrada */}
+            {propostaEncontrada && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h3 className="font-medium text-blue-900 mb-2">Proposta Encontrada</h3>
+                <div className="space-y-1 text-sm text-blue-800">
+                  <p><strong>Número:</strong> #{propostaEncontrada.numero}</p>
+                  <p><strong>Cliente:</strong> {propostaEncontrada.cliente}</p>
+                  <p><strong>CPF:</strong> {propostaEncontrada.cpf}</p>
+                  <p><strong>Valor:</strong> {propostaEncontrada.valor}</p>
+                  <p><strong>Status:</strong> {propostaEncontrada.status}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Motivo de Cancelamento */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Motivo de Cancelamento *
+              </label>
+              <Textarea
+                placeholder="Descreva o motivo do cancelamento da proposta..."
+                value={motivoCancelamento}
+                onChange={(e) => setMotivoCancelamento(e.target.value)}
+                rows={4}
+                className="resize-none"
               />
             </div>
-          </div>
-        </div>
 
-        {/* Propostas */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Propostas Ativas</h2>
+            {/* Botão Cancelar */}
+            <div className="flex justify-center">
+              <Button
+                onClick={handleCancelarProposta}
+                disabled={!propostaEncontrada || !motivoCancelamento.trim()}
+                className="bg-red-600 hover:bg-red-700 text-white px-8"
+              >
+                <X className="w-4 h-4 mr-2" />
+                CANCELAR PROPOSTA
+              </Button>
+            </div>
           </div>
-          
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead className="font-semibold text-gray-700">Número da Proposta</TableHead>
-                <TableHead className="font-semibold text-gray-700">Data de Envio</TableHead>
-                <TableHead className="font-semibold text-gray-700">Nome do Cliente</TableHead>
-                <TableHead className="font-semibold text-gray-700">CPF/CNPJ do Cliente</TableHead>
-                <TableHead className="font-semibold text-gray-700">Valor Solicitado</TableHead>
-                <TableHead className="font-semibold text-gray-700">Status</TableHead>
-                <TableHead className="font-semibold text-gray-700">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {propostas.map((proposta) => (
-                <TableRow key={proposta.numero} className="hover:bg-gray-50">
-                  <TableCell>
-                    <span className="text-blue-600 font-medium">#{proposta.numero}</span>
-                  </TableCell>
-                  <TableCell>{proposta.dataEnv}</TableCell>
-                  <TableCell className="text-blue-600">{proposta.nomeCliente}</TableCell>
-                  <TableCell>{proposta.documento}</TableCell>
-                  <TableCell className="font-medium">{proposta.valorSolicitado}</TableCell>
-                  <TableCell>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      {proposta.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      onClick={() => handleCancelar(proposta.numero)}
-                      className="bg-red-600 hover:bg-red-700 text-white"
-                      size="sm"
-                    >
-                      Cancelar
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
         </div>
       </main>
     </div>
