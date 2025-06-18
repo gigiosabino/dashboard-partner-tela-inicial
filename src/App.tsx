@@ -18,6 +18,7 @@ import ConfiguracaoCallbacks from "./pages/ConfiguracaoCallbacks";
 import FormalizacaoGarantias from "./pages/FormalizacaoGarantias";
 import FormalizacaoDetalhes from "./pages/FormalizacaoDetalhes";
 import Mensageria from "./pages/Mensageria";
+import CancelarProposta from "./pages/CancelarProposta";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/formalizacao-garantias" element={<FormalizacaoGarantias />} />
           <Route path="/formalizacao-garantias/:numero" element={<FormalizacaoDetalhes />} />
           <Route path="/mensageria" element={<Mensageria />} />
+          <Route path="/cancelar-proposta" element={<CancelarProposta />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -14,6 +14,7 @@ export function CancelarPropostaContent() {
 
   const handleBuscarProposta = async () => {
     if (!numeroProposta.trim()) {
+      alert("Por favor, informe o número da proposta!");
       return;
     }
 
@@ -23,9 +24,9 @@ export function CancelarPropostaContent() {
     // Simular busca da proposta
     setTimeout(() => {
       // Simular proposta encontrada ou não encontrada
-      if (numeroProposta === "004935629") {
+      if (numeroProposta === "004935629" || numeroProposta === "123456789") {
         setPropostaEncontrada({
-          numero: "004935629",
+          numero: numeroProposta,
           cliente: "TESTE LUCCA",
           cpf: "422.817.188-59",
           valor: "R$ 500,00",
@@ -37,7 +38,7 @@ export function CancelarPropostaContent() {
         });
       } else {
         setPropostaEncontrada(null);
-        alert("Proposta não encontrada!");
+        alert("Proposta não encontrada! Verifique o número informado.");
       }
       setIsSearching(false);
     }, 1000);
@@ -82,6 +83,7 @@ export function CancelarPropostaContent() {
                     value={numeroProposta}
                     onChange={(e) => setNumeroProposta(e.target.value)}
                     className="flex-1"
+                    onKeyPress={(e) => e.key === 'Enter' && handleBuscarProposta()}
                   />
                   <Button
                     onClick={handleBuscarProposta}
@@ -92,6 +94,9 @@ export function CancelarPropostaContent() {
                     <Search className="w-4 h-4" />
                   </Button>
                 </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  {isSearching ? "Buscando proposta..." : "Pressione Enter ou clique na lupa para buscar"}
+                </p>
               </div>
             </div>
 

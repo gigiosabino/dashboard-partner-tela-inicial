@@ -72,10 +72,11 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
               cy="50%"
               labelLine={false}
               label={renderCustomizedLabel}
-              outerRadius={120}
-              innerRadius={60}
+              outerRadius={130}
+              innerRadius={80}
               fill="#8884d8"
               dataKey="value"
+              stroke="none"
             >
               {currentData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
@@ -86,8 +87,8 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
               contentStyle={{
                 backgroundColor: 'white',
                 border: '1px solid #e5e7eb',
-                borderRadius: '8px',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                borderRadius: '12px',
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
               }}
             />
             <Legend 
@@ -104,7 +105,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
         
         {/* Resumo Total */}
         <div className="mt-4 text-center">
-          <p className="text-2xl font-bold text-gray-900">{total}</p>
+          <p className="text-3xl font-bold text-gray-900">{total}</p>
           <p className="text-sm text-gray-600">Total de propostas</p>
         </div>
       </CardContent>
