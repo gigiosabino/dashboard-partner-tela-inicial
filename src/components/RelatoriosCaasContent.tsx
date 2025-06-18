@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -297,7 +296,7 @@ export function RelatoriosCaasContent() {
                         <SelectValue placeholder="Selecione o agendamento" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Não agendar</SelectItem>
+                        <SelectItem value="sem_agendamento">Não agendar</SelectItem>
                         <SelectItem value="diario">Diário às 08:00</SelectItem>
                         <SelectItem value="semanal">Semanal - Segundas às 08:00</SelectItem>
                         <SelectItem value="mensal">Mensal - Dia 1 às 08:00</SelectItem>
