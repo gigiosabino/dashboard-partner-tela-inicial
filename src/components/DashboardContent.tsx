@@ -1,9 +1,8 @@
 
 import { useState } from "react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Clock, User, RefreshCw, ChevronDown } from "lucide-react";
+import { Search, Clock, User, RefreshCw, ChevronDown, ExternalLink } from "lucide-react";
 import { MetricsCards } from "@/components/MetricsCards";
 import { ChartsSection } from "@/components/ChartsSection";
 import { RecentPendencies } from "@/components/RecentPendencies";
@@ -16,6 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export function DashboardContent() {
   const [selectedPeriod, setSelectedPeriod] = useState("last-6-months");
@@ -56,6 +56,10 @@ export function DashboardContent() {
     console.log("Alterar empresa clicado");
   };
 
+  const handleOpenDocs = () => {
+    window.open("https://docs.exemplo.com", "_blank");
+  };
+
   return (
     <div className="flex-1">
       {/* Header */}
@@ -81,6 +85,16 @@ export function DashboardContent() {
               <Clock className="w-4 h-4" />
               <span>59:51</span>
             </div>
+
+            <Button
+              variant="outline" 
+              size="sm"
+              onClick={handleOpenDocs}
+              className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 hover:text-blue-700 hover:border-blue-300"
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              Docs
+            </Button>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

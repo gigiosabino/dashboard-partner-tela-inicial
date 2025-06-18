@@ -1,14 +1,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
+  PieChart,
+  Pie,
   Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
 } from "recharts";
 
 interface ChartsSectionProps {
@@ -16,18 +14,38 @@ interface ChartsSectionProps {
 }
 
 const statusData = [
-  { name: "Em Análise", code: "1", value: 145, color: "#F59E0B" },
-  { name: "Aprovada", code: "2", value: 234, color: "#3B82F6" },
-  { name: "Recusada", code: "3", value: 67, color: "#DC2626" },
-  { name: "Cancelada", code: "4", value: 45, color: "#6B7280" },
-  { name: "Pendente", code: "5", value: 123, color: "#F97316" },
-  { name: "Finalizada", code: "6", value: 189, color: "#059669" },
-  { name: "Conferida", code: "7", value: 78, color: "#14B8A6" },
-  { name: "Liberada", code: "8", value: 167, color: "#6366F1" },
-  { name: "Paga", code: "9", value: 256, color: "#10B981" },
-  { name: "Cedida", code: "10", value: 156, color: "#8B5CF6" },
-  { name: "Pendente Pagamento", code: "11", value: 89, color: "#EF4444" },
+  { name: "Pagas", value: 256, color: "#10B981" },
+  { name: "Cedidas", value: 156, color: "#8B5CF6" },
+  { name: "Pendente Pagamento", value: 89, color: "#EF4444" },
 ];
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+}: any) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+      fontSize={12}
+      fontWeight="bold"
+    >
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
 
 export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   const getDataByPeriod = () => {
@@ -36,6 +54,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   };
 
   const currentData = getDataByPeriod();
+  const total = currentData.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <Card className="h-full hover:shadow-lg transition-shadow duration-200">
@@ -46,41 +65,48 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
       </CardHeader>
       <CardContent className="flex-1">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={currentData}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 60,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis 
-              dataKey="code" 
-              angle={-45}
-              textAnchor="end"
-              height={80}
-              fontSize={12}
-            />
-            <YAxis fontSize={12} />
-            <Tooltip 
-              formatter={(value, name, props) => [
-                value, 
-                `${props.payload.name} (${props.payload.code})`
-              ]}
-              labelFormatter={(code) => {
-                const item = currentData.find(d => d.code === code);
-                return item ? `${item.name} (${code})` : code;
-              }}
-            />
-            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+          <PieChart>
+            <Pie
+              data={currentData}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={120}
+              innerRadius={60}
+              fill="#8884d8"
+              dataKey="value"
+            >
               {currentData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
-            </Bar>
-          </BarChart>
+            </Pie>
+            <Tooltip 
+              formatter={(value: any, name: any) => [value, name]}
+              contentStyle={{
+                backgroundColor: 'white',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+              }}
+            />
+            <Legend 
+              verticalAlign="bottom" 
+              height={36}
+              formatter={(value: any, entry: any) => (
+                <span style={{ color: entry.color, fontWeight: 500 }}>
+                  {value} ({entry.payload.value})
+                </span>
+              )}
+            />
+          </PieChart>
         </ResponsiveContainer>
+        
+        {/* Resumo Total */}
+        <div className="mt-4 text-center">
+          <p className="text-2xl font-bold text-gray-900">{total}</p>
+          <p className="text-sm text-gray-600">Total de propostas</p>
+        </div>
       </CardContent>
     </Card>
   );

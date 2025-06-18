@@ -1,357 +1,282 @@
-import { SidebarTrigger } from "@/components/ui/sidebar";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Alert,
-  AlertDescription,
-} from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { AlertTriangle, CheckCircle, Globe, Save, TestTube } from "lucide-react";
 import { useState } from "react";
-import { History, AlertTriangle } from "lucide-react";
-
-const eventos = [
-  { nome: "Em Digitação", quantidade: 0, selecionado: false },
-  { nome: "Recusada", quantidade: 3, selecionado: true },
-  { nome: "Finalizada", quantidade: 6, selecionado: true },
-  { nome: "Paga", quantidade: 9, selecionado: true },
-  { nome: "Pendente Documento", quantidade: 0, selecionado: false },
-  { nome: "Em Análise", quantidade: 1, selecionado: true },
-  { nome: "Cancelada", quantidade: 2, selecionado: true },
-  { nome: "Conferida", quantidade: 7, selecionado: true },
-  { nome: "Cedida", quantidade: 10, selecionado: true },
-  { nome: "Aviso Cancelamento", quantidade: 0, selecionado: false },
-  { nome: "Aprovada", quantidade: 2, selecionado: true },
-  { nome: "Pendente", quantidade: 5, selecionado: true },
-  { nome: "Liberada", quantidade: 8, selecionado: true },
-  { nome: "Pendente Pagamento", quantidade: 11, selecionado: true },
-  { nome: "Aviso Situação Pagamento", quantidade: 0, selecionado: false },
-];
-
-const historico = [
-  {
-    usuario: "Nome Sobrenome 1 - usuario1@gmail.com",
-    dataHora: "25/01/2025 - 15:36",
-    url: "https://webhook.site/111111-111111-111111-111?propostas={PROPOSTA}&situacao={SITUACAO}&identificador={IDENTIFICADOR}",
-    metodo: "POST",
-    autenticacao: "Authorization",
-    chave: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    status: "Aprovada, Finalizada, Liberada"
-  },
-  {
-    usuario: "Nome Sobrenome 2 - usuario2@gmail.com",
-    dataHora: "17/06/2024 - 19:27",
-    url: "https://webhook.site/111111-111111-111111-111?propostas={PROPOSTA}&situacao={SITUACAO}&identificador={IDENTIFICADOR}",
-    metodo: "POST",
-    autenticacao: "Authorization",  
-    chave: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    status: "Aprovada, Finalizada, Liberada, Paga, Cedida"
-  }
-];
+import { GlobalHeader } from "@/components/GlobalHeader";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function ConfiguracaoCallbacksContent() {
-  const [integracao, setIntegracao] = useState("TESTE G");
-  const [metodo, setMetodo] = useState("POST");
-  const [url, setUrl] = useState("https://webhook.site:443/b33b59bf-1ca6-4fcd-ad19-fca898847585");
-  const [parametros, setParametros] = useState("proposta={PROPOSTA}&situacao={SITUACAO}&identificador={IDENTIFICADOR}");
-  const [tipoAutenticacao, setTipoAutenticacao] = useState("Authorization");
-  const [chaveAutenticacao, setChaveAutenticacao] = useState("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
-  const [eventosSelecionados, setEventosSelecionados] = useState(eventos);
-  const [showTestAlert, setShowTestAlert] = useState(false);
-
-  const handleEventoChange = (index: number, checked: boolean) => {
-    const novosEventos = [...eventosSelecionados];
-    novosEventos[index].selecionado = checked;
-    setEventosSelecionados(novosEventos);
-  };
-
-  const totalSelecionados = eventosSelecionados.filter(evento => evento.selecionado).length;
-  const urlFinal = `${url}?${parametros}`;
+  const [urlCallback, setUrlCallback] = useState("https://api.exemplo.com/callback");
+  const [callbackAtivo, setCallbackAtivo] = useState(true);
+  const [token, setToken] = useState("abc123def456");
+  const [timeout, setTimeout] = useState("30");
+  const [tentativas, setTentativas] = useState("3");
+  const [observacoes, setObservacoes] = useState("");
+  const [isTestDialogOpen, setIsTestDialogOpen] = useState(false);
+  const [isTestRunning, setIsTestRunning] = useState(false);
 
   const handleSalvarConfiguracao = () => {
-    console.log("Salvando configuração de callback...");
+    console.log("Salvando configuração de callback:", {
+      url: urlCallback,
+      ativo: callbackAtivo,
+      token,
+      timeout,
+      tentativas,
+      observacoes
+    });
     alert("Configuração salva com sucesso!");
   };
 
-  const handleTestarUrl = () => {
-    if (!url.trim()) {
-      alert("Por favor, configure uma URL antes de testar.");
-      return;
-    }
-    setShowTestAlert(true);
-  };
-
-  const handleConfirmarTeste = () => {
-    console.log("Enviando callback de teste para:", urlFinal);
-    setShowTestAlert(false);
+  const handleTestarCallback = async () => {
+    setIsTestRunning(true);
+    console.log("Testando callback...");
     
-    // Simular envio do callback de teste
-    setTimeout(() => {
-      alert("Callback de teste enviado com sucesso!");
-    }, 1000);
+    // Simular teste
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setIsTestRunning(false);
+    setIsTestDialogOpen(false);
+    alert("Teste enviado com sucesso! Verifique se o callback foi recebido em sua URL.");
   };
 
   return (
     <div className="flex-1 bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <SidebarTrigger />
-            <div className="text-sm text-gray-600">
-              <span>Configuração de Callbacks</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <GlobalHeader title="Configuração de Callbacks" subtitle="Configure as URLs de callback para receber notificações automáticas" />
 
       {/* Main Content */}
-      <main className="p-6 space-y-6">
-        <div className="grid grid-cols-3 gap-6">
-          {/* Configuração Principal - 2/3 da largura */}
-          <div className="col-span-2 space-y-6">
-            {/* Configuração do Callback */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold mb-6">Configuração do Callback</h2>
-              
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Integração:</label>
-                  <Select value={integracao} onValueChange={setIntegracao}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="TESTE G">TESTE G</SelectItem>
-                      <SelectItem value="TESTE A">TESTE A</SelectItem>
-                      <SelectItem value="TESTE B">TESTE B</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Método:</label>
-                  <Select value={metodo} onValueChange={setMetodo}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="POST">POST</SelectItem>
-                      <SelectItem value="GET">GET</SelectItem>
-                      <SelectItem value="PUT">PUT</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">URL:</label>
+      <main className="p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Formulário de Configuração */}
+          <div className="lg:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Globe className="w-5 h-5" />
+                  <span>Configurações de Callback</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="url">URL de Callback *</Label>
                   <Input
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder="URL do endpoint"
+                    id="url"
+                    placeholder="https://sua-api.com/callback"
+                    value={urlCallback}
+                    onChange={(e) => setUrlCallback(e.target.value)}
                   />
+                  <p className="text-sm text-gray-500">
+                    URL que receberá as notificações de callback
+                  </p>
                 </div>
 
-                <div className="col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Parâmetros:</label>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="ativo"
+                    checked={callbackAtivo}
+                    onCheckedChange={setCallbackAtivo}
+                  />
+                  <Label htmlFor="ativo">Callback ativo</Label>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="token">Token de Autenticação</Label>
                   <Input
-                    value={parametros}
-                    onChange={(e) => setParametros(e.target.value)}
-                    placeholder="Parâmetros da URL"
+                    id="token"
+                    placeholder="Token para validação"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
                   />
+                  <p className="text-sm text-gray-500">
+                    Token que será enviado no header Authorization
+                  </p>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Autenticação:</label>
-                  <Select value={tipoAutenticacao} onValueChange={setTipoAutenticacao}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Authorization">Authorization</SelectItem>
-                      <SelectItem value="API Key">API Key</SelectItem>
-                      <SelectItem value="Basic Auth">Basic Auth</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Chave de Autenticação:</label>
-                  <Input
-                    value={chaveAutenticacao}
-                    onChange={(e) => setChaveAutenticacao(e.target.value)}
-                    placeholder="Chave de autenticação"
-                    type="password"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <label className="block text-sm font-medium text-gray-700 mb-2">URL Final:</label>
-                <div className="text-sm text-gray-600 break-all font-mono bg-white p-2 rounded border">
-                  {urlFinal}
-                </div>
-              </div>
-            </div>
-
-            {/* Eventos para Notificação */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold">Eventos para Notificação</h2>
-                <span className="text-sm text-blue-600">{totalSelecionados} selecionados</span>
-              </div>
-              <p className="text-sm text-gray-600 mb-4">Selecione quais eventos devem disparar o callback</p>
-
-              <div className="grid grid-cols-3 gap-4">
-                {eventosSelecionados.map((evento, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg">
-                    <Checkbox
-                      checked={evento.selecionado}
-                      onCheckedChange={(checked) => handleEventoChange(index, checked as boolean)}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="timeout">Timeout (segundos)</Label>
+                    <Input
+                      id="timeout"
+                      type="number"
+                      placeholder="30"
+                      value={timeout}
+                      onChange={(e) => setTimeout(e.target.value)}
                     />
-                    <div className="flex-1">
-                      <span className="text-sm font-medium">{evento.nome}</span>
-                      <span className="ml-2 text-xs text-gray-500">({evento.quantidade})</span>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="tentativas">Máx. Tentativas</Label>
+                    <Input
+                      id="tentativas"
+                      type="number"
+                      placeholder="3"
+                      value={tentativas}
+                      onChange={(e) => setTentativas(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="observacoes">Observações</Label>
+                  <Textarea
+                    id="observacoes"
+                    placeholder="Observações adicionais sobre a configuração..."
+                    rows={3}
+                    value={observacoes}
+                    onChange={(e) => setObservacoes(e.target.value)}
+                  />
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-medium text-blue-900 mb-2">Estrutura do Callback</h4>
+                  <p className="text-sm text-blue-800 mb-2">
+                    O callback será enviado via POST com a seguinte estrutura:
+                  </p>
+                  <pre className="text-xs bg-white p-3 rounded border text-blue-900 overflow-x-auto">
+{`{
+  "proposta": "123456789",
+  "situacao": "aprovada",
+  "identificador": "uuid-v4",
+  "data": "2025-01-15T10:30:00Z",
+  "valor": 15000.00
+}`}
+                  </pre>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Resumo e Ações */}
+          <div className="space-y-6">
+            {/* Resumo da Configuração */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Resumo da Configuração</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Status</Label>
+                    <div className="mt-1">
+                      <Badge variant={callbackAtivo ? "default" : "secondary"} className="flex items-center w-fit">
+                        {callbackAtivo ? <CheckCircle className="w-3 h-3 mr-1" /> : <AlertTriangle className="w-3 h-3 mr-1" />}
+                        {callbackAtivo ? "Ativo" : "Inativo"}
+                      </Badge>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
 
-          {/* Resumo da Configuração - 1/3 da largura */}
-          <div className="col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-6">
-              <h3 className="text-lg font-semibold mb-4">Resumo da Configuração</h3>
-              
-              <div className="space-y-3 text-sm">
-                <div>
-                  <span className="font-medium text-gray-700">Integração:</span>
-                  <p className="text-gray-600">{integracao}</p>
-                </div>
-                
-                <div>
-                  <span className="font-medium text-gray-700">Método:</span>
-                  <p className="text-gray-600">{metodo}</p>
-                </div>
-                
-                <div>
-                  <span className="font-medium text-gray-700">URL:</span>
-                  <p className="text-gray-600 break-all font-mono text-xs">{url || "Não configurada"}</p>
-                </div>
-                
-                <div>
-                  <span className="font-medium text-gray-700">Autenticação:</span>
-                  <p className="text-gray-600">{tipoAutenticacao}</p>
-                </div>
-                
-                <div>
-                  <span className="font-medium text-gray-700">Eventos:</span>
-                  <p className="text-gray-600">{totalSelecionados} eventos selecionados</p>
-                </div>
-              </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">URL Configurada</Label>
+                    <p className="text-sm text-gray-600 mt-1 break-all">
+                      {urlCallback || "Não configurada"}
+                    </p>
+                  </div>
 
-              <div className="mt-6 space-y-3">
-                <Button 
-                  onClick={handleSalvarConfiguracao}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Salvar Configuração
-                </Button>
-                
-                <Button 
-                  onClick={handleTestarUrl}
-                  variant="outline" 
-                  className="w-full border-gray-300"
-                >
-                  Testar URL
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Timeout</Label>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {timeout || "30"} segundos
+                    </p>
+                  </div>
 
-        {/* Alert de Teste */}
-        {showTestAlert && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-md mx-4">
-              <div className="flex items-start space-x-3">
-                <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-gray-900 mb-2">Atenção</h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Este teste enviará um callback com valores fictícios nos parâmetros proposta, situacao e identificador.
-                    <br/><br/>
-                    O objetivo é apenas validar se sua URL está recebendo corretamente o callback enviado pelo sistema.
-                  </p>
-                  <div className="flex justify-end space-x-2">
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setShowTestAlert(false)}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button 
-                      onClick={handleConfirmarTeste}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      Enviar Teste
-                    </Button>
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Tentativas</Label>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Máximo {tentativas || "3"} tentativas
+                    </p>
+                  </div>
+
+                  <div>
+                    <Label className="text-sm font-medium text-gray-700">Última Atualização</Label>
+                    <p className="text-sm text-gray-600 mt-1">
+                      15/01/2025 às 14:30
+                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        )}
+              </CardContent>
+            </Card>
 
-        {/* Histórico de Edições */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center space-x-2 mb-4">
-            <History className="w-5 h-5" />
-            <h2 className="text-lg font-semibold">Histórico de Edições</h2>
-          </div>
+            {/* Ações */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Ações</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button
+                  onClick={handleSalvarConfiguracao}
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  disabled={!urlCallback.trim()}
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Salvar Configuração
+                </Button>
 
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Usuário</TableHead>
-                  <TableHead>Data e hora</TableHead>
-                  <TableHead>URL</TableHead>
-                  <TableHead>Método</TableHead>
-                  <TableHead>Autenticação</TableHead>
-                  <TableHead>Chave</TableHead>
-                  <TableHead>Status selecionado</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {historico.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">{item.usuario}</TableCell>
-                    <TableCell>{item.dataHora}</TableCell>
-                    <TableCell className="max-w-xs truncate font-mono text-xs">{item.url}</TableCell>
-                    <TableCell>{item.metodo}</TableCell>
-                    <TableCell>{item.autenticacao}</TableCell>
-                    <TableCell className="max-w-xs truncate font-mono text-xs">{item.chave}</TableCell>
-                    <TableCell>{item.status}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                <Dialog open={isTestDialogOpen} onOpenChange={setIsTestDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      disabled={!urlCallback.trim() || !callbackAtivo}
+                    >
+                      <TestTube className="w-4 h-4 mr-2" />
+                      Testar URL
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center space-x-2">
+                        <AlertTriangle className="w-5 h-5 text-orange-500" />
+                        <span>Teste de Callback</span>
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="py-4">
+                      <p className="text-gray-700 mb-4">
+                        <strong>Atenção:</strong> Este teste enviará um callback com valores fictícios nos parâmetros proposta, situação e identificador.
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        O objetivo é apenas validar se sua URL está recebendo corretamente o callback enviado pelo sistema.
+                      </p>
+                      <div className="mt-4 p-3 bg-gray-50 rounded border">
+                        <p className="text-sm font-medium">URL de destino:</p>
+                        <p className="text-sm text-gray-600 break-all">{urlCallback}</p>
+                      </div>
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsTestDialogOpen(false)}
+                        disabled={isTestRunning}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button 
+                        onClick={handleTestarCallback}
+                        disabled={isTestRunning}
+                        className="bg-orange-600 hover:bg-orange-700"
+                      >
+                        {isTestRunning ? "Enviando..." : "Enviar Teste"}
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-gray-500">
+                    Certifique-se de que sua URL está acessível e configurada para receber requisições POST.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>

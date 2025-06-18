@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { GlobalHeader } from "@/components/GlobalHeader";
 
 const propostas = [
   {
@@ -133,18 +134,7 @@ export function AtualizarDadosBancariosContent() {
 
   return (
     <div className="flex-1 bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <SidebarTrigger />
-            <div>
-              <h1 className="text-xl font-semibold text-gray-900">Atualização de Dados Bancários</h1>
-              <p className="text-sm text-gray-600">Gerencie a atualização de dados bancários das propostas</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      <GlobalHeader title="Atualização de Dados Bancários" subtitle="Gerencie a atualização de dados bancários das propostas" />
 
       {/* Main Content */}
       <main className="p-6">
@@ -340,6 +330,21 @@ export function AtualizarDadosBancariosContent() {
                 {expandedRows.has(proposta.numero) && (
                   <div className="bg-gray-50 border-t border-gray-200">
                     <div className="p-4">
+                      {/* Cabeçalho das colunas dos splits */}
+                      <div className="grid grid-cols-12 gap-3 items-center text-xs font-medium text-gray-500 uppercase tracking-wide mb-3 px-4">
+                        <div className="col-span-1">Split</div>
+                        <div className="col-span-1">Previsão</div>
+                        <div className="col-span-1">Situação</div>
+                        <div className="col-span-1">Valor</div>
+                        <div className="col-span-1">Banco</div>
+                        <div className="col-span-1">Agência</div>
+                        <div className="col-span-1">Conta</div>
+                        <div className="col-span-1">Dígito</div>
+                        <div className="col-span-2">Favorecido</div>
+                        <div className="col-span-1">Código</div>
+                        <div className="col-span-1">Ação</div>
+                      </div>
+
                       <div className="space-y-3">
                         {proposta.splits.map((split) => (
                           <div key={split.id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
@@ -348,13 +353,11 @@ export function AtualizarDadosBancariosContent() {
                                 <span className="font-medium text-blue-600">{split.nome}</span>
                               </div>
                               
-                              {split.tipo === "BOLETO" && (
-                                <div className="col-span-1">
-                                  <span className="text-gray-600">{split.previsaoPagamento || "-"}</span>
-                                </div>
-                              )}
+                              <div className="col-span-1">
+                                <span className="text-gray-600">{split.previsaoPagamento || "-"}</span>
+                              </div>
                               
-                              <div className={split.tipo === "BOLETO" ? "col-span-1" : "col-span-2"}>
+                              <div className="col-span-1">
                                 <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
                                   split.situacao === "Pago" ? "bg-green-100 text-green-800" :
                                   split.situacao === "Liberado" ? "bg-blue-100 text-blue-800" :
@@ -368,32 +371,35 @@ export function AtualizarDadosBancariosContent() {
                                 <span className="font-medium">{split.valor}</span>
                               </div>
                               
-                              {split.tipo === "TED" && (
-                                <>
-                                  <div className="col-span-1">
-                                    <span className="text-gray-600">{split.banco}</span>
-                                  </div>
-                                  <div className="col-span-1">
-                                    <span className="text-gray-600">{split.agencia}</span>
-                                  </div>
-                                  <div className="col-span-1">
-                                    <span className="text-gray-600">{split.conta}</span>
-                                  </div>
-                                  <div className="col-span-1">
-                                    <span className="text-gray-600">{split.dig}</span>
-                                  </div>
-                                </>
-                              )}
+                              <div className="col-span-1">
+                                <span className="text-gray-600">{split.banco || "-"}</span>
+                              </div>
                               
-                              <div className={split.tipo === "TED" ? "col-span-2" : "col-span-4"}>
+                              <div className="col-span-1">
+                                <span className="text-gray-600">{split.agencia || "-"}</span>
+                              </div>
+                              
+                              <div className="col-span-1">
+                                <span className="text-gray-600">{split.conta || "-"}</span>
+                              </div>
+                              
+                              <div className="col-span-1">
+                                <span className="text-gray-600">{split.dig || "-"}</span>
+                              </div>
+                              
+                              <div className="col-span-2">
                                 <span className="text-gray-600">{split.favorecido}</span>
                               </div>
                               
-                              {split.tipo === "BOLETO" && split.codBarras && (
-                                <div className="col-span-2">
-                                  <span className="text-xs font-mono text-gray-600">{split.codBarras}</span>
-                                </div>
-                              )}
+                              <div className="col-span-1">
+                                {split.codBarras ? (
+                                  <span className="text-xs font-mono text-gray-600 truncate block" title={split.codBarras}>
+                                    {split.codBarras.substring(0, 15)}...
+                                  </span>
+                                ) : (
+                                  <span className="text-gray-400">-</span>
+                                )}
+                              </div>
                               
                               <div className="col-span-1 flex justify-end">
                                 {split.situacao === "Pendente pagamento" && (
