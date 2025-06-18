@@ -53,7 +53,10 @@ export function ConfiguracaoCallbacksContent() {
 
   return (
     <div className="flex-1 bg-gray-50">
-      <GlobalHeader title="Configuração de Callbacks" subtitle="Configure as URLs de callback para receber notificações automáticas" />
+      <GlobalHeader 
+        title="Configuração de Callbacks" 
+        subtitle="Configure as URLs de callback para receber notificações automáticas" 
+      />
 
       {/* Main Content */}
       <main className="p-6">
