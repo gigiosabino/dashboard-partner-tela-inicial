@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -41,6 +40,15 @@ const integracoes = [
   { value: "integracao-1", label: "Integração Principal" },
   { value: "integracao-2", label: "Integração Secundária" },
   { value: "integracao-3", label: "Integração de Teste" }
+];
+
+const metodosAutenticacao = [
+  { value: "bearer-token", label: "Bearer Token" },
+  { value: "api-key", label: "API Key" },
+  { value: "basic-authentication", label: "Basic Authentication" },
+  { value: "x-api-key", label: "X-API-Key" },
+  { value: "jwt", label: "JWT (JSON Web Token)" },
+  { value: "hmac", label: "HMAC (Hash-based Message Authentication Code)" }
 ];
 
 const eventos = [
@@ -204,12 +212,18 @@ export function ConfiguracaoCallbacksContent() {
 
                 <div className="space-y-2">
                   <Label htmlFor="autenticacao">Autenticação</Label>
-                  <Input
-                    id="autenticacao"
-                    placeholder="Bearer, API Key, etc."
-                    value={autenticacao}
-                    onChange={(e) => setAutenticacao(e.target.value)}
-                  />
+                  <Select value={autenticacao} onValueChange={setAutenticacao}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o método de autenticação" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {metodosAutenticacao.map((metodo) => (
+                        <SelectItem key={metodo.value} value={metodo.value}>
+                          {metodo.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
