@@ -25,7 +25,7 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
   };
 
   const handleOpenDocs = () => {
-    window.open("https://docs.exemplo.com", "_blank");
+    window.open("https://bmpdocs.moneyp.com.br/caas/sobre-o-caas", "_blank");
   };
 
   return (

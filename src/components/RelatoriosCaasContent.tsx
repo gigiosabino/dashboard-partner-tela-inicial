@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Search, Filter, Pencil, Trash2, Calendar, Download, Play, Clock, FileText, Info } from "lucide-react";
+import { Search, Filter, Pencil, Trash2, Calendar, Download, Play, Clock, FileText, Info, Save } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -185,6 +185,10 @@ export function RelatoriosCaasContent() {
   const [agendamentoPadrao, setAgendamentoPadrao] = useState("");
   const [horarioCustomizado, setHorarioCustomizado] = useState("");
   const [diaCustomizado, setDiaCustomizado] = useState("");
+  const [isProgramarDialogOpen, setIsProgramarDialogOpen] = useState(false);
+  const [isSalvarPersonalizadoOpen, setIsSalvarPersonalizadoOpen] = useState(false);
+  const [nomeRelatorioPersonalizado, setNomeRelatorioPersonalizado] = useState("");
+  const [descricaoRelatorioPersonalizado, setDescricaoRelatorioPersonalizado] = useState("");
 
   const filteredCampos = camposDisponiveis.filter(campo =>
     campo.nome.toLowerCase().includes(searchCampos.toLowerCase()) ||
@@ -255,6 +259,49 @@ export function RelatoriosCaasContent() {
     alert(`Download do relatório "${relatorio.nome}" iniciado!`);
   };
 
+  const handleSalvarRelatorioPersonalizado = () => {
+    if (camposSelecionados.length === 0) {
+      alert("Selecione pelo menos um campo para o relatório!");
+      return;
+    }
+    if (!nomeRelatorioPersonalizado.trim()) {
+      alert("Digite um nome para o relatório!");
+      return;
+    }
+    
+    console.log("Salvando relatório personalizado:", {
+      nome: nomeRelatorioPersonalizado,
+      descricao: descricaoRelatorioPersonalizado,
+      campos: camposSelecionados
+    });
+    
+    // Reset form
+    setNomeRelatorioPersonalizado("");
+    setDescricaoRelatorioPersonalizado("");
+    setCamposSelecionados([]);
+    setIsSalvarPersonalizadoOpen(false);
+    
+    alert("Relatório personalizado salvo com sucesso!");
+  };
+
+  const handleProgramarRelatorio = () => {
+    if (!diaCustomizado || !horarioCustomizado) {
+      alert("Selecione o dia da semana e o horário!");
+      return;
+    }
+    
+    console.log("Programando relatório padrão:", {
+      dia: diaCustomizado,
+      horario: horarioCustomizado
+    });
+    
+    setIsProgramarDialogOpen(false);
+    setDiaCustomizado("");
+    setHorarioCustomizado("");
+    
+    alert("Relatório programado! Será gerado automaticamente conforme configurado.");
+  };
+
   return (
     <div className="flex-1 bg-gray-50">
       <GlobalHeader title="Relatórios CAAS" />
@@ -290,7 +337,7 @@ export function RelatoriosCaasContent() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Agendamento Automático</label>
+                    <label className="block text-sm font-medium mb-2">Agendamento automático</label>
                     <Select value={agendamentoPadrao} onValueChange={setAgendamentoPadrao}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione o agendamento" />
@@ -300,6 +347,8 @@ export function RelatoriosCaasContent() {
                         <SelectItem value="diario">Diário às 08:00</SelectItem>
                         <SelectItem value="semanal">Semanal - Segundas às 08:00</SelectItem>
                         <SelectItem value="mensal">Mensal - Dia 1 às 08:00</SelectItem>
+                        <SelectItem value="mensal_15">Mensal - Dia 15 às 08:00</SelectItem>
+                        <SelectItem value="personalizado">Personalizado</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -308,10 +357,54 @@ export function RelatoriosCaasContent() {
                       <Download className="w-4 h-4 mr-2" />
                       Gerar Relatório
                     </Button>
-                    <Button onClick={handleGerarRelatorioPadrao} variant="outline">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Programar
-                    </Button>
+                    <Dialog open={isProgramarDialogOpen} onOpenChange={setIsProgramarDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button variant="outline">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          Programar
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Programar Relatório Padrão</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4 py-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Dia da Semana</label>
+                            <Select value={diaCustomizado} onValueChange={setDiaCustomizado}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Selecione o dia" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="segunda">Segunda-feira</SelectItem>
+                                <SelectItem value="terca">Terça-feira</SelectItem>
+                                <SelectItem value="quarta">Quarta-feira</SelectItem>
+                                <SelectItem value="quinta">Quinta-feira</SelectItem>
+                                <SelectItem value="sexta">Sexta-feira</SelectItem>
+                                <SelectItem value="sabado">Sábado</SelectItem>
+                                <SelectItem value="domingo">Domingo</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-2">Horário</label>
+                            <Input 
+                              type="time"
+                              value={horarioCustomizado}
+                              onChange={(e) => setHorarioCustomizado(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-end space-x-2">
+                          <Button variant="outline" onClick={() => setIsProgramarDialogOpen(false)}>
+                            Cancelar
+                          </Button>
+                          <Button onClick={handleProgramarRelatorio} className="bg-blue-600 hover:bg-blue-700">
+                            Salvar
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </CardContent>
@@ -393,14 +486,58 @@ export function RelatoriosCaasContent() {
                     </div>
                     
                     <div className="mt-4">
-                      <Button 
-                        onClick={handleGerarPersonalizado}
-                        className="w-full bg-green-600 hover:bg-green-700"
-                        disabled={camposSelecionados.length === 0}
-                      >
-                        <Download className="w-4 h-4 mr-2" />
-                        Gerar Personalizado
-                      </Button>
+                      <Dialog open={isSalvarPersonalizadoOpen} onOpenChange={setIsSalvarPersonalizadoOpen}>
+                        <DialogTrigger asChild>
+                          <Button 
+                            className="w-full bg-green-600 hover:bg-green-700"
+                            disabled={camposSelecionados.length === 0}
+                          >
+                            <Save className="w-4 h-4 mr-2" />
+                            Salvar Relatório
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Salvar Relatório Personalizado</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4 py-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Nome do Relatório *</label>
+                              <Input 
+                                placeholder="Digite o nome do relatório"
+                                value={nomeRelatorioPersonalizado}
+                                onChange={(e) => setNomeRelatorioPersonalizado(e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-2">Descrição</label>
+                              <Textarea 
+                                placeholder="Descrição opcional do relatório"
+                                value={descricaoRelatorioPersonalizado}
+                                onChange={(e) => setDescricaoRelatorioPersonalizado(e.target.value)}
+                                rows={3}
+                              />
+                            </div>
+                            <div className="bg-gray-50 p-3 rounded">
+                              <p className="text-sm font-medium mb-1">Campos selecionados: {camposSelecionados.length}</p>
+                              <div className="text-xs text-gray-600 max-h-20 overflow-y-auto">
+                                {camposSelecionados.map(campoId => {
+                                  const campo = camposDisponiveis.find(c => c.id === campoId);
+                                  return campo?.nome;
+                                }).join(", ")}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-end space-x-2">
+                            <Button variant="outline" onClick={() => setIsSalvarPersonalizadoOpen(false)}>
+                              Cancelar
+                            </Button>
+                            <Button onClick={handleSalvarRelatorioPersonalizado} className="bg-green-600 hover:bg-green-700">
+                              Salvar
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </div>
                 </div>

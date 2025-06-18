@@ -22,7 +22,6 @@ import {
   MessageSquare,
   BarChart3,
   FileSpreadsheet,
-  BookOpen,
   ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -86,13 +85,6 @@ const menuItems = [
     items: [],
     url: "/relatorios-caas"
   },
-  {
-    title: "Docs",
-    icon: BookOpen,
-    items: [],
-    url: "https://bmpdocs.moneyp.com.br/caas/sobre-o-caas",
-    external: true
-  },
 ];
 
 export function AppSidebar() {
@@ -149,17 +141,10 @@ export function AppSidebar() {
                     ) : (
                       <SidebarMenuButton asChild className="text-white hover:bg-gray-700">
                         {item.url ? (
-                          item.external ? (
-                            <a href={item.url} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                              <item.icon className="w-4 h-4 flex-shrink-0" />
-                              <span className="whitespace-normal leading-tight break-words flex-1 min-w-0">{item.title}</span>
-                            </a>
-                          ) : (
-                            <Link to={item.url} className="flex items-center">
-                              <item.icon className="w-4 h-4 flex-shrink-0" />
-                              <span className="whitespace-normal leading-tight break-words flex-1 min-w-0">{item.title}</span>
-                            </Link>
-                          )
+                          <Link to={item.url} className="flex items-center">
+                            <item.icon className="w-4 h-4 flex-shrink-0" />
+                            <span className="whitespace-normal leading-tight break-words flex-1 min-w-0">{item.title}</span>
+                          </Link>
                         ) : (
                           <div className="flex items-center">
                             <item.icon className="w-4 h-4 flex-shrink-0" />
