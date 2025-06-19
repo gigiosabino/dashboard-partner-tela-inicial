@@ -19,6 +19,9 @@ import FormalizacaoGarantias from "./pages/FormalizacaoGarantias";
 import FormalizacaoDetalhes from "./pages/FormalizacaoDetalhes";
 import Mensageria from "./pages/Mensageria";
 import CancelarProposta from "./pages/CancelarProposta";
+import ReenviarLinkAssinatura from "./pages/ReenviarLinkAssinatura";
+import ConsultarRegistroBoleto from "./pages/ConsultarRegistroBoleto";
+import ConsultaProposta from "./pages/ConsultaProposta";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +47,9 @@ const App = () => (
           <Route path="/formalizacao-garantias/:numero" element={<FormalizacaoDetalhes />} />
           <Route path="/mensageria" element={<Mensageria />} />
           <Route path="/cancelar-proposta" element={<CancelarProposta />} />
+          <Route path="/reenviar-link-assinatura" element={<ReenviarLinkAssinatura />} />
+          <Route path="/consultar-registro-boleto" element={<ConsultarRegistroBoleto />} />
+          <Route path="/consulta-proposta" element={<ConsultaProposta />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
