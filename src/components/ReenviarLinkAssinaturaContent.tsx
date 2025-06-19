@@ -4,19 +4,55 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export function ReenviarLinkAssinaturaContent() {
   const [numeroProposta, setNumeroProposta] = useState("");
-  const navigate = useNavigate();
+  const [reenviarModalOpen, setReenviarModalOpen] = useState(false);
+  const [isReenviando, setIsReenviando] = useState(false);
+  const { toast } = useToast();
 
   const handleSearch = () => {
     if (numeroProposta.trim()) {
-      // Simular busca da proposta e reenvio do link
       console.log("Reenviando link de assinatura para proposta:", numeroProposta);
-      // Aqui seria implementada a lógica de busca e reenvio
-      // Por enquanto, vamos apenas mostrar uma mensagem
-      alert(`Link de assinatura reenviado para a proposta ${numeroProposta}`);
+      // Simular busca da proposta e abrir modal
+      setReenviarModalOpen(true);
+    }
+  };
+
+  const handleReenviarVia = async (metodo: string) => {
+    setIsReenviando(true);
+    
+    try {
+      // Simular chamada à API
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      toast({
+        title: "Sucesso",
+        description: `Link de assinatura reenviado via ${metodo} com sucesso`,
+        variant: "default",
+      });
+      
+      setReenviarModalOpen(false);
+      setNumeroProposta("");
+      
+    } catch (error) {
+      console.error('Erro ao reenviar link:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao reenviar link de assinatura",
+        variant: "destructive",
+      });
+    } finally {
+      setIsReenviando(false);
     }
   };
 
@@ -48,6 +84,53 @@ export function ReenviarLinkAssinaturaContent() {
           </p>
         </CardContent>
       </Card>
+
+      {/* Modal para reenviar link */}
+      <Dialog open={reenviarModalOpen} onOpenChange={setReenviarModalOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Notificar Assinante</DialogTitle>
+            <DialogDescription>
+              Escolha como deseja reenviar o link de assinatura para TESTE 2
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex gap-4 py-6">
+            <Button 
+              variant="outline"
+              onClick={() => handleReenviarVia('Email')}
+              disabled={isReenviando}
+              className="flex-1 justify-center border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-3 h-12"
+            >
+              {isReenviando ? 'ENVIANDO...' : 'EMAIL'}
+            </Button>
+            <Button 
+              variant="outline"
+              onClick={() => handleReenviarVia('WhatsApp')}
+              disabled={isReenviando}
+              className="flex-1 justify-center border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-3 h-12"
+            >
+              {isReenviando ? 'ENVIANDO...' : 'WHATSAPP'}
+            </Button>
+            <Button 
+              variant="outline"
+              onClick={() => handleReenviarVia('SMS')}
+              disabled={isReenviando}
+              className="flex-1 justify-center border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-semibold py-3 h-12"
+            >
+              {isReenviando ? 'ENVIANDO...' : 'SMS'}
+            </Button>
+          </div>
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setReenviarModalOpen(false)}
+              disabled={isReenviando}
+            >
+              CANCELAR
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
