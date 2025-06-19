@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 interface ChartsSectionProps {
   selectedPeriod: string;
@@ -48,9 +49,24 @@ const renderCustomizedLabel = ({
 };
 
 export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
+  const navigate = useNavigate();
+
   const getDataByPeriod = () => {
     console.log("Período selecionado:", selectedPeriod);
     return statusData;
+  };
+
+  const handleSliceClick = (data: any) => {
+    const statusMap: { [key: string]: string } = {
+      "Pagas": "paga",
+      "Cedidas": "cedida", 
+      "Pendente Pagamento": "pendente-pagamento"
+    };
+    
+    const status = statusMap[data.name];
+    if (status) {
+      navigate(`/propostas?status=${status}`);
+    }
   };
 
   const currentData = getDataByPeriod();
@@ -62,6 +78,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
         <CardTitle className="text-lg font-semibold text-gray-900">
           Monitoramento de propostas por status
         </CardTitle>
+        <p className="text-sm text-gray-500">Clique em uma fatia para filtrar as propostas</p>
       </CardHeader>
       <CardContent className="flex-1">
         <ResponsiveContainer width="100%" height="100%">
@@ -77,6 +94,8 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
               fill="#8884d8"
               dataKey="value"
               stroke="none"
+              onClick={handleSliceClick}
+              style={{ cursor: 'pointer' }}
             >
               {currentData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
@@ -95,10 +114,11 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
               verticalAlign="bottom" 
               height={36}
               formatter={(value: any, entry: any) => (
-                <span style={{ color: entry.color, fontWeight: 500 }}>
+                <span style={{ color: entry.color, fontWeight: 500, cursor: 'pointer' }}>
                   {value} ({entry.payload.value})
                 </span>
               )}
+              onClick={handleSliceClick}
             />
           </PieChart>
         </ResponsiveContainer>

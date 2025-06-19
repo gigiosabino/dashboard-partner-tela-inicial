@@ -1,8 +1,8 @@
 
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Eye, Filter, RefreshCw, Download } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Search, Filter, Calendar } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -11,183 +11,260 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
+import { GlobalHeader } from "@/components/GlobalHeader";
 
-const historicos = [
+const historicoCallbacks = [
   {
-    numeroPropsota: "004935629",
-    dataHora: "13/06/2025 15:29:15",
-    emitente: "João Silva Santos",
-    documento: "123.456.789-00",
-    situacao: "Aprovada",
-    notificado: "Sim",
+    id: 1,
+    numeroProposta: "056939510",
+    evento: "Aprovada",
+    dataEnvio: "05/06/2025 14:30:15",
+    situacao: "Enviado",
+    url: "https://api.parceiro.com/callback",
     tentativas: 1,
-    envio: "https://webhook.site:443/b33b59bf-1ca6-4fcd-ad19-fca898847585?proposta=482a8814-0dab-4b1b-9966-19461a94011d&situacao=2&identificador=b17277a7-4b39-4ea3-890a-658f3129dd9b",
-    retorno: 'DtProcessado: 2025-06-13 15:29:15 - Tentativa 1: StatusCode: NotFound | Content: {"success":false,"error":{"message":"Token \\"b33b59bf-1ca6-4fcd-ad19-fca898847585\\" not found","id":""}} ||'
+    ultimaResposta: "200 - OK"
   },
   {
-    numeroPropsota: "004935630",
-    dataHora: "12/06/2025 10:15:30",
-    emitente: "Ana Carolina Lima",
-    documento: "987.654.321-00",
-    situacao: "Finalizada",
-    notificado: "Não",
+    id: 2,
+    numeroProposta: "056441261",
+    evento: "Em Análise",
+    dataEnvio: "05/06/2025 13:25:42",
+    situacao: "Erro",
+    url: "https://api.parceiro.com/callback",
     tentativas: 3,
-    envio: "https://webhook.site:443/b33b59bf-1ca6-4fcd-ad19-fca898847585?proposta=123a8814-0dab-4b1b-9966-19461a94022b&situacao=5&identificador=c17277a7-4b39-4ea3-890a-658f3129ee8c",
-    retorno: 'DtProcessado: 2025-06-12 10:15:30 - Tentativa 3: StatusCode: Success | Content: {"success":true,"message":"Callback processed successfully"} ||'
+    ultimaResposta: "500 - Internal Server Error"
+  },
+  {
+    id: 3,
+    numeroProposta: "056411663",
+    evento: "Paga",
+    dataEnvio: "04/06/2025 16:45:30",
+    situacao: "Enviado",
+    url: "https://api.parceiro.com/callback",
+    tentativas: 1,
+    ultimaResposta: "200 - OK"
+  },
+  {
+    id: 4,
+    numeroProposta: "056386138",
+    evento: "Cedida",
+    dataEnvio: "04/06/2025 10:15:22",
+    situacao: "Pendente",
+    url: "https://api.parceiro.com/callback",
+    tentativas: 2,
+    ultimaResposta: "Timeout"
   }
 ];
 
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "Aprovada":
-      return "bg-green-500";
-    case "Finalizada":
-      return "bg-blue-500";
-    case "Cancelada":
-      return "bg-red-500";
+const getSituacaoVariant = (situacao: string) => {
+  switch (situacao) {
+    case "Enviado":
+      return "outline";
+    case "Erro":
+      return "destructive";
+    case "Pendente":
+      return "secondary";
     default:
-      return "bg-gray-500";
+      return "secondary";
   }
 };
 
 export function HistoricoEnvioContent() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [situacaoFilter, setSituacaoFilter] = useState("");
+  const [dataInicial, setDataInicial] = useState("");
+  const [dataFinal, setDataFinal] = useState("");
 
-  const handleRefresh = () => {
-    console.log("Atualizando histórico...");
+  const filteredHistorico = historicoCallbacks.filter(callback => {
+    const matchesSearch = 
+      callback.numeroProposta.includes(searchTerm) ||
+      callback.evento.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesSituacao = situacaoFilter === "" || callback.situacao === situacaoFilter;
+    
+    // Filtro de data (simplificado para o exemplo)
+    const matchesData = true; // Implementar filtro de data real conforme necessário
+    
+    return matchesSearch && matchesSituacao && matchesData;
+  });
+
+  const handleLimparFiltros = () => {
+    setSituacaoFilter("");
+    setDataInicial("");
+    setDataFinal("");
+    setSearchTerm("");
   };
 
   return (
     <div className="flex-1 bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <SidebarTrigger />
-            <div className="text-sm text-gray-600">
-              <span>Histórico de Envio</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <GlobalHeader 
+        title="Histórico de Envio de Callbacks" 
+        subtitle="Acompanhe todos os callbacks enviados para sua integração" 
+      />
 
-      {/* Main Content */}
       <main className="p-6">
-        {/* Top Section - Action Buttons */}
+        {/* Filtros */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
-              <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
-                <Filter className="w-4 h-4 mr-2" />
-                Filtros
-              </Button>
-              
-              <Button variant="outline" onClick={handleRefresh} className="border-gray-300 hover:bg-gray-50">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Atualizar
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                    <Filter className="w-4 h-4 mr-2" />
+                    Filtros Avançados
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-96 bg-white p-4">
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Situação do Callback</label>
+                      <Select value={situacaoFilter} onValueChange={setSituacaoFilter}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione a situação" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="">Todas</SelectItem>
+                          <SelectItem value="Enviado">Enviado</SelectItem>
+                          <SelectItem value="Erro">Erro</SelectItem>
+                          <SelectItem value="Pendente">Pendente</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-              <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
-                <Download className="w-4 h-4 mr-2" />
-                Exportar
-              </Button>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Data Inicial</label>
+                        <Input
+                          type="date"
+                          value={dataInicial}
+                          onChange={(e) => setDataInicial(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Data Final</label>
+                        <Input
+                          type="date"
+                          value={dataFinal}
+                          onChange={(e) => setDataFinal(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-end space-x-2 pt-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={handleLimparFiltros}
+                      >
+                        Limpar
+                      </Button>
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                        Aplicar Filtros
+                      </Button>
+                    </div>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
+              <span className="text-sm text-gray-600">
+                {filteredHistorico.length} callback(s) encontrado(s)
+              </span>
             </div>
 
-            {/* Campo de busca */}
             <div className="relative w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input 
-                placeholder="Pesquisar" 
+                placeholder="Buscar por número da proposta ou evento" 
                 className="pl-10 border-gray-300"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
+
+          {/* Filtros Rápidos */}
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-600">Filtros rápidos:</span>
+            <Button
+              variant={situacaoFilter === "Enviado" ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSituacaoFilter(situacaoFilter === "Enviado" ? "" : "Enviado")}
+            >
+              Enviados
+            </Button>
+            <Button
+              variant={situacaoFilter === "Erro" ? "destructive" : "outline"}
+              size="sm"
+              onClick={() => setSituacaoFilter(situacaoFilter === "Erro" ? "" : "Erro")}
+            >
+              Com Erro
+            </Button>
+            <Button
+              variant={situacaoFilter === "Pendente" ? "secondary" : "outline"}
+              size="sm"
+              onClick={() => setSituacaoFilter(situacaoFilter === "Pendente" ? "" : "Pendente")}
+            >
+              Pendentes
+            </Button>
+          </div>
         </div>
 
-        {/* Tabela */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        {/* Tabela de Histórico */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead className="font-semibold text-gray-700">Número da Proposta</TableHead>
-                <TableHead className="font-semibold text-gray-700">Data e Hora de Envio</TableHead>
-                <TableHead className="font-semibold text-gray-700">Emitente</TableHead>
-                <TableHead className="font-semibold text-gray-700">Documento Federal</TableHead>
-                <TableHead className="font-semibold text-gray-700">Situação</TableHead>
-                <TableHead className="font-semibold text-gray-700">Notificado?</TableHead>
-                <TableHead className="font-semibold text-gray-700">Nº Tentativas</TableHead>
-                <TableHead className="font-semibold text-gray-700">Envio</TableHead>
-                <TableHead className="font-semibold text-gray-700">Retorno</TableHead>
+              <TableRow>
+                <TableHead>Número Proposta</TableHead>
+                <TableHead>Evento</TableHead>
+                <TableHead>Data/Hora Envio</TableHead>
+                <TableHead>Situação</TableHead>
+                <TableHead>URL Destino</TableHead>
+                <TableHead>Tentativas</TableHead>
+                <TableHead>Última Resposta</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {historicos.map((historico, index) => (
-                <TableRow key={index} className="hover:bg-gray-50">
-                  <TableCell className="font-medium">#{historico.numeroPropsota}</TableCell>
-                  <TableCell>{historico.dataHora}</TableCell>
-                  <TableCell>{historico.emitente}</TableCell>
-                  <TableCell>{historico.documento}</TableCell>
+              {filteredHistorico.map((callback) => (
+                <TableRow key={callback.id} className="hover:bg-gray-50">
+                  <TableCell className="font-medium text-blue-600">#{callback.numeroProposta}</TableCell>
                   <TableCell>
-                    <div className="flex items-center space-x-2">
-                      <div className={`w-3 h-3 rounded-full ${getStatusColor(historico.situacao)}`}></div>
-                      <span className="text-sm">{historico.situacao}</span>
-                    </div>
+                    <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                      {callback.evento}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-sm">{callback.dataEnvio}</TableCell>
+                  <TableCell>
+                    <Badge variant={getSituacaoVariant(callback.situacao)}>
+                      {callback.situacao}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-sm text-gray-600 max-w-48 truncate" title={callback.url}>
+                    {callback.url}
                   </TableCell>
                   <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      historico.notificado === "Sim" 
-                        ? "bg-green-100 text-green-800" 
-                        : "bg-red-100 text-red-800"
-                    }`}>
-                      {historico.notificado}
+                    <span className={`font-medium ${callback.tentativas > 1 ? 'text-orange-600' : 'text-green-600'}`}>
+                      {callback.tentativas}
                     </span>
                   </TableCell>
-                  <TableCell>{historico.tentativas}</TableCell>
-                  <TableCell>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="border-blue-600 text-blue-600 hover:bg-blue-50">
-                          <Eye className="w-4 h-4 mr-1" />
-                          Envio
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl">
-                        <DialogHeader>
-                          <DialogTitle>Detalhes do Envio</DialogTitle>
-                        </DialogHeader>
-                        <div className="p-4">
-                          <p className="text-sm break-all">{historico.envio}</p>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </TableCell>
-                  <TableCell>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="border-green-600 text-green-600 hover:bg-green-50">
-                          <Eye className="w-4 h-4 mr-1" />
-                          Retorno
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl">
-                        <DialogHeader>
-                          <DialogTitle>Detalhes do Retorno</DialogTitle>
-                        </DialogHeader>
-                        <div className="p-4">
-                          <p className="text-sm break-all">{historico.retorno}</p>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                  <TableCell className="text-sm">
+                    <span className={`${
+                      callback.ultimaResposta.startsWith('200') ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {callback.ultimaResposta}
+                    </span>
                   </TableCell>
                 </TableRow>
               ))}
