@@ -96,24 +96,24 @@ const menuItems = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="border-r border-gray-200">
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+    <Sidebar className="border-r border-slate-200">
+      <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-slate-900 to-slate-800">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-lg">
             <span className="text-white font-bold text-sm">BMP</span>
           </div>
-          <span className="font-semibold text-gray-900">BMP</span>
+          <span className="font-semibold text-white">BMP</span>
         </div>
-        <SidebarTrigger className="lg:hidden" />
+        <SidebarTrigger className="lg:hidden text-white hover:bg-slate-700" />
       </div>
       
-      <SidebarContent className="bg-gray-800 text-white">
+      <SidebarContent className="bg-gradient-to-b from-slate-900 to-slate-800 text-white">
         <div className="p-4">
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild className="text-white hover:bg-gray-700 bg-blue-600">
+                  <SidebarMenuButton asChild className="text-white hover:bg-slate-700 bg-gradient-to-r from-emerald-600 to-teal-700 shadow-md">
                     <Link to="/">
                       <BarChart3 className="w-4 h-4" />
                       <span>Início</span>
@@ -125,7 +125,7 @@ export function AppSidebar() {
                     {item.items.length > 0 ? (
                       <Collapsible>
                         <CollapsibleTrigger asChild>
-                          <SidebarMenuButton className="text-white hover:bg-gray-700 w-full">
+                          <SidebarMenuButton className="text-slate-100 hover:bg-slate-700 hover:text-white w-full transition-all duration-200">
                             <item.icon className="w-4 h-4 flex-shrink-0" />
                             <span className="text-left break-words leading-tight whitespace-normal flex-1 min-w-0">{item.title}</span>
                             <ChevronRight className="ml-auto w-4 h-4 transition-transform group-data-[state=open]:rotate-90 flex-shrink-0" />
@@ -135,7 +135,7 @@ export function AppSidebar() {
                           <SidebarMenuSub>
                             {item.items.map((subItem) => (
                               <SidebarMenuSubItem key={subItem.title}>
-                                <SidebarMenuSubButton asChild className="text-white hover:text-white hover:bg-gray-700 text-sm">
+                                <SidebarMenuSubButton asChild className="text-slate-200 hover:text-white hover:bg-slate-600 text-sm transition-all duration-200">
                                   <Link to={subItem.url} className="block py-2 px-4 rounded">
                                     <span className="whitespace-normal leading-tight break-words min-w-0 flex-1">{subItem.title}</span>
                                   </Link>
@@ -146,7 +146,7 @@ export function AppSidebar() {
                         </CollapsibleContent>
                       </Collapsible>
                     ) : (
-                      <SidebarMenuButton asChild className="text-white hover:bg-gray-700">
+                      <SidebarMenuButton asChild className="text-slate-100 hover:bg-slate-700 hover:text-white transition-all duration-200">
                         {item.url ? (
                           <Link to={item.url} className="flex items-center">
                             <item.icon className="w-4 h-4 flex-shrink-0" />

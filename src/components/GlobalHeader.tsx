@@ -29,27 +29,27 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-6 py-4 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <SidebarTrigger />
+          <SidebarTrigger className="text-slate-600 hover:text-slate-900 hover:bg-slate-200" />
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
-            {subtitle && <p className="text-sm text-gray-600">{subtitle}</p>}
+            <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
+            {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
           </div>
         </div>
         
         <div className="flex items-center space-x-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input 
               placeholder="Search" 
-              className="pl-10 w-64"
+              className="pl-10 w-64 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
             />
           </div>
           
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <Clock className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-sm text-slate-600 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
+            <Clock className="w-4 h-4 text-emerald-600" />
             <span>59:51</span>
           </div>
 
@@ -57,7 +57,7 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
             variant="outline" 
             size="sm"
             onClick={handleOpenDocs}
-            className="bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 hover:text-blue-700 hover:border-blue-300"
+            className="bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border-emerald-200 hover:from-emerald-100 hover:to-teal-100 hover:text-emerald-800 hover:border-emerald-300 shadow-sm"
           >
             <ExternalLink className="w-4 h-4 mr-2" />
             Docs
@@ -65,17 +65,17 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center space-x-2">
-                <User className="w-4 h-4 text-gray-600" />
+              <Button variant="ghost" className="flex items-center space-x-2 text-slate-700 hover:text-slate-900 hover:bg-slate-200">
+                <User className="w-4 h-4" />
                 <span className="text-sm font-medium">PERFIL</span>
-                <ChevronDown className="w-4 h-4 text-gray-600" />
+                <ChevronDown className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 bg-white">
-              <DropdownMenuItem onClick={handleAlterarSenha}>
+            <DropdownMenuContent align="end" className="w-48 bg-white border-slate-200 shadow-lg">
+              <DropdownMenuItem onClick={handleAlterarSenha} className="text-slate-700 hover:bg-slate-50">
                 Alterar senha
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleAlterarEmpresa}>
+              <DropdownMenuItem onClick={handleAlterarEmpresa} className="text-slate-700 hover:bg-slate-50">
                 Alterar empresa
               </DropdownMenuItem>
             </DropdownMenuContent>

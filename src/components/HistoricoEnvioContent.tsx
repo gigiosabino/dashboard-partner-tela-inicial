@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -137,7 +138,7 @@ export function HistoricoEnvioContent() {
   };
 
   return (
-    <div className="flex-1 bg-gray-50">
+    <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
       <GlobalHeader 
         title="Histórico de Envio de Callbacks" 
         subtitle="Acompanhe todos os callbacks enviados para sua integração" 
@@ -145,43 +146,46 @@ export function HistoricoEnvioContent() {
 
       <main className="p-6">
         {/* Filtros */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                  <Button variant="outline" className="border-slate-300 hover:bg-slate-50 text-slate-700 shadow-sm">
                     <Filter className="w-4 h-4 mr-2" />
                     Filtros
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-96 bg-white p-4">
+                <DropdownMenuContent align="start" className="w-96 bg-white p-4 border-slate-200 shadow-lg">
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Data Inicial</label>
+                        <label className="text-sm font-medium mb-2 block text-slate-700">Data Inicial</label>
                         <Input
                           type="date"
                           value={dataInicial}
                           onChange={(e) => setDataInicial(e.target.value)}
+                          className="border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Data Final</label>
+                        <label className="text-sm font-medium mb-2 block text-slate-700">Data Final</label>
                         <Input
                           type="date"
                           value={dataFinal}
                           onChange={(e) => setDataFinal(e.target.value)}
+                          className="border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
                         />
                       </div>
                     </div>
                     
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Número da Proposta</label>
+                      <label className="text-sm font-medium mb-2 block text-slate-700">Número da Proposta</label>
                       <Input
                         placeholder="Digite o número da proposta"
                         value={numeroPropostaFilter}
                         onChange={(e) => setNumeroPropostaFilter(e.target.value)}
+                        className="border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
                       />
                     </div>
                     
@@ -190,10 +194,11 @@ export function HistoricoEnvioContent() {
                         variant="outline" 
                         size="sm"
                         onClick={handleLimparFiltros}
+                        className="border-slate-300 text-slate-600 hover:bg-slate-50"
                       >
                         Limpar
                       </Button>
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                      <Button size="sm" className="bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white shadow-md">
                         Aplicar Filtros
                       </Button>
                     </div>
@@ -203,28 +208,28 @@ export function HistoricoEnvioContent() {
 
               <div className="w-48">
                 <Select value={tipoCallback} onValueChange={setTipoCallback}>
-                  <SelectTrigger className="border-gray-300 hover:bg-gray-50">
+                  <SelectTrigger className="border-slate-300 hover:bg-slate-50 text-slate-700 shadow-sm">
                     <SelectValue placeholder="Tipo de callback" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="proposta">Proposta</SelectItem>
-                    <SelectItem value="fgts">FGTS</SelectItem>
-                    <SelectItem value="split">Split</SelectItem>
-                    <SelectItem value="agenda">Agenda recebíveis</SelectItem>
+                  <SelectContent className="border-slate-200 bg-white shadow-lg">
+                    <SelectItem value="proposta" className="text-slate-700 hover:bg-slate-50">Proposta</SelectItem>
+                    <SelectItem value="fgts" className="text-slate-700 hover:bg-slate-50">FGTS</SelectItem>
+                    <SelectItem value="split" className="text-slate-700 hover:bg-slate-50">Split</SelectItem>
+                    <SelectItem value="agenda" className="text-slate-700 hover:bg-slate-50">Agenda recebíveis</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-slate-600 bg-slate-100 px-3 py-2 rounded-lg border border-slate-200">
                 {filteredHistorico.length} callback(s) encontrado(s)
               </span>
             </div>
 
             <div className="relative w-80">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
               <Input 
                 placeholder="Buscar por número da proposta ou evento" 
-                className="pl-10 border-gray-300"
+                className="pl-10 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -233,54 +238,60 @@ export function HistoricoEnvioContent() {
         </div>
 
         {/* Tabela de Histórico */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Número Proposta</TableHead>
-                <TableHead>Evento</TableHead>
-                <TableHead>Data e Hora de Envio</TableHead>
-                <TableHead>Situação</TableHead>
-                <TableHead>Tentativas</TableHead>
-                <TableHead>Envio</TableHead>
-                <TableHead>Retorno</TableHead>
+              <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+                <TableHead className="text-slate-700 font-semibold">Número Proposta</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Evento</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Data e Hora de Envio</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Situação</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Tentativas</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Envio</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Retorno</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredHistorico.map((callback) => (
-                <TableRow key={callback.id} className="hover:bg-gray-50">
-                  <TableCell className="font-medium text-blue-600">#{callback.numeroProposta}</TableCell>
+                <TableRow key={callback.id} className="hover:bg-slate-50 border-b border-slate-100">
+                  <TableCell className="font-medium text-emerald-700">#{callback.numeroProposta}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="bg-blue-50 text-blue-700">
+                    <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
                       {callback.evento}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-sm">{callback.dataEnvio}</TableCell>
+                  <TableCell className="text-sm text-slate-600">{callback.dataEnvio}</TableCell>
                   <TableCell>
-                    <Badge variant={getSituacaoVariant(callback.situacao)}>
+                    <Badge variant={getSituacaoVariant(callback.situacao)} className={
+                      callback.situacao === "Sucesso" 
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                        : callback.situacao === "Erro"
+                        ? "bg-red-50 text-red-700 border-red-200"
+                        : ""
+                    }>
                       {callback.situacao}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <span className={`font-medium ${callback.tentativas > 1 ? 'text-orange-600' : 'text-green-600'}`}>
+                    <span className={`font-medium ${callback.tentativas > 1 ? 'text-amber-600' : 'text-emerald-600'}`}>
                       {callback.tentativas}
                     </span>
                   </TableCell>
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm">
                           <Eye className="w-4 h-4 mr-1" />
                           Envio
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="max-w-2xl">
+                      <DialogContent className="max-w-2xl border-slate-200 shadow-xl">
                         <DialogHeader>
-                          <DialogTitle>Requisição de Envio - Proposta #{callback.numeroProposta}</DialogTitle>
+                          <DialogTitle className="text-slate-900">Requisição de Envio - Proposta #{callback.numeroProposta}</DialogTitle>
                         </DialogHeader>
                         <div className="mt-4">
-                          <label className="text-sm font-medium text-gray-700 block mb-2">URL de Envio:</label>
-                          <div className="bg-gray-50 p-3 rounded border text-sm break-all">
+                          <label className="text-sm font-medium text-slate-700 block mb-2">URL de Envio:</label>
+                          <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-sm break-all text-slate-700">
                             {getCallbackExample(tipoCallback).envio}
                           </div>
                         </div>
@@ -290,18 +301,18 @@ export function HistoricoEnvioContent() {
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm">
                           <Eye className="w-4 h-4 mr-1" />
                           Retorno
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="max-w-2xl">
+                      <DialogContent className="max-w-2xl border-slate-200 shadow-xl">
                         <DialogHeader>
-                          <DialogTitle>Retorno da Requisição - Proposta #{callback.numeroProposta}</DialogTitle>
+                          <DialogTitle className="text-slate-900">Retorno da Requisição - Proposta #{callback.numeroProposta}</DialogTitle>
                         </DialogHeader>
                         <div className="mt-4">
-                          <label className="text-sm font-medium text-gray-700 block mb-2">Resposta do Callback:</label>
-                          <div className="bg-gray-50 p-3 rounded border text-sm">
+                          <label className="text-sm font-medium text-slate-700 block mb-2">Resposta do Callback:</label>
+                          <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-sm text-slate-700">
                             {getCallbackExample(tipoCallback).retorno}
                           </div>
                         </div>
