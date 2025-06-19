@@ -69,6 +69,14 @@ const menuItems = [
     ]
   },
   {
+    title: "Relatórios",
+    icon: BarChart3,
+    items: [
+      { title: "Relatórios de Serviços Integrados", url: "/relatorios-servicos" },
+      { title: "Relatórios CAAS", url: "/relatorios-caas" },
+    ]
+  },
+  {
     title: "Formalização de garantias",
     icon: Shield,
     items: [],
@@ -85,18 +93,6 @@ const menuItems = [
     icon: MessageSquare,
     items: [],
     url: "/mensageria"
-  },
-  {
-    title: "Relatórios de Serviços Integrados",
-    icon: FileSpreadsheet,
-    items: [],
-    url: "/relatorios-servicos"
-  },
-  {
-    title: "Relatórios CAAS",
-    icon: BarChart3,
-    items: [],
-    url: "/relatorios-caas"
   },
 ];
 
