@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +32,8 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { GlobalHeader } from "@/components/GlobalHeader";
+import { NovoRelatorioModal } from "@/components/NovoRelatorioModal";
+import { useNavigate } from "react-router-dom";
 
 const relatoriosGerados = [
   {
@@ -71,6 +72,23 @@ const relatoriosPersonalizados = [
 export function RelatoriosCaasContent() {
   const [selectedReportType, setSelectedReportType] = useState("");
   const [dateRange, setDateRange] = useState("");
+  const [isNovoRelatorioModalOpen, setIsNovoRelatorioModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("gerador");
+  const navigate = useNavigate();
+
+  const handleNovoRelatorio = () => {
+    setIsNovoRelatorioModalOpen(true);
+  };
+
+  const handleSaveRelatorio = () => {
+    setIsNovoRelatorioModalOpen(false);
+    setActiveTab("personalizados");
+  };
+
+  const handleCancelRelatorio = () => {
+    setIsNovoRelatorioModalOpen(false);
+    navigate("/relatorios-caas");
+  };
 
   return (
     <div className="flex-1 bg-gray-50">
@@ -80,7 +98,7 @@ export function RelatoriosCaasContent() {
       />
 
       <main className="p-6">
-        <Tabs defaultValue="gerador" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-3 bg-white border border-gray-200 p-1 rounded-lg shadow-sm">
             <TabsTrigger 
               value="gerador" 
@@ -197,7 +215,10 @@ export function RelatoriosCaasContent() {
                       className="pl-10"
                     />
                   </div>
-                  <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Button 
+                    onClick={handleNovoRelatorio}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
                     <Settings className="w-4 h-4 mr-2" />
                     Novo Relatório
                   </Button>
@@ -301,6 +322,13 @@ export function RelatoriosCaasContent() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        <NovoRelatorioModal
+          open={isNovoRelatorioModalOpen}
+          onOpenChange={setIsNovoRelatorioModalOpen}
+          onSave={handleSaveRelatorio}
+          onCancel={handleCancelRelatorio}
+        />
       </main>
     </div>
   );
