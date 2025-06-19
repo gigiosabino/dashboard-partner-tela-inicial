@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +15,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -69,6 +75,25 @@ const historicoCallbacks = [
   }
 ];
 
+const callbackExamples = {
+  proposta: {
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?proposta=056939510&situacao=2&identificador=02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-05 14:30:45 - Tentativa 1: StatusCode: OK | Content: This URL has no default content configured. <a href=\"https://webhook.site/#!/edit/4b6c3112-5f26-477e-b679-d2a7e295dc0f\">Change response in Webhook.site</a>. ||;"
+  },
+  fgts: {
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?fgts=FG123456789&situacao=aprovado&valor=15000.00&identificador=fgts-02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-05 14:30:45 - Tentativa 1: StatusCode: OK | Content: FGTS processado com sucesso - Valor liberado: R$ 15.000,00 ||;"
+  },
+  split: {
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?split=SPL987654321&parcela=3&valor=5000.00&status=processado&identificador=split-02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-05 14:30:45 - Tentativa 1: StatusCode: OK | Content: Split processado - Parcela 3 de 12 - Valor: R$ 5.000,00 ||;"
+  },
+  agenda: {
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?agenda=AGR456789123&vencimento=2025-07-15&valor=8500.00&status=agendado&identificador=agenda-02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-05 14:30:45 - Tentativa 1: StatusCode: OK | Content: Agenda de recebíveis processada - Vencimento: 15/07/2025 - Valor: R$ 8.500,00 ||;"
+  }
+};
+
 const getSituacaoVariant = (situacao: string) => {
   switch (situacao) {
     case "Sucesso":
@@ -85,6 +110,7 @@ export function HistoricoEnvioContent() {
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
   const [numeroPropostaFilter, setNumeroPropostaFilter] = useState("");
+  const [tipoCallback, setTipoCallback] = useState("proposta");
 
   const filteredHistorico = historicoCallbacks.filter(callback => {
     const matchesSearch = 
@@ -104,6 +130,10 @@ export function HistoricoEnvioContent() {
     setDataFinal("");
     setSearchTerm("");
     setNumeroPropostaFilter("");
+  };
+
+  const getCallbackExample = (type: string) => {
+    return callbackExamples[type as keyof typeof callbackExamples] || callbackExamples.proposta;
   };
 
   return (
@@ -170,6 +200,20 @@ export function HistoricoEnvioContent() {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              <div className="w-48">
+                <Select value={tipoCallback} onValueChange={setTipoCallback}>
+                  <SelectTrigger className="border-gray-300 hover:bg-gray-50">
+                    <SelectValue placeholder="Tipo de callback" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="proposta">Proposta</SelectItem>
+                    <SelectItem value="fgts">FGTS</SelectItem>
+                    <SelectItem value="split">Split</SelectItem>
+                    <SelectItem value="agenda">Agenda recebíveis</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               
               <span className="text-sm text-gray-600">
                 {filteredHistorico.length} callback(s) encontrado(s)
@@ -237,7 +281,7 @@ export function HistoricoEnvioContent() {
                         <div className="mt-4">
                           <label className="text-sm font-medium text-gray-700 block mb-2">URL de Envio:</label>
                           <div className="bg-gray-50 p-3 rounded border text-sm break-all">
-                            {callback.envio}
+                            {getCallbackExample(tipoCallback).envio}
                           </div>
                         </div>
                       </DialogContent>
@@ -258,7 +302,7 @@ export function HistoricoEnvioContent() {
                         <div className="mt-4">
                           <label className="text-sm font-medium text-gray-700 block mb-2">Resposta do Callback:</label>
                           <div className="bg-gray-50 p-3 rounded border text-sm">
-                            {callback.retorno}
+                            {getCallbackExample(tipoCallback).retorno}
                           </div>
                         </div>
                       </DialogContent>

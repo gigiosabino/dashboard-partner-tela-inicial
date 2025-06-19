@@ -57,7 +57,10 @@ const menuItems = [
   {
     title: "Gestão de contratos",
     icon: FileCheck,
-    items: []
+    items: [
+      { title: "Visualizar contratos", url: "/visualizar-contratos" },
+      { title: "Boletos", url: "/boletos" },
+    ]
   },
   {
     title: "Ações rápidas",
