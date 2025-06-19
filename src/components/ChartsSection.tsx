@@ -73,60 +73,80 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   const total = currentData.reduce((sum, item) => sum + item.value, 0);
 
   return (
-    <Card className="h-full hover:shadow-lg transition-shadow duration-200">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900">
-          Monitoramento de propostas por status
+    <Card className="h-full hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-white to-gray-50 border-0 shadow-md">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl font-bold text-gray-800 text-center">
+          Monitoramento de Propostas por Status
         </CardTitle>
-        <p className="text-sm text-gray-500">Clique em uma fatia para filtrar as propostas</p>
+        <p className="text-sm text-gray-500 text-center">Clique em uma fatia para filtrar as propostas</p>
       </CardHeader>
-      <CardContent className="flex-1">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={currentData}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={renderCustomizedLabel}
-              outerRadius={130}
-              innerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
-              stroke="none"
-              onClick={handleSliceClick}
-              style={{ cursor: 'pointer' }}
-            >
-              {currentData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip 
-              formatter={(value: any, name: any) => [value, name]}
-              contentStyle={{
-                backgroundColor: 'white',
-                border: '1px solid #e5e7eb',
-                borderRadius: '12px',
-                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
-              }}
-            />
-            <Legend 
-              verticalAlign="bottom" 
-              height={36}
-              formatter={(value: any, entry: any) => (
-                <span style={{ color: entry.color, fontWeight: 500, cursor: 'pointer' }}>
-                  {value} ({entry.payload.value})
-                </span>
-              )}
-              onClick={handleSliceClick}
-            />
-          </PieChart>
-        </ResponsiveContainer>
+      <CardContent className="flex-1 flex flex-col items-center">
+        <div className="w-full h-80 mb-4">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={currentData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={renderCustomizedLabel}
+                outerRadius={120}
+                innerRadius={60}
+                fill="#8884d8"
+                dataKey="value"
+                stroke="white"
+                strokeWidth={3}
+                onClick={handleSliceClick}
+                style={{ cursor: 'pointer' }}
+              >
+                {currentData.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={entry.color}
+                    className="hover:opacity-80 transition-opacity duration-200"
+                  />
+                ))}
+              </Pie>
+              <Tooltip 
+                formatter={(value: any, name: any) => [value, name]}
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  fontSize: '14px'
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
         
-        {/* Resumo Total */}
-        <div className="mt-4 text-center">
-          <p className="text-3xl font-bold text-gray-900">{total}</p>
-          <p className="text-sm text-gray-600">Total de propostas</p>
+        {/* Custom Legend */}
+        <div className="flex flex-wrap justify-center gap-4 mb-4">
+          {currentData.map((entry, index) => (
+            <div 
+              key={`legend-${index}`}
+              onClick={() => handleSliceClick(entry)}
+              className="flex items-center space-x-2 cursor-pointer hover:scale-105 transition-transform duration-200 bg-white px-3 py-2 rounded-lg shadow-sm border"
+            >
+              <div 
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: entry.color }}
+              />
+              <span className="text-sm font-medium text-gray-700">
+                {entry.name}
+              </span>
+              <span className="text-sm font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded-full">
+                {entry.value}
+              </span>
+            </div>
+          ))}
+        </div>
+        
+        {/* Total Summary */}
+        <div className="text-center bg-white px-6 py-4 rounded-xl shadow-sm border w-full max-w-xs">
+          <p className="text-3xl font-bold text-gray-900 mb-1">{total.toLocaleString()}</p>
+          <p className="text-sm text-gray-600 font-medium">Total de Propostas</p>
         </div>
       </CardContent>
     </Card>
