@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Plus, Minus } from "lucide-react";
@@ -140,6 +139,11 @@ export function AtualizarDadosBancariosContent() {
       nomeBeneficiario
     });
     alert("Dados bancários atualizados com sucesso!");
+  };
+
+  const handleSalvarSplit = (splitId: string) => {
+    console.log("Salvando dados bancários do split:", splitId);
+    alert("Dados bancários do split atualizados com sucesso!");
   };
 
   const filteredBancos = bancos.filter(banco => 
@@ -405,6 +409,7 @@ export function AtualizarDadosBancariosContent() {
                                   <TableHead>Conta</TableHead>
                                   <TableHead>Favorecido</TableHead>
                                   <TableHead>Código de Barras</TableHead>
+                                  <TableHead>Ação</TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
@@ -434,6 +439,128 @@ export function AtualizarDadosBancariosContent() {
                                       ) : (
                                         "-"
                                       )}
+                                    </TableCell>
+                                    <TableCell>
+                                      <Dialog>
+                                        <DialogTrigger asChild>
+                                          <Button className="bg-blue-600 hover:bg-blue-700 text-white" size="sm">
+                                            Atualizar
+                                          </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="max-w-2xl">
+                                          <DialogHeader>
+                                            <DialogTitle>Atualizar Dados Bancários - Split {split.id}</DialogTitle>
+                                          </DialogHeader>
+                                          <div className="space-y-4 py-4">
+                                            <div className="space-y-2">
+                                              <label className="block text-sm font-medium">Banco:</label>
+                                              <div className="space-y-2">
+                                                <Input
+                                                  placeholder="Buscar banco por nome, número ou código"
+                                                  value={bancoSearch}
+                                                  onChange={(e) => setBancoSearch(e.target.value)}
+                                                />
+                                                <Select value={selectedBanco} onValueChange={setSelectedBanco}>
+                                                  <SelectTrigger>
+                                                    <SelectValue placeholder="Selecione o banco" />
+                                                  </SelectTrigger>
+                                                  <SelectContent>
+                                                    {filteredBancos.map((banco) => (
+                                                      <SelectItem key={banco.codigo} value={banco.codigo}>
+                                                        {banco.codigo} - {banco.nome}
+                                                      </SelectItem>
+                                                    ))}
+                                                  </SelectContent>
+                                                </Select>
+                                              </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                              <div>
+                                                <label className="block text-sm font-medium mb-2">Tipo de Conta:</label>
+                                                <Select value={tipoConta} onValueChange={setTipoConta}>
+                                                  <SelectTrigger>
+                                                    <SelectValue placeholder="Selecione o tipo" />
+                                                  </SelectTrigger>
+                                                  <SelectContent>
+                                                    <SelectItem value="corrente">Conta Corrente</SelectItem>
+                                                    <SelectItem value="poupanca">Conta Poupança</SelectItem>
+                                                    <SelectItem value="pagamento">Conta Pagamento</SelectItem>
+                                                  </SelectContent>
+                                                </Select>
+                                              </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                              <div>
+                                                <label className="block text-sm font-medium mb-2">Agência:</label>
+                                                <Input
+                                                  placeholder="Digite a agência"
+                                                  value={agencia}
+                                                  onChange={(e) => setAgencia(e.target.value)}
+                                                />
+                                              </div>
+                                              
+                                              <div>
+                                                <label className="block text-sm font-medium mb-2">Dígito da Agência:</label>
+                                                <Input
+                                                  placeholder="Digite o dígito"
+                                                  value={digitoAgencia}
+                                                  onChange={(e) => setDigitoAgencia(e.target.value)}
+                                                />
+                                              </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                              <div>
+                                                <label className="block text-sm font-medium mb-2">Conta Corrente:</label>
+                                                <Input
+                                                  placeholder="Digite a conta"
+                                                  value={contaCorrente}
+                                                  onChange={(e) => setContaCorrente(e.target.value)}
+                                                />
+                                              </div>
+                                              
+                                              <div>
+                                                <label className="block text-sm font-medium mb-2">Dígito da Conta:</label>
+                                                <Input
+                                                  placeholder="Digite o dígito"
+                                                  value={digitoConta}
+                                                  onChange={(e) => setDigitoConta(e.target.value)}
+                                                />
+                                              </div>
+                                            </div>
+
+                                            <div>
+                                              <label className="block text-sm font-medium mb-2">Documento Federal do Beneficiário:</label>
+                                              <Input
+                                                placeholder="Digite o documento"
+                                                value={documentoBeneficiario}
+                                                onChange={(e) => setDocumentoBeneficiario(e.target.value)}
+                                              />
+                                            </div>
+
+                                            <div>
+                                              <label className="block text-sm font-medium mb-2">Nome do Beneficiário:</label>
+                                              <Input
+                                                placeholder="Digite o nome do beneficiário"
+                                                value={nomeBeneficiario}
+                                                onChange={(e) => setNomeBeneficiario(e.target.value)}
+                                              />
+                                            </div>
+
+                                            <div className="flex justify-end space-x-2 pt-4">
+                                              <Button variant="outline">Cancelar</Button>
+                                              <Button 
+                                                onClick={() => handleSalvarSplit(split.id)}
+                                                className="bg-blue-600 hover:bg-blue-700"
+                                              >
+                                                Salvar
+                                              </Button>
+                                            </div>
+                                          </div>
+                                        </DialogContent>
+                                      </Dialog>
                                     </TableCell>
                                   </TableRow>
                                 ))}

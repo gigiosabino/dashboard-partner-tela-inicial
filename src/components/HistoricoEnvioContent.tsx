@@ -124,26 +124,11 @@ export function HistoricoEnvioContent() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
                     <Filter className="w-4 h-4 mr-2" />
-                    Filtros Avançados
+                    Filtrar por Período
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-96 bg-white p-4">
                   <div className="space-y-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Situação do Callback</label>
-                      <Select value={situacaoFilter} onValueChange={setSituacaoFilter}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione a situação" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="todas">Todas</SelectItem>
-                          <SelectItem value="Enviado">Enviado</SelectItem>
-                          <SelectItem value="Erro">Erro</SelectItem>
-                          <SelectItem value="Pendente">Pendente</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="text-sm font-medium mb-2 block">Data Inicial</label>
@@ -195,7 +180,7 @@ export function HistoricoEnvioContent() {
             </div>
           </div>
 
-          {/* Filtros Rápidos */}
+          {/* Filtros Rápidos por Situação */}
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-600">Filtros rápidos:</span>
             <Button
