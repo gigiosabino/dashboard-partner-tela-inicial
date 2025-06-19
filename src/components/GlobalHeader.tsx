@@ -29,13 +29,20 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
   };
 
   return (
-    <header className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 px-6 py-4 shadow-sm">
+    <header className="bg-gradient-to-r from-slate-50 to-blue-50 border-b border-slate-300 px-6 py-4 shadow-lg">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <SidebarTrigger className="text-slate-600 hover:text-slate-900 hover:bg-slate-200" />
-          <div>
-            <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
-            {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
+          <SidebarTrigger className="text-slate-700 hover:text-blue-700 hover:bg-blue-100" />
+          <div className="flex items-center space-x-3">
+            <img 
+              src="https://bmpteste.moneyp.com.br/styles/img/logo_bmp.png" 
+              alt="BMP Logo" 
+              className="h-8 w-auto"
+            />
+            <div className="border-l border-slate-300 pl-3">
+              <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
+              {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
+            </div>
           </div>
         </div>
         
@@ -44,12 +51,12 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input 
               placeholder="Search" 
-              className="pl-10 w-64 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
+              className="pl-10 w-64 border-slate-300 focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           
           <div className="flex items-center space-x-2 text-sm text-slate-600 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
-            <Clock className="w-4 h-4 text-emerald-600" />
+            <Clock className="w-4 h-4 text-blue-600" />
             <span>59:51</span>
           </div>
 
@@ -57,7 +64,7 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
             variant="outline" 
             size="sm"
             onClick={handleOpenDocs}
-            className="bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 border-emerald-200 hover:from-emerald-100 hover:to-teal-100 hover:text-emerald-800 hover:border-emerald-300 shadow-sm"
+            className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border-blue-200 hover:from-blue-100 hover:to-indigo-100 hover:text-blue-800 hover:border-blue-300 shadow-sm"
           >
             <ExternalLink className="w-4 h-4 mr-2" />
             Docs

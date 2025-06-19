@@ -96,24 +96,25 @@ const menuItems = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="border-r border-slate-200">
-      <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-gradient-to-r from-slate-900 to-slate-800">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-sm">BMP</span>
-          </div>
-          <span className="font-semibold text-white">BMP</span>
+    <Sidebar className="border-r border-slate-300">
+      <div className="flex items-center justify-between p-4 border-b border-slate-300 bg-gradient-to-r from-slate-800 to-blue-900">
+        <div className="flex items-center space-x-3">
+          <img 
+            src="https://bmpteste.moneyp.com.br/styles/img/logo_bmp.png" 
+            alt="BMP Logo" 
+            className="h-6 w-auto filter brightness-0 invert"
+          />
         </div>
         <SidebarTrigger className="lg:hidden text-white hover:bg-slate-700" />
       </div>
       
-      <SidebarContent className="bg-gradient-to-b from-slate-900 to-slate-800 text-white">
+      <SidebarContent className="bg-gradient-to-b from-slate-800 to-blue-900 text-white">
         <div className="p-4">
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton asChild className="text-white hover:bg-slate-700 bg-gradient-to-r from-emerald-600 to-teal-700 shadow-md">
+                  <SidebarMenuButton asChild className="text-white hover:bg-slate-700 bg-gradient-to-r from-blue-600 to-indigo-700 shadow-md">
                     <Link to="/">
                       <BarChart3 className="w-4 h-4" />
                       <span>Início</span>
