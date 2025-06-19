@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, Calendar } from "lucide-react";
+import { Search, Filter, Eye } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -17,12 +17,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useState } from "react";
 import { GlobalHeader } from "@/components/GlobalHeader";
 
@@ -32,51 +32,49 @@ const historicoCallbacks = [
     numeroProposta: "056939510",
     evento: "Aprovada",
     dataEnvio: "05/06/2025 14:30:15",
-    situacao: "Enviado",
-    url: "https://api.parceiro.com/callback",
+    situacao: "Sucesso",
     tentativas: 1,
-    ultimaResposta: "200 - OK"
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?proposta=056939510&situacao=2&identificador=02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-05 14:30:45 - Tentativa 1: StatusCode: OK | Content: This URL has no default content configured. <a href=\"https://webhook.site/#!/edit/4b6c3112-5f26-477e-b679-d2a7e295dc0f\">Change response in Webhook.site</a>. ||;"
   },
   {
     id: 2,
     numeroProposta: "056441261",
-    evento: "Em Análise",
+    evento: "Finalizada",
     dataEnvio: "05/06/2025 13:25:42",
     situacao: "Erro",
-    url: "https://api.parceiro.com/callback",
     tentativas: 3,
-    ultimaResposta: "500 - Internal Server Error"
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?proposta=056441261&situacao=4&identificador=02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-05 13:25:45 - Tentativa 3: StatusCode: 500 | Content: Internal Server Error ||;"
   },
   {
     id: 3,
     numeroProposta: "056411663",
     evento: "Paga",
     dataEnvio: "04/06/2025 16:45:30",
-    situacao: "Enviado",
-    url: "https://api.parceiro.com/callback",
+    situacao: "Sucesso",
     tentativas: 1,
-    ultimaResposta: "200 - OK"
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?proposta=056411663&situacao=8&identificador=02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-04 16:45:32 - Tentativa 1: StatusCode: OK | Content: This URL has no default content configured. <a href=\"https://webhook.site/#!/edit/4b6c3112-5f26-477e-b679-d2a7e295dc0f\">Change response in Webhook.site</a>. ||;"
   },
   {
     id: 4,
     numeroProposta: "056386138",
-    evento: "Cedida",
+    evento: "Liberada",
     dataEnvio: "04/06/2025 10:15:22",
-    situacao: "Pendente",
-    url: "https://api.parceiro.com/callback",
+    situacao: "Erro",
     tentativas: 2,
-    ultimaResposta: "Timeout"
+    envio: "https://webhook.site/4b6c3112-5f26-477e-b679-d2a7e295dc0f?proposta=056386138&situacao=6&identificador=02122717-6879-43d4-b07b-6225df9e820f",
+    retorno: "DtProcessado: 2025-06-04 10:15:25 - Tentativa 2: StatusCode: Timeout | Content: Request timeout ||;"
   }
 ];
 
 const getSituacaoVariant = (situacao: string) => {
   switch (situacao) {
-    case "Enviado":
+    case "Sucesso":
       return "outline";
     case "Erro":
       return "destructive";
-    case "Pendente":
-      return "secondary";
     default:
       return "secondary";
   }
@@ -86,22 +84,26 @@ export function HistoricoEnvioContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
+  const [numeroPropostaFilter, setNumeroPropostaFilter] = useState("");
 
   const filteredHistorico = historicoCallbacks.filter(callback => {
     const matchesSearch = 
       callback.numeroProposta.includes(searchTerm) ||
       callback.evento.toLowerCase().includes(searchTerm.toLowerCase());
     
+    const matchesNumeroProposta = !numeroPropostaFilter || callback.numeroProposta.includes(numeroPropostaFilter);
+    
     // Filtro de data (simplificado para o exemplo)
     const matchesData = true; // Implementar filtro de data real conforme necessário
     
-    return matchesSearch && matchesData;
+    return matchesSearch && matchesNumeroProposta && matchesData;
   });
 
   const handleLimparFiltros = () => {
     setDataInicial("");
     setDataFinal("");
     setSearchTerm("");
+    setNumeroPropostaFilter("");
   };
 
   return (
@@ -120,7 +122,7 @@ export function HistoricoEnvioContent() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
                     <Filter className="w-4 h-4 mr-2" />
-                    Filtrar por Período
+                    Filtros
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-96 bg-white p-4">
@@ -142,6 +144,15 @@ export function HistoricoEnvioContent() {
                           onChange={(e) => setDataFinal(e.target.value)}
                         />
                       </div>
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Número da Proposta</label>
+                      <Input
+                        placeholder="Digite o número da proposta"
+                        value={numeroPropostaFilter}
+                        onChange={(e) => setNumeroPropostaFilter(e.target.value)}
+                      />
                     </div>
                     
                     <div className="flex justify-end space-x-2 pt-2">
@@ -184,11 +195,11 @@ export function HistoricoEnvioContent() {
               <TableRow>
                 <TableHead>Número Proposta</TableHead>
                 <TableHead>Evento</TableHead>
-                <TableHead>Data/Hora Envio</TableHead>
+                <TableHead>Data e Hora de Envio</TableHead>
                 <TableHead>Situação</TableHead>
-                <TableHead>URL Destino</TableHead>
                 <TableHead>Tentativas</TableHead>
-                <TableHead>Última Resposta</TableHead>
+                <TableHead>Envio</TableHead>
+                <TableHead>Retorno</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -206,20 +217,52 @@ export function HistoricoEnvioContent() {
                       {callback.situacao}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-sm text-gray-600 max-w-48 truncate" title={callback.url}>
-                    {callback.url}
-                  </TableCell>
                   <TableCell>
                     <span className={`font-medium ${callback.tentativas > 1 ? 'text-orange-600' : 'text-green-600'}`}>
                       {callback.tentativas}
                     </span>
                   </TableCell>
-                  <TableCell className="text-sm">
-                    <span className={`${
-                      callback.ultimaResposta.startsWith('200') ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {callback.ultimaResposta}
-                    </span>
+                  <TableCell>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" size="sm">
+                          <Eye className="w-4 h-4 mr-1" />
+                          Envio
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-2xl">
+                        <DialogHeader>
+                          <DialogTitle>Requisição de Envio - Proposta #{callback.numeroProposta}</DialogTitle>
+                        </DialogHeader>
+                        <div className="mt-4">
+                          <label className="text-sm font-medium text-gray-700 block mb-2">URL de Envio:</label>
+                          <div className="bg-gray-50 p-3 rounded border text-sm break-all">
+                            {callback.envio}
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
+                  <TableCell>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" size="sm">
+                          <Eye className="w-4 h-4 mr-1" />
+                          Retorno
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-2xl">
+                        <DialogHeader>
+                          <DialogTitle>Retorno da Requisição - Proposta #{callback.numeroProposta}</DialogTitle>
+                        </DialogHeader>
+                        <div className="mt-4">
+                          <label className="text-sm font-medium text-gray-700 block mb-2">Resposta do Callback:</label>
+                          <div className="bg-gray-50 p-3 rounded border text-sm">
+                            {callback.retorno}
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
                   </TableCell>
                 </TableRow>
               ))}
