@@ -165,7 +165,7 @@ export function HistoricoEnvioContent() {
                           type="date"
                           value={dataInicial}
                           onChange={(e) => setDataInicial(e.target.value)}
-                          className="border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
+                          className="border-slate-300 focus:border-blue-600 focus:ring-blue-600"
                         />
                       </div>
                       <div>
@@ -174,7 +174,7 @@ export function HistoricoEnvioContent() {
                           type="date"
                           value={dataFinal}
                           onChange={(e) => setDataFinal(e.target.value)}
-                          className="border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
+                          className="border-slate-300 focus:border-blue-600 focus:ring-blue-600"
                         />
                       </div>
                     </div>
@@ -185,7 +185,7 @@ export function HistoricoEnvioContent() {
                         placeholder="Digite o número da proposta"
                         value={numeroPropostaFilter}
                         onChange={(e) => setNumeroPropostaFilter(e.target.value)}
-                        className="border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
+                        className="border-slate-300 focus:border-blue-600 focus:ring-blue-600"
                       />
                     </div>
                     
@@ -198,7 +198,7 @@ export function HistoricoEnvioContent() {
                       >
                         Limpar
                       </Button>
-                      <Button size="sm" className="bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white shadow-md">
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white shadow-md">
                         Aplicar Filtros
                       </Button>
                     </div>
@@ -229,7 +229,7 @@ export function HistoricoEnvioContent() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
               <Input 
                 placeholder="Buscar por número da proposta ou evento" 
-                className="pl-10 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm"
+                className="pl-10 border-slate-300 focus:border-blue-600 focus:ring-blue-600 shadow-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -254,9 +254,9 @@ export function HistoricoEnvioContent() {
             <TableBody>
               {filteredHistorico.map((callback) => (
                 <TableRow key={callback.id} className="hover:bg-slate-50 border-b border-slate-100">
-                  <TableCell className="font-medium text-emerald-700">#{callback.numeroProposta}</TableCell>
+                  <TableCell className="font-medium text-blue-700">#{callback.numeroProposta}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">
+                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                       {callback.evento}
                     </Badge>
                   </TableCell>
@@ -264,7 +264,7 @@ export function HistoricoEnvioContent() {
                   <TableCell>
                     <Badge variant={getSituacaoVariant(callback.situacao)} className={
                       callback.situacao === "Sucesso" 
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-200" 
+                        ? "bg-green-50 text-green-700 border-green-200" 
                         : callback.situacao === "Erro"
                         ? "bg-red-50 text-red-700 border-red-200"
                         : ""
@@ -273,7 +273,7 @@ export function HistoricoEnvioContent() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <span className={`font-medium ${callback.tentativas > 1 ? 'text-amber-600' : 'text-emerald-600'}`}>
+                    <span className={`font-medium ${callback.tentativas > 1 ? 'text-amber-600' : 'text-green-600'}`}>
                       {callback.tentativas}
                     </span>
                   </TableCell>

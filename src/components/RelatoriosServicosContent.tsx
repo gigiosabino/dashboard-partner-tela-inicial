@@ -157,7 +157,7 @@ export function RelatoriosServicosContent() {
             </div>
             
             <div>
-              <Button onClick={handleConsultar} disabled={loading} className="w-full text-cyan-50 bg-sky-600 hover:bg-sky-500">
+              <Button onClick={handleConsultar} disabled={loading} className="w-full">
                 <Search className="w-4 h-4 mr-2" />
                 {loading ? "Consultando..." : "Consultar"}
               </Button>
@@ -194,7 +194,7 @@ export function RelatoriosServicosContent() {
                       <TableCell>{item.criterio}</TableCell>
                       <TableCell className="text-center">{item.bureau}</TableCell>
                       <TableCell className="text-center">
-                        <Button variant="outline" size="sm" onClick={() => handleRelatorioDetalhado(item)} className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600">
+                        <Button variant="default" size="sm" onClick={() => handleRelatorioDetalhado(item)}>
                           <FileSpreadsheet className="w-4 h-4 mr-1" />
                           Relatório detalhado
                         </Button>
