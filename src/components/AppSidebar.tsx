@@ -69,6 +69,7 @@ const menuItems = [
       { title: "Reenviar link de assinatura", url: "/reenviar-link-assinatura" },
       { title: "Consultar registro de boleto", url: "/consultar-registro-boleto" },
       { title: "Consulta proposta", url: "/consulta-proposta" },
+      { title: "Mensageria", url: "/mensageria" },
     ]
   },
   {
@@ -90,12 +91,6 @@ const menuItems = [
     icon: Users,
     items: [],
     url: "/gestao-acessos"
-  },
-  {
-    title: "Mensageria",
-    icon: MessageSquare,
-    items: [],
-    url: "/mensageria"
   },
 ];
 
