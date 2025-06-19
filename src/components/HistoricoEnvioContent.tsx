@@ -84,7 +84,7 @@ const getSituacaoVariant = (situacao: string) => {
 
 export function HistoricoEnvioContent() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [situacaoFilter, setSituacaoFilter] = useState("");
+  const [situacaoFilter, setSituacaoFilter] = useState("todas");
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
 
@@ -93,7 +93,7 @@ export function HistoricoEnvioContent() {
       callback.numeroProposta.includes(searchTerm) ||
       callback.evento.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesSituacao = situacaoFilter === "" || callback.situacao === situacaoFilter;
+    const matchesSituacao = situacaoFilter === "todas" || callback.situacao === situacaoFilter;
     
     // Filtro de data (simplificado para o exemplo)
     const matchesData = true; // Implementar filtro de data real conforme necessário
@@ -102,7 +102,7 @@ export function HistoricoEnvioContent() {
   });
 
   const handleLimparFiltros = () => {
-    setSituacaoFilter("");
+    setSituacaoFilter("todas");
     setDataInicial("");
     setDataFinal("");
     setSearchTerm("");
@@ -136,7 +136,7 @@ export function HistoricoEnvioContent() {
                           <SelectValue placeholder="Selecione a situação" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Todas</SelectItem>
+                          <SelectItem value="todas">Todas</SelectItem>
                           <SelectItem value="Enviado">Enviado</SelectItem>
                           <SelectItem value="Erro">Erro</SelectItem>
                           <SelectItem value="Pendente">Pendente</SelectItem>
@@ -201,21 +201,21 @@ export function HistoricoEnvioContent() {
             <Button
               variant={situacaoFilter === "Enviado" ? "default" : "outline"}
               size="sm"
-              onClick={() => setSituacaoFilter(situacaoFilter === "Enviado" ? "" : "Enviado")}
+              onClick={() => setSituacaoFilter(situacaoFilter === "Enviado" ? "todas" : "Enviado")}
             >
               Enviados
             </Button>
             <Button
               variant={situacaoFilter === "Erro" ? "destructive" : "outline"}
               size="sm"
-              onClick={() => setSituacaoFilter(situacaoFilter === "Erro" ? "" : "Erro")}
+              onClick={() => setSituacaoFilter(situacaoFilter === "Erro" ? "todas" : "Erro")}
             >
               Com Erro
             </Button>
             <Button
               variant={situacaoFilter === "Pendente" ? "secondary" : "outline"}
               size="sm"
-              onClick={() => setSituacaoFilter(situacaoFilter === "Pendente" ? "" : "Pendente")}
+              onClick={() => setSituacaoFilter(situacaoFilter === "Pendente" ? "todas" : "Pendente")}
             >
               Pendentes
             </Button>
