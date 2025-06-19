@@ -1,67 +1,41 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Edit, Trash2, Plus, Search, X } from "lucide-react";
 import { useState } from "react";
 
 // Dados mockados dos usuários com perfis atualizados
-const usuarios = [
-  {
-    id: 1,
-    nome: "João Silva",
-    email: "joao.silva@empresa.com",
-    perfis: ["Manager", "Basic"]
-  },
-  {
-    id: 2,
-    nome: "Maria Santos",
-    email: "maria.santos@empresa.com",
-    perfis: ["Master"]
-  },
-  {
-    id: 3,
-    nome: "Pedro Costa",
-    email: "pedro.costa@empresa.com",
-    perfis: ["Basic", "Import"]
-  },
-  {
-    id: 4,
-    nome: "Ana Oliveira",
-    email: "ana.oliveira@empresa.com",
-    perfis: ["Auditoria"]
-  },
-  {
-    id: 5,
-    nome: "Carlos Ferreira",
-    email: "carlos.ferreira@empresa.com",
-    perfis: ["Vendedor", "Report"]
-  }
-];
+const usuarios = [{
+  id: 1,
+  nome: "João Silva",
+  email: "joao.silva@empresa.com",
+  perfis: ["Manager", "Basic"]
+}, {
+  id: 2,
+  nome: "Maria Santos",
+  email: "maria.santos@empresa.com",
+  perfis: ["Master"]
+}, {
+  id: 3,
+  nome: "Pedro Costa",
+  email: "pedro.costa@empresa.com",
+  perfis: ["Basic", "Import"]
+}, {
+  id: 4,
+  nome: "Ana Oliveira",
+  email: "ana.oliveira@empresa.com",
+  perfis: ["Auditoria"]
+}, {
+  id: 5,
+  nome: "Carlos Ferreira",
+  email: "carlos.ferreira@empresa.com",
+  perfis: ["Vendedor", "Report"]
+}];
 
 // Perfis disponíveis
 const perfisDisponiveis = ["Manager", "Basic", "Auditoria", "Import", "Master", "Vendedor", "Report"];
@@ -83,7 +57,6 @@ const getPerfisPermitidos = (perfilUsuario: string[]) => {
   }
   return [];
 };
-
 export function GestaoAcessosContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -93,7 +66,6 @@ export function GestaoAcessosContent() {
 
   // Obter perfis permitidos para o usuário logado
   const perfisPermitidos = getPerfisPermitidos(usuarioLogado.perfis);
-
   const handleEditarUsuario = (id: number) => {
     const usuario = usuarios.find(u => u.id === id);
     if (usuario) {
@@ -103,7 +75,6 @@ export function GestaoAcessosContent() {
       setIsEditModalOpen(true);
     }
   };
-
   const handleSalvarEdicao = () => {
     console.log('Salvando edição:', {
       id: usuarioEditando.id,
@@ -114,42 +85,30 @@ export function GestaoAcessosContent() {
     setIsEditModalOpen(false);
     setUsuarioEditando(null);
   };
-
   const handleFecharModal = () => {
     setIsEditModalOpen(false);
     setUsuarioEditando(null);
     setNomeEditando("");
     setPerfisEditando([]);
   };
-
   const handleAdicionarPerfil = (perfil: string) => {
     if (!perfisEditando.includes(perfil)) {
       setPerfisEditando([...perfisEditando, perfil]);
     }
   };
-
   const handleRemoverPerfil = (perfil: string) => {
     setPerfisEditando(perfisEditando.filter(p => p !== perfil));
   };
-
   const handleExcluirUsuario = (id: number) => {
     console.log('Excluir usuário:', id);
     // Aqui seria implementada a lógica de exclusão
   };
-
   const handleNovoUsuario = () => {
     console.log('Novo usuário');
     // Aqui seria implementada a lógica para adicionar novo usuário
   };
-
-  const filteredUsuarios = usuarios.filter(usuario => 
-    usuario.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    usuario.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    usuario.perfis.some(perfil => perfil.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
-
-  return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+  const filteredUsuarios = usuarios.filter(usuario => usuario.nome.toLowerCase().includes(searchTerm.toLowerCase()) || usuario.email.toLowerCase().includes(searchTerm.toLowerCase()) || usuario.perfis.some(perfil => perfil.toLowerCase().includes(searchTerm.toLowerCase())));
+  return <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
         <div className="flex items-center space-x-2">
           <SidebarTrigger />
@@ -164,18 +123,13 @@ export function GestaoAcessosContent() {
               Usuários do Portal
             </CardTitle>
             <div className="flex items-center gap-4">
-              <Button onClick={handleNovoUsuario} className="flex items-center gap-2 bg-sky-400 hover:bg-sky-500">
+              <Button onClick={handleNovoUsuario} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500">
                 <Plus className="w-4 h-4" />
                 Novo Usuário
               </Button>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Buscar por nome, email ou perfil..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-80"
-                />
+                <Input placeholder="Buscar por nome, email ou perfil..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 w-80" />
               </div>
             </div>
           </div>
@@ -192,8 +146,7 @@ export function GestaoAcessosContent() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredUsuarios.map((usuario) => (
-                  <TableRow key={usuario.id}>
+                {filteredUsuarios.map(usuario => <TableRow key={usuario.id}>
                     <TableCell className="font-medium">
                       {usuario.nome}
                     </TableCell>
@@ -202,35 +155,22 @@ export function GestaoAcessosContent() {
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
-                        {usuario.perfis.map((perfil, index) => (
-                          <Badge key={index} variant="secondary">
+                        {usuario.perfis.map((perfil, index) => <Badge key={index} variant="secondary">
                             {perfil}
-                          </Badge>
-                        ))}
+                          </Badge>)}
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => handleEditarUsuario(usuario.id)}
-                          className="h-8 w-8"
-                        >
+                        <Button variant="outline" size="icon" onClick={() => handleEditarUsuario(usuario.id)} className="h-8 w-8">
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => handleExcluirUsuario(usuario.id)}
-                          className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
+                        <Button variant="outline" size="icon" onClick={() => handleExcluirUsuario(usuario.id)} className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </TableCell>
-                  </TableRow>
-                ))}
+                  </TableRow>)}
               </TableBody>
             </Table>
           </div>
@@ -249,12 +189,7 @@ export function GestaoAcessosContent() {
               <label htmlFor="nome" className="text-right text-sm font-medium">
                 Nome
               </label>
-              <Input
-                id="nome"
-                value={nomeEditando}
-                onChange={(e) => setNomeEditando(e.target.value)}
-                className="col-span-3"
-              />
+              <Input id="nome" value={nomeEditando} onChange={e => setNomeEditando(e.target.value)} className="col-span-3" />
             </div>
             
             <div className="grid grid-cols-4 items-center gap-4">
@@ -276,30 +211,19 @@ export function GestaoAcessosContent() {
                     <SelectValue placeholder="Adicionar perfil" />
                   </SelectTrigger>
                   <SelectContent>
-                    {perfisPermitidos
-                      .filter(perfil => !perfisEditando.includes(perfil))
-                      .map((perfil) => (
-                        <SelectItem key={perfil} value={perfil}>
+                    {perfisPermitidos.filter(perfil => !perfisEditando.includes(perfil)).map(perfil => <SelectItem key={perfil} value={perfil}>
                           {perfil}
-                        </SelectItem>
-                      ))}
+                        </SelectItem>)}
                   </SelectContent>
                 </Select>
                 
                 <div className="flex flex-wrap gap-2">
-                  {perfisEditando.map((perfil) => (
-                    <Badge key={perfil} variant="secondary" className="flex items-center gap-1">
+                  {perfisEditando.map(perfil => <Badge key={perfil} variant="secondary" className="flex items-center gap-1">
                       {perfil}
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-4 w-4 p-0 hover:bg-transparent"
-                        onClick={() => handleRemoverPerfil(perfil)}
-                      >
+                      <Button variant="ghost" size="icon" className="h-4 w-4 p-0 hover:bg-transparent" onClick={() => handleRemoverPerfil(perfil)}>
                         <X className="h-3 w-3" />
                       </Button>
-                    </Badge>
-                  ))}
+                    </Badge>)}
                 </div>
               </div>
             </div>
@@ -315,6 +239,5 @@ export function GestaoAcessosContent() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>;
 }
