@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -139,37 +138,37 @@ export function RelatoriosServicosContent() {
   };
 
   return (
-    <div className="flex-1 p-6">
+    <div className="flex-1 p-6 bg-slate-50 min-h-screen">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-semibold text-slate-800 mb-2">
           Relatórios de Serviços Integrados
         </h1>
-        <p className="text-gray-600">
+        <p className="text-slate-600">
           Consulte os relatórios de serviços integrados da sua empresa
         </p>
       </div>
 
       {/* Filtros */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-lg">Filtros</CardTitle>
+      <Card className="mb-6 bg-white border-slate-200 shadow-sm">
+        <CardHeader className="bg-slate-50 border-b border-slate-200">
+          <CardTitle className="text-lg text-slate-800">Filtros</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div>
-              <Label htmlFor="bureau">Bureau</Label>
+              <Label htmlFor="bureau" className="text-slate-700 font-medium">Bureau</Label>
               <Select value="SCR - Bacen" disabled>
-                <SelectTrigger className="bg-gray-100">
+                <SelectTrigger className="bg-slate-100 border-slate-300 text-slate-600">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white border-slate-200">
                   <SelectItem value="SCR - Bacen">SCR - Bacen</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
             <div>
-              <Label htmlFor="mesInicial">Mês Inicial</Label>
+              <Label htmlFor="mesInicial" className="text-slate-700 font-medium">Mês Inicial</Label>
               <MonthYearPicker
                 value={mesInicial}
                 onSelect={handleMesInicialChange}
@@ -178,7 +177,7 @@ export function RelatoriosServicosContent() {
             </div>
             
             <div>
-              <Label htmlFor="mesFinal">Mês Final</Label>
+              <Label htmlFor="mesFinal" className="text-slate-700 font-medium">Mês Final</Label>
               <MonthYearPicker
                 value={mesFinal}
                 onSelect={handleMesFinalChange}
@@ -191,7 +190,7 @@ export function RelatoriosServicosContent() {
               <Button 
                 onClick={handleConsultar}
                 disabled={loading}
-                className="w-full"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
               >
                 <Search className="w-4 h-4 mr-2" />
                 {loading ? "Consultando..." : "Consultar"}
@@ -202,14 +201,14 @@ export function RelatoriosServicosContent() {
       </Card>
 
       {/* Resultados */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg">Resultados</CardTitle>
+      <Card className="bg-white border-slate-200 shadow-sm">
+        <CardHeader className="flex flex-row items-center justify-between bg-slate-50 border-b border-slate-200">
+          <CardTitle className="text-lg text-slate-800">Resultados</CardTitle>
           {resultados.length > 0 && (
             <Button 
               variant="outline" 
               onClick={handleExportToExcel}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-slate-300 text-slate-700 hover:bg-slate-50"
             >
               <Download className="w-4 h-4" />
               Export to Excel
@@ -221,27 +220,27 @@ export function RelatoriosServicosContent() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="font-semibold text-center">Período</TableHead>
-                    <TableHead className="font-semibold text-center">Nº Tran.</TableHead>
-                    <TableHead className="font-semibold">Critério</TableHead>
-                    <TableHead className="font-semibold text-center">Bureau</TableHead>
-                    <TableHead className="font-semibold text-center">Ação</TableHead>
+                  <TableRow className="bg-slate-50 border-slate-200">
+                    <TableHead className="font-semibold text-center text-slate-700">Período</TableHead>
+                    <TableHead className="font-semibold text-center text-slate-700">Nº Tran.</TableHead>
+                    <TableHead className="font-semibold text-slate-700">Critério</TableHead>
+                    <TableHead className="font-semibold text-center text-slate-700">Bureau</TableHead>
+                    <TableHead className="font-semibold text-center text-slate-700">Ação</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {resultados.map((item, index) => (
-                    <TableRow key={index} className="hover:bg-gray-50">
-                      <TableCell className="text-center">{item.periodo}</TableCell>
-                      <TableCell className="text-center">{item.numeroTransacoes}</TableCell>
-                      <TableCell>{item.criterio}</TableCell>
-                      <TableCell className="text-center">{item.bureau}</TableCell>
+                    <TableRow key={index} className="hover:bg-slate-50 border-slate-200">
+                      <TableCell className="text-center text-slate-700">{item.periodo}</TableCell>
+                      <TableCell className="text-center text-slate-700">{item.numeroTransacoes}</TableCell>
+                      <TableCell className="text-slate-700">{item.criterio}</TableCell>
+                      <TableCell className="text-center text-slate-700">{item.bureau}</TableCell>
                       <TableCell className="text-center">
                         <Button 
                           variant="outline" 
                           size="sm"
                           onClick={() => handleRelatorioDetalhado(item)}
-                          className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600"
+                          className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600 font-medium"
                         >
                           <FileSpreadsheet className="w-4 h-4 mr-1" />
                           Relatório detalhado
@@ -253,8 +252,8 @@ export function RelatoriosServicosContent() {
               </Table>
             </div>
           ) : (
-            <div className="text-center py-8 text-gray-500">
-              <FileSpreadsheet className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+            <div className="text-center py-8 text-slate-500">
+              <FileSpreadsheet className="w-12 h-12 mx-auto mb-4 text-slate-300" />
               <p>Nenhum resultado encontrado</p>
               <p className="text-sm">Use os filtros acima para realizar uma consulta</p>
             </div>
