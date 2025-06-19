@@ -84,7 +84,6 @@ const getSituacaoVariant = (situacao: string) => {
 
 export function HistoricoEnvioContent() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [situacaoFilter, setSituacaoFilter] = useState("todas");
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
 
@@ -93,16 +92,13 @@ export function HistoricoEnvioContent() {
       callback.numeroProposta.includes(searchTerm) ||
       callback.evento.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesSituacao = situacaoFilter === "todas" || callback.situacao === situacaoFilter;
-    
     // Filtro de data (simplificado para o exemplo)
     const matchesData = true; // Implementar filtro de data real conforme necessário
     
-    return matchesSearch && matchesSituacao && matchesData;
+    return matchesSearch && matchesData;
   });
 
   const handleLimparFiltros = () => {
-    setSituacaoFilter("todas");
     setDataInicial("");
     setDataFinal("");
     setSearchTerm("");
@@ -118,7 +114,7 @@ export function HistoricoEnvioContent() {
       <main className="p-6">
         {/* Filtros */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -178,32 +174,6 @@ export function HistoricoEnvioContent() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-          </div>
-
-          {/* Filtros Rápidos por Situação */}
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-600">Filtros rápidos:</span>
-            <Button
-              variant={situacaoFilter === "Enviado" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSituacaoFilter(situacaoFilter === "Enviado" ? "todas" : "Enviado")}
-            >
-              Enviados
-            </Button>
-            <Button
-              variant={situacaoFilter === "Erro" ? "destructive" : "outline"}
-              size="sm"
-              onClick={() => setSituacaoFilter(situacaoFilter === "Erro" ? "todas" : "Erro")}
-            >
-              Com Erro
-            </Button>
-            <Button
-              variant={situacaoFilter === "Pendente" ? "secondary" : "outline"}
-              size="sm"
-              onClick={() => setSituacaoFilter(situacaoFilter === "Pendente" ? "todas" : "Pendente")}
-            >
-              Pendentes
-            </Button>
           </div>
         </div>
 
