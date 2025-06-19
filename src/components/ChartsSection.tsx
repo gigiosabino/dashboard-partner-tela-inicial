@@ -70,7 +70,6 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   };
 
   const currentData = getDataByPeriod();
-  const total = currentData.reduce((sum, item) => sum + item.value, 0);
 
   return (
     <Card className="h-full hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br from-white to-gray-50 border-0 shadow-md">
@@ -122,7 +121,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
         </div>
         
         {/* Custom Legend */}
-        <div className="flex flex-wrap justify-center gap-4 mb-4">
+        <div className="flex flex-wrap justify-center gap-4">
           {currentData.map((entry, index) => (
             <div 
               key={`legend-${index}`}
@@ -141,12 +140,6 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
               </span>
             </div>
           ))}
-        </div>
-        
-        {/* Total Summary */}
-        <div className="text-center bg-white px-6 py-4 rounded-xl shadow-sm border w-full max-w-xs">
-          <p className="text-3xl font-bold text-gray-900 mb-1">{total.toLocaleString()}</p>
-          <p className="text-sm text-gray-600 font-medium">Total de Propostas</p>
         </div>
       </CardContent>
     </Card>
