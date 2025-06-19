@@ -23,6 +23,10 @@ import {
   BarChart3,
   FileSpreadsheet,
   ChevronRight,
+  Zap,
+  Send,
+  Receipt,
+  Search,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -54,6 +58,15 @@ const menuItems = [
     title: "Gestão de contratos",
     icon: FileCheck,
     items: []
+  },
+  {
+    title: "Ações rápidas",
+    icon: Zap,
+    items: [
+      { title: "Reenviar link de assinatura", url: "/reenviar-link-assinatura" },
+      { title: "Consultar registro de boleto", url: "/consultar-registro-boleto" },
+      { title: "Consulta proposta", url: "/consulta-proposta" },
+    ]
   },
   {
     title: "Formalização de garantias",
