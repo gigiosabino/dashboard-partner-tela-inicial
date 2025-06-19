@@ -57,24 +57,24 @@ export function ReenviarLinkAssinaturaContent() {
   };
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6 bg-gray-50 min-h-screen">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Reenviar Link de Assinatura</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900">Reenviar Link de Assinatura</h2>
       </div>
 
-      <Card className="max-w-2xl">
-        <CardHeader>
-          <CardTitle>Consultar Proposta</CardTitle>
+      <Card className="max-w-2xl bg-white border-gray-200 shadow-sm">
+        <CardHeader className="bg-gray-50 border-b border-gray-200">
+          <CardTitle className="text-gray-900">Consultar Proposta</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-6">
           <div className="flex space-x-2">
             <Input
               placeholder="Informe o número da proposta"
               value={numeroProposta}
               onChange={(e) => setNumeroProposta(e.target.value)}
-              className="flex-1"
+              className="flex-1 border-gray-300 focus:border-blue-600 focus:ring-blue-600"
             />
-            <Button onClick={handleSearch} size="icon">
+            <Button onClick={handleSearch} size="icon" className="bg-blue-600 hover:bg-blue-700">
               <Search className="h-4 w-4" />
             </Button>
           </div>
@@ -87,10 +87,10 @@ export function ReenviarLinkAssinaturaContent() {
 
       {/* Modal para reenviar link */}
       <Dialog open={reenviarModalOpen} onOpenChange={setReenviarModalOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[500px] bg-white">
           <DialogHeader>
-            <DialogTitle>Notificar Assinante</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900">Notificar Assinante</DialogTitle>
+            <DialogDescription className="text-gray-600">
               Escolha como deseja reenviar o link de assinatura para TESTE 2
             </DialogDescription>
           </DialogHeader>
@@ -125,6 +125,7 @@ export function ReenviarLinkAssinaturaContent() {
               variant="outline" 
               onClick={() => setReenviarModalOpen(false)}
               disabled={isReenviando}
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
             >
               CANCELAR
             </Button>
