@@ -1,8 +1,10 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -145,6 +147,17 @@ export function ConfiguracaoCallbacksContent() {
       {/* Main Content */}
       <main className="p-6">
         <div className="max-w-6xl mx-auto space-y-6">
+          {/* Warning Alert */}
+          <Alert className="border-orange-200 bg-orange-50">
+            <AlertTriangle className="h-4 w-4 text-orange-600" />
+            <AlertDescription className="text-orange-800">
+              <strong>Aviso:</strong> Callback de status enviado via URL com parâmetros:<br />
+              <code className="text-sm bg-orange-100 px-2 py-1 rounded mt-2 inline-block">
+                [SUA_URL_BASE]?proposta={"{PROPOSTA}"}&situacao={"{SITUACAO}"}&identificador={"{IDENTIFICADOR}"}
+              </code>
+            </AlertDescription>
+          </Alert>
+
           {/* Formulário de Configuração */}
           <Card>
             <CardHeader>
