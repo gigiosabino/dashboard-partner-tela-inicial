@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -281,10 +280,7 @@ export function ConfiguracaoCallbacksContent() {
               <div className="flex justify-end space-x-3 pt-4 border-t">
                 <Dialog open={isTestDialogOpen} onOpenChange={setIsTestDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      disabled={!isFormValid}
-                    >
+                    <Button variant="outline">
                       <TestTube className="w-4 h-4 mr-2" />
                       Testar
                     </Button>
