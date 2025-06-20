@@ -159,7 +159,7 @@ export function AtualizarDadosBancariosContent() {
   );
 
   return (
-    <div className="flex-1 bg-gray-50">
+    <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
       <GlobalHeader 
         title="Atualização de Dados Bancários" 
         subtitle="Propostas com status 'Pendente pagamento' ou splits pendentes" 
@@ -167,32 +167,32 @@ export function AtualizarDadosBancariosContent() {
 
       <main className="p-6">
         {/* Filtros */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+                  <Button variant="outline" className="border-slate-300 hover:bg-slate-50 text-slate-700 shadow-sm">
                     <Filter className="w-4 h-4 mr-2" />
                     Filtros por Período
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-96 bg-white p-4">
+                <DropdownMenuContent align="start" className="w-96 bg-white p-4 border-slate-200 shadow-lg">
                   <div className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Data Inicial</label>
-                      <Input type="date" className="w-full" />
+                      <label className="text-sm font-medium mb-2 block text-slate-700">Data Inicial</label>
+                      <Input type="date" className="w-full border-slate-300 focus:border-blue-600 focus:ring-blue-600" />
                     </div>
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Data Final</label>
-                      <Input type="date" className="w-full" />
+                      <label className="text-sm font-medium mb-2 block text-slate-700">Data Final</label>
+                      <Input type="date" className="w-full border-slate-300 focus:border-blue-600 focus:ring-blue-600" />
                     </div>
                     
                     <div className="flex justify-end space-x-2 pt-2">
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" className="border-slate-300 text-slate-600 hover:bg-slate-50">
                         Limpar
                       </Button>
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white shadow-md">
                         Aplicar Filtros
                       </Button>
                     </div>
@@ -200,14 +200,16 @@ export function AtualizarDadosBancariosContent() {
                 </DropdownMenuContent>
               </DropdownMenu>
               
-              <span className="text-sm text-gray-600">{filteredPropostas.length} proposta(s) encontrada(s)</span>
+              <span className="text-sm text-slate-600 bg-slate-100 px-3 py-2 rounded-lg border border-slate-200">
+                {filteredPropostas.length} proposta(s) encontrada(s)
+              </span>
             </div>
 
             <div className="relative w-80">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
               <Input 
                 placeholder="Buscar por número da proposta, CPF ou nome" 
-                className="pl-10 border-gray-300"
+                className="pl-10 border-slate-300 focus:border-blue-600 focus:ring-blue-600 shadow-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -216,33 +218,33 @@ export function AtualizarDadosBancariosContent() {
         </div>
 
         {/* Tabela de Propostas */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-12"></TableHead>
-                <TableHead>Número CCB</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Data Tentativa Pagamento</TableHead>
-                <TableHead>Nome Cliente</TableHead>
-                <TableHead>Documento Federal Cliente</TableHead>
-                <TableHead>Nome Beneficiário</TableHead>
-                <TableHead>Documento Federal Beneficiário</TableHead>
-                <TableHead>Valor a ser Pago</TableHead>
-                <TableHead>Ação</TableHead>
+              <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+                <TableHead className="w-12 text-slate-700 font-semibold"></TableHead>
+                <TableHead className="text-slate-700 font-semibold">Número CCB</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Status</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Data Tentativa Pagamento</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Nome Cliente</TableHead>
+                <TableHead className="text-slate-600 font-semibold">Documento Federal Cliente</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Nome Beneficiário</TableHead>
+                <TableHead className="text-slate-600 font-semibold">Documento Federal Beneficiário</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Valor a ser Pago</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Ação</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredPropostas.map((proposta) => (
                 <>
-                  <TableRow key={proposta.numeroCCB} className="hover:bg-gray-50">
+                  <TableRow key={proposta.numeroCCB} className="hover:bg-slate-50 border-b border-slate-100">
                     <TableCell>
                       {proposta.temSplit && (
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => toggleRow(proposta.numeroCCB)}
-                          className="p-1"
+                          className="p-1 text-slate-600 hover:bg-slate-100"
                         >
                           {expandedRows.has(proposta.numeroCCB) ? (
                             <Minus className="w-4 h-4" />
@@ -252,28 +254,30 @@ export function AtualizarDadosBancariosContent() {
                         </Button>
                       )}
                     </TableCell>
-                    <TableCell className="font-medium text-blue-600">#{proposta.numeroCCB}</TableCell>
+                    <TableCell className="font-medium text-blue-700">#{proposta.numeroCCB}</TableCell>
                     <TableCell>
-                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                        proposta.status === "Pendente pagamento" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"
+                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
+                        proposta.status === "Pendente pagamento" 
+                          ? "bg-red-50 text-red-700 border border-red-200" 
+                          : "bg-blue-50 text-blue-700 border border-blue-200"
                       }`}>
                         {proposta.status}
                       </span>
                     </TableCell>
-                    <TableCell>{proposta.dataTentativaPagamento}</TableCell>
-                    <TableCell>{proposta.nomeCliente}</TableCell>
-                    <TableCell>{proposta.documentoCliente}</TableCell>
-                    <TableCell>{proposta.nomeBeneficiario}</TableCell>
-                    <TableCell>{proposta.documentoBeneficiario}</TableCell>
-                    <TableCell className="font-medium">{proposta.valorPagar}</TableCell>
+                    <TableCell className="text-slate-700">{proposta.dataTentativaPagamento}</TableCell>
+                    <TableCell className="text-slate-700">{proposta.nomeCliente}</TableCell>
+                    <TableCell className="text-slate-600">{proposta.documentoCliente}</TableCell>
+                    <TableCell className="text-slate-700">{proposta.nomeBeneficiario}</TableCell>
+                    <TableCell className="text-slate-600">{proposta.documentoBeneficiario}</TableCell>
+                    <TableCell className="font-medium text-slate-900">{proposta.valorPagar}</TableCell>
                     <TableCell>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button className="bg-blue-600 hover:bg-blue-700 text-white" size="sm">
+                          <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md" size="sm">
                             Atualizar
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
+                        <DialogContent className="max-w-2xl border-slate-200 shadow-xl">
                           <DialogHeader>
                             <DialogTitle>Atualizar Dados Bancários - #{proposta.numeroCCB}</DialogTitle>
                           </DialogHeader>
@@ -390,64 +394,71 @@ export function AtualizarDadosBancariosContent() {
                     </TableCell>
                   </TableRow>
 
-                  {/* Splits expandidos */}
+                  {/* Splits expandidos com bordas */}
                   {expandedRows.has(proposta.numeroCCB) && proposta.splits && (
                     <TableRow>
-                      <TableCell colSpan={10} className="bg-gray-50 p-0">
+                      <TableCell colSpan={10} className="bg-slate-50 p-0">
                         <div className="p-4">
-                          <h4 className="font-medium text-gray-900 mb-3">Splits da Proposta:</h4>
-                          <div className="bg-white rounded border">
+                          <h4 className="font-medium text-slate-900 mb-3">Splits da Proposta:</h4>
+                          <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
                             <Table>
                               <TableHeader>
-                                <TableRow>
-                                  <TableHead>ID</TableHead>
-                                  <TableHead>Previsão de Pagamento</TableHead>
-                                  <TableHead>Situação</TableHead>
-                                  <TableHead>Valor</TableHead>
-                                  <TableHead>Banco</TableHead>
-                                  <TableHead>Agência</TableHead>
-                                  <TableHead>Conta</TableHead>
-                                  <TableHead>Favorecido</TableHead>
-                                  <TableHead>Código de Barras</TableHead>
-                                  <TableHead>Ação</TableHead>
+                                <TableRow className="bg-slate-50 border-b border-slate-200">
+                                  <TableHead className="text-slate-700 font-semibold">ID</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Previsão de Pagamento</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Situação</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Valor</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Banco</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Agência</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Conta</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Favorecido</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Código de Barras</TableHead>
+                                  <TableHead className="text-slate-700 font-semibold">Ação</TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
-                                {proposta.splits.map((split) => (
-                                  <TableRow key={split.id}>
-                                    <TableCell className="font-medium text-blue-600">{split.id}</TableCell>
-                                    <TableCell>{split.previsaoPagamento || "-"}</TableCell>
+                                {proposta.splits.map((split, index) => (
+                                  <TableRow 
+                                    key={split.id} 
+                                    className={`hover:bg-slate-50 ${
+                                      index === 0 ? 'border-t border-slate-200' : ''
+                                    } ${
+                                      index === proposta.splits.length - 1 ? 'border-b border-slate-200' : 'border-b border-slate-100'
+                                    }`}
+                                  >
+                                    <TableCell className="font-medium text-blue-700">{split.id}</TableCell>
+                                    <TableCell className="text-slate-700">{split.previsaoPagamento || "-"}</TableCell>
                                     <TableCell>
-                                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                                        split.situacao === "Pago" ? "bg-green-100 text-green-800" :
-                                        split.situacao === "Liberado" ? "bg-blue-100 text-blue-800" :
-                                        "bg-yellow-100 text-yellow-800"
+                                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium border ${
+                                        split.situacao === "Pago" ? "bg-green-50 text-green-700 border-green-200" :
+                                        split.situacao === "Liberado" ? "bg-blue-50 text-blue-700 border-blue-200" :
+                                        "bg-yellow-50 text-yellow-700 border-yellow-200"
                                       }`}>
                                         {split.situacao}
                                       </span>
                                     </TableCell>
-                                    <TableCell className="font-medium">{split.valor}</TableCell>
-                                    <TableCell>{split.banco || "-"}</TableCell>
-                                    <TableCell>{split.agencia || "-"}</TableCell>
-                                    <TableCell>{split.conta || "-"}</TableCell>
-                                    <TableCell>{split.favorecido}</TableCell>
+                                    <TableCell className="font-medium text-slate-900">{split.valor}</TableCell>
+                                    <TableCell className="text-slate-700">{split.banco || "-"}</TableCell>
+                                    <TableCell className="text-slate-700">{split.agencia || "-"}</TableCell>
+                                    <TableCell className="text-slate-700">{split.conta || "-"}</TableCell>
+                                    <TableCell className="text-slate-700">{split.favorecido}</TableCell>
                                     <TableCell>
                                       {split.codBarras ? (
-                                        <span className="text-xs font-mono" title={split.codBarras}>
+                                        <span className="text-xs font-mono text-slate-600" title={split.codBarras}>
                                           {split.codBarras.substring(0, 15)}...
                                         </span>
                                       ) : (
-                                        "-"
+                                        <span className="text-slate-500">-</span>
                                       )}
                                     </TableCell>
                                     <TableCell>
                                       <Dialog>
                                         <DialogTrigger asChild>
-                                          <Button className="bg-blue-600 hover:bg-blue-700 text-white" size="sm">
+                                          <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md" size="sm">
                                             Atualizar
                                           </Button>
                                         </DialogTrigger>
-                                        <DialogContent className="max-w-2xl">
+                                        <DialogContent className="max-w-2xl border-slate-200 shadow-xl">
                                           <DialogHeader>
                                             <DialogTitle>Atualizar Dados Bancários - Split {split.id}</DialogTitle>
                                           </DialogHeader>

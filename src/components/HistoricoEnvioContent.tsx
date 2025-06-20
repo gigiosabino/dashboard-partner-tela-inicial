@@ -111,6 +111,7 @@ export function HistoricoEnvioContent() {
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
   const [numeroPropostaFilter, setNumeroPropostaFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const [tipoCallback, setTipoCallback] = useState("proposta");
 
   const filteredHistorico = historicoCallbacks.filter(callback => {
@@ -118,12 +119,25 @@ export function HistoricoEnvioContent() {
       callback.numeroProposta.includes(searchTerm) ||
       callback.evento.toLowerCase().includes(searchTerm.toLowerCase());
     
+    // Filtro por número da proposta específico (ignora período quando preenchido)
     const matchesNumeroProposta = !numeroPropostaFilter || callback.numeroProposta.includes(numeroPropostaFilter);
     
-    // Filtro de data (simplificado para o exemplo)
-    const matchesData = true; // Implementar filtro de data real conforme necessário
+    // Filtro por status
+    const matchesStatus = !statusFilter || callback.situacao === statusFilter;
     
-    return matchesSearch && matchesNumeroProposta && matchesData;
+    // Filtro de data (ignorado se número da proposta estiver preenchido)
+    let matchesData = true;
+    if (!numeroPropostaFilter && (dataInicial || dataFinal)) {
+      // Implementar filtro de data real conforme necessário
+      const callbackDate = new Date(callback.dataEnvio.split(' ')[0].split('/').reverse().join('-'));
+      const startDate = dataInicial ? new Date(dataInicial) : null;
+      const endDate = dataFinal ? new Date(dataFinal) : null;
+      
+      if (startDate && callbackDate < startDate) matchesData = false;
+      if (endDate && callbackDate > endDate) matchesData = false;
+    }
+    
+    return matchesSearch && matchesNumeroProposta && matchesStatus && matchesData;
   });
 
   const handleLimparFiltros = () => {
@@ -131,6 +145,7 @@ export function HistoricoEnvioContent() {
     setDataFinal("");
     setSearchTerm("");
     setNumeroPropostaFilter("");
+    setStatusFilter("");
   };
 
   const getCallbackExample = (type: string) => {
@@ -187,6 +202,22 @@ export function HistoricoEnvioContent() {
                         onChange={(e) => setNumeroPropostaFilter(e.target.value)}
                         className="border-slate-300 focus:border-blue-600 focus:ring-blue-600"
                       />
+                      <p className="text-xs text-slate-500 mt-1">
+                        Ignora o período quando preenchido
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium mb-2 block text-slate-700">Status</label>
+                      <Select value={statusFilter} onValueChange={setStatusFilter}>
+                        <SelectTrigger className="border-slate-300 focus:border-blue-600 focus:ring-blue-600">
+                          <SelectValue placeholder="Selecione o status" />
+                        </SelectTrigger>
+                        <SelectContent className="border-slate-200 bg-white shadow-lg">
+                          <SelectItem value="Sucesso" className="text-slate-700 hover:bg-slate-50">Sucesso</SelectItem>
+                          <SelectItem value="Erro" className="text-slate-700 hover:bg-slate-50">Erro</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     
                     <div className="flex justify-end space-x-2 pt-2">
