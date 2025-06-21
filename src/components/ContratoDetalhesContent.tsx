@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Calendar, Download, FileText, ArrowLeft, MoreHorizontal } from "lucide-react";
 import {
@@ -106,6 +105,8 @@ export function ContratoDetalhesContent() {
   const [valorDesconto, setValorDesconto] = useState("");
   const [motivoPagamento, setMotivoPagamento] = useState("");
   const [descricaoPagamento, setDescricaoPagamento] = useState("");
+  const [valorBaixa, setValorBaixa] = useState("");
+  const [descricaoBaixa, setDescricaoBaixa] = useState("");
 
   const handleVoltar = () => {
     navigate("/visualizar-contratos");
@@ -124,6 +125,10 @@ export function ContratoDetalhesContent() {
   };
 
   const handleSalvarProrrogacao = () => {
+    if (!motivoAlteracao.trim()) {
+      alert("O campo 'Motivo da Alteração' é obrigatório.");
+      return;
+    }
     console.log("Salvando prorrogação:", { novoVencimento, motivoAlteracao });
     setProrrogarOpen(false);
     setNovoVencimento("");
@@ -131,6 +136,10 @@ export function ContratoDetalhesContent() {
   };
 
   const handleEfetuarLancamento = () => {
+    if (!valorLancamento.trim() || !descricaoLancamento.trim()) {
+      alert("Os campos 'Valor Lançamento' e 'Descrição do Lançamento' são obrigatórios.");
+      return;
+    }
     console.log("Efetuando lançamento:", { tipoLancamento, valorLancamento, dataLancamento, descricaoLancamento });
     setAbatimentoOpen(false);
     setTipoLancamento("");
@@ -140,6 +149,10 @@ export function ContratoDetalhesContent() {
   };
 
   const handleEfetuarPagamento = () => {
+    if (!valorPagamento.trim() || !motivoPagamento.trim() || !descricaoPagamento.trim()) {
+      alert("Os campos 'Valor Pagamento', 'Motivo Pagamento' e 'Descrição do Pagamento' são obrigatórios.");
+      return;
+    }
     console.log("Efetuando pagamento:", { dataPagamento, valorPagamento, valorDesconto, motivoPagamento, descricaoPagamento });
     setPagamentoOpen(false);
     setDataPagamento("");
@@ -149,14 +162,23 @@ export function ContratoDetalhesContent() {
     setDescricaoPagamento("");
   };
 
-  const handleGerarPix = () => {
-    console.log("Gerando PIX parcial");
+  const handleEfetuarBaixa = () => {
+    if (!valorBaixa.trim() || !descricaoBaixa.trim()) {
+      alert("Os campos 'Valor da Baixa' e 'Descrição' são obrigatórios.");
+      return;
+    }
+    console.log("Efetuando baixa:", { valorBaixa, descricaoBaixa });
     setBaixaOpen(false);
+    setValorBaixa("");
+    setDescricaoBaixa("");
+  };
+
+  const handleGerarPix = () => {
+    handleEfetuarBaixa();
   };
 
   const handleGerarBoleto = () => {
-    console.log("Gerando boleto parcial");
-    setBaixaOpen(false);
+    handleEfetuarBaixa();
   };
 
   return (
@@ -457,12 +479,13 @@ export function ContratoDetalhesContent() {
               </div>
               
               <div>
-                <Label htmlFor="motivoAlteracao">Motivo da Alteração</Label>
+                <Label htmlFor="motivoAlteracao">Motivo da Alteração *</Label>
                 <Textarea
                   id="motivoAlteracao"
                   value={motivoAlteracao}
                   onChange={(e) => setMotivoAlteracao(e.target.value)}
                   className="min-h-[80px]"
+                  required
                 />
               </div>
 
@@ -490,13 +513,14 @@ export function ContratoDetalhesContent() {
             
             <div className="space-y-4">
               <div>
-                <Label htmlFor="valorLancamento">Valor Lançamento</Label>
+                <Label htmlFor="valorLancamento">Valor Lançamento *</Label>
                 <Input
                   id="valorLancamento"
                   type="number"
                   step="0.01"
                   value={valorLancamento}
                   onChange={(e) => setValorLancamento(e.target.value)}
+                  required
                 />
               </div>
 
@@ -525,12 +549,13 @@ export function ContratoDetalhesContent() {
               </div>
               
               <div>
-                <Label htmlFor="descricaoLancamento">Descrição do Lançamento</Label>
+                <Label htmlFor="descricaoLancamento">Descrição do Lançamento *</Label>
                 <Textarea
                   id="descricaoLancamento"
                   value={descricaoLancamento}
                   onChange={(e) => setDescricaoLancamento(e.target.value)}
                   className="min-h-[80px]"
+                  required
                 />
               </div>
 
@@ -579,13 +604,14 @@ export function ContratoDetalhesContent() {
               </div>
               
               <div>
-                <Label htmlFor="valorPagamento">Valor Pagamento</Label>
+                <Label htmlFor="valorPagamento">Valor Pagamento *</Label>
                 <Input
                   id="valorPagamento"
                   type="number"
                   step="0.01"
                   value={valorPagamento}
                   onChange={(e) => setValorPagamento(e.target.value)}
+                  required
                 />
               </div>
 
@@ -601,7 +627,7 @@ export function ContratoDetalhesContent() {
               </div>
               
               <div>
-                <Label htmlFor="motivoPagamento">Motivo Pagamento</Label>
+                <Label htmlFor="motivoPagamento">Motivo Pagamento *</Label>
                 <Select value={motivoPagamento} onValueChange={setMotivoPagamento}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o motivo" />
@@ -620,12 +646,13 @@ export function ContratoDetalhesContent() {
               </div>
               
               <div>
-                <Label htmlFor="descricaoPagamento">Descrição do Pagamento</Label>
+                <Label htmlFor="descricaoPagamento">Descrição do Pagamento *</Label>
                 <Textarea
                   id="descricaoPagamento"
                   value={descricaoPagamento}
                   onChange={(e) => setDescricaoPagamento(e.target.value)}
                   className="min-h-[80px]"
+                  required
                 />
               </div>
 
@@ -691,8 +718,16 @@ export function ContratoDetalhesContent() {
                   <Input id="chavePix" defaultValue="fbf47a1c-491c-4a3e-aff6-f" />
                 </div>
                 <div>
-                  <Label htmlFor="valorBaixa">Valor da Baixa</Label>
-                  <Input id="valorBaixa" className="border-red-300" />
+                  <Label htmlFor="valorBaixa">Valor da Baixa *</Label>
+                  <Input 
+                    id="valorBaixa" 
+                    type="number"
+                    step="0.01"
+                    value={valorBaixa}
+                    onChange={(e) => setValorBaixa(e.target.value)}
+                    className="border-red-300" 
+                    required
+                  />
                 </div>
               </div>
 
@@ -704,8 +739,14 @@ export function ContratoDetalhesContent() {
               </div>
 
               <div>
-                <Label htmlFor="descricao">Descrição</Label>
-                <Textarea id="descricao" className="min-h-[80px]" />
+                <Label htmlFor="descricaoBaixa">Descrição *</Label>
+                <Textarea 
+                  id="descricaoBaixa" 
+                  value={descricaoBaixa}
+                  onChange={(e) => setDescricaoBaixa(e.target.value)}
+                  className="min-h-[80px]"
+                  required
+                />
               </div>
 
               <div className="flex justify-end space-x-2">

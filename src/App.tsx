@@ -24,6 +24,7 @@ import ConsultarRegistroBoleto from "./pages/ConsultarRegistroBoleto";
 import ConsultaProposta from "./pages/ConsultaProposta";
 import VisualizarContratos from "./pages/VisualizarContratos";
 import ContratoDetalhes from "./pages/ContratoDetalhes";
+import Boletos from "./pages/Boletos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
           <Route path="/consulta-proposta" element={<ConsultaProposta />} />
           <Route path="/visualizar-contratos" element={<VisualizarContratos />} />
           <Route path="/visualizar-contratos/:numero" element={<ContratoDetalhes />} />
+          <Route path="/boletos" element={<Boletos />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
