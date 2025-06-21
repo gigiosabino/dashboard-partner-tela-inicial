@@ -4,14 +4,12 @@ interface GridDataDisplayProps {
   columns?: number;
 }
 
-export function GridDataDisplay({ data, columns = 2 }: GridDataDisplayProps) {
-  const gridCols = columns === 1 ? 'grid-cols-1' : columns === 3 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2';
-  
+export function GridDataDisplay({ data, columns = 1 }: GridDataDisplayProps) {
   return (
-    <div className={`grid ${gridCols} gap-4`}>
+    <div className="space-y-3">
       {Object.entries(data).map(([key, value]) => (
-        <div key={key} className="bg-gray-50 p-4 rounded-md border border-gray-200">
-          <label className="text-sm font-medium text-gray-600 block mb-1">{key}</label>
+        <div key={key} className="flex flex-col">
+          <label className="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">{key}</label>
           <p className="text-gray-900 font-medium">{value}</p>
         </div>
       ))}

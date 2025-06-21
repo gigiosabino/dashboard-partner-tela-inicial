@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6,8 +7,8 @@ import { ExpandableSection } from "./proposta-detalhes/ExpandableSection";
 import { GridDataDisplay } from "./proposta-detalhes/GridDataDisplay";
 import { DocumentsTable } from "./proposta-detalhes/DocumentsTable";
 import { AnalysisItemsTable } from "./proposta-detalhes/AnalysisItemsTable";
+import { PropostaSummaryCard } from "./proposta-detalhes/PropostaSummaryCard";
 import { useExpandedSections } from "@/hooks/useExpandedSections";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function PropostaDetalhesContent() {
   const { numero } = useParams();
@@ -24,30 +25,14 @@ export function PropostaDetalhesContent() {
 
   // Dados mockados para exemplo
   const propostaData = {
-    numero: numero || "056939510",
-    status: "Aprovada",
-    tarifaCadastro: "R$ 0,00",
-    iof: "R$ 7,53",
-    valorDivida: "R$ 807,53",
-    campoAuxiliar1: "Valor Campo 1",
-    campoAuxiliar2: "Valor Campo 2",
-    campoAuxiliar3: "Valor Campo 3",
-    campoAuxiliar4: "Valor Campo 4",
-    tipoOperacao: "Financiamento",
-    modelo: "PRICE",
-    taxaMensal: "7,90000",
-    taxaAnual: "149,03",
-    fluxo: "Regular",
-    valorSolicitado: "R$ 800,00",
-    vendedor: "Integração Banqi",
-    numParcelas: "5",
-    primeiroVencimento: "15/05/25",
-    parceiro: "BANQI",
-    valorAprovado: "R$ 800,00",
-    cetAnual: "166,16",
-    tipoContrato: "CPD - CP DIGITAL",
-    valorParcela: "R$ 190,92",
-    valorTotalCredito: "R$ 807,53"
+    numero: numero || "004935629",
+    cliente: "TESTE LUCCA",
+    cpf: "422.817.188-59",
+    dataEnvio: "05/06/2025",
+    valorSolicitado: "R$ 500,00",
+    situacao: "Em análise",
+    parceiro: "Parceiro Exemplo",
+    status: "Ativa"
   };
 
   const valoresOperacao = {
@@ -85,20 +70,20 @@ export function PropostaDetalhesContent() {
   ];
 
   const assinantes = [
-    { nome: "IZABELA MARIA PEREIRA DE AZEVEDO", email: "izabela@email.com", documento: "077.445.417-23", celular: "(11) 99999-9999", identificador: "ID123" }
+    { nome: "TESTE LUCCA", email: "teste@email.com", documento: "422.817.188-59", celular: "(11) 99999-9999", identificador: "ID123" }
   ];
 
   const dadosCliente = {
-    "Nome": "IZABELA MARIA PEREIRA DE AZEVEDO",
-    "Documento Federal": "077.445.417-23",
+    "Nome": "TESTE LUCCA",
+    "Documento Federal": "422.817.188-59",
     "Data de Nascimento": "15/03/1985",
     "RG": "12.345.678-9",
-    "Sexo": "Feminino",
+    "Sexo": "Masculino",
     "Escolaridade": "Superior Completo",
-    "Nome da Mãe": "MARIA PEREIRA DE AZEVEDO",
-    "Estado Civil": "Solteira",
+    "Nome da Mãe": "MARIA TESTE",
+    "Estado Civil": "Solteiro",
     "Nacionalidade": "Brasileira",
-    "E-mail": "izabela@email.com",
+    "E-mail": "teste@email.com",
     "Telefone Celular": "(11) 99999-9999"
   };
 
@@ -127,7 +112,7 @@ export function PropostaDetalhesContent() {
   };
 
   const outrosPagamentos = [
-    { tipo: "PIX", chave: "077.445.417-23", principal: "Sim" },
+    { tipo: "PIX", chave: "422.817.188-59", principal: "Sim" },
     { tipo: "TED", banco: "Banco Itaú", agencia: "9876", conta: "54321-0", principal: "Não" }
   ];
 
@@ -148,92 +133,22 @@ export function PropostaDetalhesContent() {
     <div className="flex-1 bg-gray-50 min-h-screen">
       <PropostaHeader 
         numero={propostaData.numero}
-        status={propostaData.status}
+        status={propostaData.situacao}
         onVoltar={handleVoltar}
       />
 
       <main className="p-6 space-y-6 max-w-7xl mx-auto">
-        {/* Card de Informações Principais */}
-        <Card className="bg-white border border-gray-200 shadow-sm rounded-lg">
-          <CardHeader className="bg-gray-800 text-white p-6">
-            <CardTitle className="text-2xl font-semibold flex items-center justify-between">
-              <span>Proposta {propostaData.numero}</span>
-              <Badge className={`${
-                propostaData.status === 'Aprovada' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
-              } text-white px-3 py-1 rounded`}>
-                {propostaData.status}
-              </Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="space-y-4">
-                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                  <label className="text-sm font-medium text-green-700 block mb-1">Valor Aprovado</label>
-                  <p className="text-2xl font-bold text-green-800">{propostaData.valorAprovado}</p>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <label className="text-sm font-medium text-blue-700 block mb-1">Valor da Parcela</label>
-                  <p className="text-xl font-bold text-blue-800">{propostaData.valorParcela}</p>
-                </div>
-              </div>
+        {/* Card de Resumo da Proposta */}
+        <PropostaSummaryCard propostaData={propostaData} />
 
-              <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="text-sm font-medium text-gray-600 block mb-1">Tipo de Operação</label>
-                  <p className="text-gray-900 font-medium">{propostaData.tipoOperacao}</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="text-sm font-medium text-gray-600 block mb-1">Modelo</label>
-                  <p className="text-gray-900 font-medium">{propostaData.modelo}</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="text-sm font-medium text-gray-600 block mb-1">Parcelas</label>
-                  <p className="text-gray-900 font-medium">{propostaData.numParcelas}x</p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                  <label className="text-sm font-medium text-orange-700 block mb-1">Taxa Mensal</label>
-                  <p className="text-orange-900 font-medium">{propostaData.taxaMensal}%</p>
-                </div>
-                <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                  <label className="text-sm font-medium text-orange-700 block mb-1">Taxa Anual</label>
-                  <p className="text-orange-900 font-medium">{propostaData.taxaAnual}%</p>
-                </div>
-                <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-                  <label className="text-sm font-medium text-red-700 block mb-1">CET Anual</label>
-                  <p className="text-red-900 font-medium">{propostaData.cetAnual}%</p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="text-sm font-medium text-gray-600 block mb-1">1º Vencimento</label>
-                  <p className="text-gray-900 font-medium">{propostaData.primeiroVencimento}</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="text-sm font-medium text-gray-600 block mb-1">Parceiro</label>
-                  <p className="text-gray-900 font-medium">{propostaData.parceiro}</p>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <label className="text-sm font-medium text-gray-600 block mb-1">Vendedor</label>
-                  <p className="text-gray-900 font-medium">{propostaData.vendedor}</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Seções Expansíveis */}
-        <div className="space-y-4">
+        {/* Seções Expansíveis em Duas Colunas */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ExpandableSection
             title="Valores da Operação"
             isOpen={expandedSections.valoresOperacao}
             onToggle={() => toggleSection('valoresOperacao')}
           >
-            <GridDataDisplay data={valoresOperacao} columns={2} />
+            <GridDataDisplay data={valoresOperacao} columns={1} />
           </ExpandableSection>
 
           <ExpandableSection
@@ -247,6 +162,41 @@ export function PropostaDetalhesContent() {
             </div>
           </ExpandableSection>
 
+          <ExpandableSection
+            title="Dados do Cliente"
+            isOpen={expandedSections.dadosCliente}
+            onToggle={() => toggleSection('dadosCliente')}
+          >
+            <GridDataDisplay data={dadosCliente} columns={1} />
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Endereço do Cliente"
+            isOpen={expandedSections.endereco}
+            onToggle={() => toggleSection('endereco')}
+          >
+            <GridDataDisplay data={enderecoCliente} columns={1} />
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Referências Bancárias"
+            isOpen={expandedSections.referenciasBancarias}
+            onToggle={() => toggleSection('referenciasBancarias')}
+          >
+            <GridDataDisplay data={referenciasBancarias} columns={1} />
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Conta de Pagamento da Proposta"
+            isOpen={expandedSections.contaPagamento}
+            onToggle={() => toggleSection('contaPagamento')}
+          >
+            <GridDataDisplay data={contaPagamento} columns={1} />
+          </ExpandableSection>
+        </div>
+
+        {/* Seções que ocupam toda a largura */}
+        <div className="space-y-6">
           <ExpandableSection
             title="Itens da Análise (Resolvido: 2 de 2)"
             isOpen={expandedSections.itensAnalise}
@@ -319,38 +269,6 @@ export function PropostaDetalhesContent() {
                 </TableBody>
               </Table>
             </div>
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Dados do Cliente"
-            isOpen={expandedSections.dadosCliente}
-            onToggle={() => toggleSection('dadosCliente')}
-          >
-            <GridDataDisplay data={dadosCliente} columns={2} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Endereço do Cliente"
-            isOpen={expandedSections.endereco}
-            onToggle={() => toggleSection('endereco')}
-          >
-            <GridDataDisplay data={enderecoCliente} columns={2} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Referências Bancárias"
-            isOpen={expandedSections.referenciasBancarias}
-            onToggle={() => toggleSection('referenciasBancarias')}
-          >
-            <GridDataDisplay data={referenciasBancarias} columns={2} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Conta de Pagamento da Proposta"
-            isOpen={expandedSections.contaPagamento}
-            onToggle={() => toggleSection('contaPagamento')}
-          >
-            <GridDataDisplay data={contaPagamento} columns={2} />
           </ExpandableSection>
 
           <ExpandableSection
