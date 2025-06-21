@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -235,15 +236,14 @@ export function BoletosContent() {
             <TableHeader>
               <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
                 <TableHead className="text-slate-700 font-semibold">Proposta</TableHead>
+                <TableHead className="text-slate-700 font-semibold">Valor Boleto</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Boleto</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Tipo</TableHead>
                 <TableHead className="text-slate-700 font-semibold">CPF/CNPJ</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Nome/Razão Social</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Geração</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Vencimento</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Cancelamento</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Crédito</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Valor Boleto</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Ações</TableHead>
               </TableRow>
             </TableHeader>
@@ -251,15 +251,19 @@ export function BoletosContent() {
               {currentData.map((boleto, index) => (
                 <TableRow key={index} className="hover:bg-slate-50 border-b border-slate-100">
                   <TableCell className="font-medium text-slate-900">{boleto.proposta}</TableCell>
-                  <TableCell className="text-slate-600">{boleto.boleto}</TableCell>
-                  <TableCell className="text-slate-600">{boleto.tipo}</TableCell>
+                  <TableCell className="font-medium text-slate-900">{boleto.valorBoleto}</TableCell>
+                  <TableCell className="text-slate-600">
+                    <div className="flex flex-col">
+                      <span className="font-medium">{boleto.boleto}</span>
+                      <span className="text-xs text-slate-500">{boleto.tipo}</span>
+                    </div>
+                  </TableCell>
                   <TableCell className="text-slate-600">{boleto.cpfCnpj}</TableCell>
                   <TableCell className="text-slate-600 max-w-xs truncate">{boleto.nomeRazaoSocial}</TableCell>
                   <TableCell className="text-slate-600">{boleto.geracao}</TableCell>
                   <TableCell className="text-slate-600">{boleto.vencimento}</TableCell>
                   <TableCell className="text-slate-600">{boleto.cancelamento || "-"}</TableCell>
                   <TableCell className="text-slate-600">{boleto.credito || "-"}</TableCell>
-                  <TableCell className="font-medium text-slate-900">{boleto.valorBoleto}</TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
                       <Dialog>
