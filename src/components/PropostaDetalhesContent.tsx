@@ -1,19 +1,11 @@
-
 import { useParams, useNavigate } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PropostaHeader } from "./proposta-detalhes/PropostaHeader";
-import { ExpandableSection } from "./proposta-detalhes/ExpandableSection";
-import { GridDataDisplay } from "./proposta-detalhes/GridDataDisplay";
-import { DocumentsTable } from "./proposta-detalhes/DocumentsTable";
-import { AnalysisItemsTable } from "./proposta-detalhes/AnalysisItemsTable";
 import { PropostaSummaryCard } from "./proposta-detalhes/PropostaSummaryCard";
-import { useExpandedSections } from "@/hooks/useExpandedSections";
+import { PropostaTabsContent } from "./proposta-detalhes/PropostaTabsContent";
 
 export function PropostaDetalhesContent() {
   const { numero } = useParams();
   const navigate = useNavigate();
-  const { expandedSections, toggleSection } = useExpandedSections();
 
   const handleDownloadDocument = (documentName: string) => {
     console.log(`Baixando documento: ${documentName}`);
@@ -138,192 +130,22 @@ export function PropostaDetalhesContent() {
       />
 
       <main className="p-6 space-y-6 max-w-7xl mx-auto">
-        {/* Card de Resumo da Proposta */}
         <PropostaSummaryCard propostaData={propostaData} />
-
-        {/* Seções Expansíveis em Duas Colunas */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ExpandableSection
-            title="Valores da Operação"
-            isOpen={expandedSections.valoresOperacao}
-            onToggle={() => toggleSection('valoresOperacao')}
-          >
-            <GridDataDisplay data={valoresOperacao} columns={1} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Ajuda Analista"
-            isOpen={expandedSections.ajudaAnalista}
-            onToggle={() => toggleSection('ajudaAnalista')}
-          >
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="text-sm font-medium text-gray-600 block mb-2">Campo de texto preenchido pelo analista:</label>
-              <p className="text-gray-900 leading-relaxed">Cliente aprovado após análise completa dos documentos e verificação de renda. Todos os requisitos foram atendidos.</p>
-            </div>
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Dados do Cliente"
-            isOpen={expandedSections.dadosCliente}
-            onToggle={() => toggleSection('dadosCliente')}
-          >
-            <GridDataDisplay data={dadosCliente} columns={1} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Endereço do Cliente"
-            isOpen={expandedSections.endereco}
-            onToggle={() => toggleSection('endereco')}
-          >
-            <GridDataDisplay data={enderecoCliente} columns={1} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Referências Bancárias"
-            isOpen={expandedSections.referenciasBancarias}
-            onToggle={() => toggleSection('referenciasBancarias')}
-          >
-            <GridDataDisplay data={referenciasBancarias} columns={1} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Conta de Pagamento da Proposta"
-            isOpen={expandedSections.contaPagamento}
-            onToggle={() => toggleSection('contaPagamento')}
-          >
-            <GridDataDisplay data={contaPagamento} columns={1} />
-          </ExpandableSection>
-        </div>
-
-        {/* Seções que ocupam toda a largura */}
-        <div className="space-y-6">
-          <ExpandableSection
-            title="Itens da Análise (Resolvido: 2 de 2)"
-            isOpen={expandedSections.itensAnalise}
-            onToggle={() => toggleSection('itensAnalise')}
-          >
-            <AnalysisItemsTable items={itensAnalise} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Propostas Anteriores"
-            isOpen={expandedSections.propostasAnteriores}
-            onToggle={() => toggleSection('propostasAnteriores')}
-          >
-            <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="font-medium">Número da Proposta</TableHead>
-                    <TableHead className="font-medium">Data de Criação</TableHead>
-                    <TableHead className="font-medium">Produto</TableHead>
-                    <TableHead className="font-medium">Valor Solicitado</TableHead>
-                    <TableHead className="font-medium">Situação</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {propostasAnteriores.map((proposta, index) => (
-                    <TableRow key={index} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">#{proposta.numero}</TableCell>
-                      <TableCell>{proposta.dataCriacao}</TableCell>
-                      <TableCell>{proposta.produto}</TableCell>
-                      <TableCell>{proposta.valorSolicitado}</TableCell>
-                      <TableCell>
-                        <Badge variant={proposta.situacao === "Finalizada" ? "default" : "destructive"} className="rounded">
-                          {proposta.situacao}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Assinantes (CCB Digital)"
-            isOpen={expandedSections.assinantes}
-            onToggle={() => toggleSection('assinantes')}
-          >
-            <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="font-medium">Nome</TableHead>
-                    <TableHead className="font-medium">Email</TableHead>
-                    <TableHead className="font-medium">Documento Federal</TableHead>
-                    <TableHead className="font-medium">Celular</TableHead>
-                    <TableHead className="font-medium">Identificador</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {assinantes.map((assinante, index) => (
-                    <TableRow key={index} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">{assinante.nome}</TableCell>
-                      <TableCell>{assinante.email}</TableCell>
-                      <TableCell>{assinante.documento}</TableCell>
-                      <TableCell>{assinante.celular}</TableCell>
-                      <TableCell>{assinante.identificador}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Outros Métodos de Pagamento"
-            isOpen={expandedSections.outrosPagamentos}
-            onToggle={() => toggleSection('outrosPagamentos')}
-          >
-            <div className="bg-white rounded-lg overflow-hidden border border-gray-200">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="font-medium">Tipo</TableHead>
-                    <TableHead className="font-medium">Chave/Dados</TableHead>
-                    <TableHead className="font-medium">Banco</TableHead>
-                    <TableHead className="font-medium">Agência</TableHead>
-                    <TableHead className="font-medium">Conta</TableHead>
-                    <TableHead className="font-medium">Principal</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {outrosPagamentos.map((pagamento, index) => (
-                    <TableRow key={index} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">{pagamento.tipo}</TableCell>
-                      <TableCell>{pagamento.chave || '-'}</TableCell>
-                      <TableCell>{pagamento.banco || '-'}</TableCell>
-                      <TableCell>{pagamento.agencia || '-'}</TableCell>
-                      <TableCell>{pagamento.conta || '-'}</TableCell>
-                      <TableCell>
-                        <Badge variant={pagamento.principal === "Sim" ? "default" : "secondary"} className="rounded">
-                          {pagamento.principal}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Documentos do Cliente"
-            isOpen={expandedSections.documentosCliente}
-            onToggle={() => toggleSection('documentosCliente')}
-          >
-            <DocumentsTable documents={documentosCliente} onDownload={handleDownloadDocument} />
-          </ExpandableSection>
-
-          <ExpandableSection
-            title="Documentos da Proposta"
-            isOpen={expandedSections.documentosProposta}
-            onToggle={() => toggleSection('documentosProposta')}
-          >
-            <DocumentsTable documents={documentosProposta} onDownload={handleDownloadDocument} />
-          </ExpandableSection>
-        </div>
+        
+        <PropostaTabsContent
+          valoresOperacao={valoresOperacao}
+          dadosCliente={dadosCliente}
+          enderecoCliente={enderecoCliente}
+          referenciasBancarias={referenciasBancarias}
+          contaPagamento={contaPagamento}
+          itensAnalise={itensAnalise}
+          propostasAnteriores={propostasAnteriores}
+          assinantes={assinantes}
+          outrosPagamentos={outrosPagamentos}
+          documentosCliente={documentosCliente}
+          documentosProposta={documentosProposta}
+          onDownloadDocument={handleDownloadDocument}
+        />
       </main>
     </div>
   );
