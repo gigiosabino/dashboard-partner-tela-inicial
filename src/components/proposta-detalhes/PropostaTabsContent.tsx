@@ -197,17 +197,27 @@ export function PropostaTabsContent({
   const garantiasData = [
     {
       id: "1",
-      tipo: "Veículo",
-      descricao: "CHEVROLET ONIX 1.0 TB AT - DMA4C96",
-      valor: "R$ 78.000,00",
-      situacao: "Ativa"
+      grupo: "Bens Imóveis",
+      subgrupo: "Prédio comercial",
+      valor: "R$ 13.330,00"
     },
     {
       id: "2",
-      tipo: "Avalista",
-      descricao: "MARCOS FERNANDES - 422.817.188-59",
-      valor: "R$ 100.000,00",
-      situacao: "Pendente"
+      grupo: "Bens Rurais",
+      subgrupo: "Alienação Fiduciária",
+      valor: "R$ 10.000,00"
+    },
+    {
+      id: "3",
+      grupo: "Bens Móveis",
+      subgrupo: "Máquinas e equipamentos",
+      valor: "R$ 10.000,00"
+    },
+    {
+      id: "4",
+      grupo: "Bens Móveis",
+      subgrupo: "Veículo automotor terrestre, caminhão, automóvel, moto etc",
+      valor: "R$ 45.000,00"
     }
   ];
 
