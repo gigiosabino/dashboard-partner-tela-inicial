@@ -19,8 +19,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { User, FileText, DollarSign, Building, CreditCard, AlertCircle, Edit, Send, Users } from "lucide-react";
+import { User, FileText, DollarSign, Building, CreditCard, AlertCircle, Edit, Send, Users, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { VeiculosTable } from "./VeiculosTable";
+import { GarantiasTable } from "./GarantiasTable";
 
 interface PropostaTabsContentProps {
   valoresOperacao: Record<string, string | number>;
@@ -157,10 +159,62 @@ export function PropostaTabsContent({
     });
   };
 
+  // Dados mockados dos veículos para exemplo
+  const veiculosData = [
+    {
+      id: "1",
+      placa: "DMA4C96",
+      chassi: "NEM035187320001234",
+      anoFab: "2021",
+      anoMod: "2021",
+      descricao: "CHEVROLET ONIX 1.0 TB AT",
+      proprietario: "MARCOS FERNANDES",
+      cpfCnpj: "422.817.188-59",
+      marca: "CHEVROLET",
+      modelo: "ONIX",
+      versao: "1.0 TB AT",
+      valorFipe: "R$ 76.800,00",
+      valorVeiculo: "R$ 78.000,00",
+      zeroKm: false,
+      km: "26584",
+      cor: "VERMELHO",
+      tipoChissi: "2 - Normal",
+      tipoRestricao: "Selecione",
+      renavam: "23097728690",
+      ufLicenciamento: "SP",
+      numeroGravame: "0",
+      financiado: false,
+      saldo: "R$ 0,00",
+      tipoPlaca: "Carro",
+      tipoVeiculo: "Particular",
+      pendenciaGravame: "",
+      identificador: "b156b365-8264-4c04-b113-46d907b2ceb6",
+      houveConsultaRenave: false
+    }
+  ];
+
+  // Dados mockados das garantias para exemplo
+  const garantiasData = [
+    {
+      id: "1",
+      tipo: "Veículo",
+      descricao: "CHEVROLET ONIX 1.0 TB AT - DMA4C96",
+      valor: "R$ 78.000,00",
+      situacao: "Ativa"
+    },
+    {
+      id: "2",
+      tipo: "Avalista",
+      descricao: "MARCOS FERNANDES - 422.817.188-59",
+      valor: "R$ 100.000,00",
+      situacao: "Pendente"
+    }
+  ];
+
   return (
     <>
       <Tabs defaultValue="operacao" className="w-full">
-        <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1 rounded-lg">
+        <TabsList className="grid w-full grid-cols-6 bg-gray-100 p-1 rounded-lg">
           <TabsTrigger value="operacao" className="flex items-center gap-2">
             <DollarSign className="w-4 h-4" />
             Operação
@@ -172,6 +226,10 @@ export function PropostaTabsContent({
           <TabsTrigger value="assinantes" className="flex items-center gap-2">
             <Users className="w-4 h-4" />
             Assinantes
+          </TabsTrigger>
+          <TabsTrigger value="garantias" className="flex items-center gap-2">
+            <Shield className="w-4 h-4" />
+            Garantias
           </TabsTrigger>
           <TabsTrigger value="pagamentos" className="flex items-center gap-2">
             <CreditCard className="w-4 h-4" />
@@ -344,6 +402,34 @@ export function PropostaTabsContent({
               </Table>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="garantias" className="mt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Veículos
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <VeiculosTable veiculos={veiculosData} />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Garantias
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <GarantiasTable garantias={garantiasData} />
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="pagamentos" className="mt-6">
