@@ -85,10 +85,9 @@ export function VeiculosTable({ veiculos }: VeiculosTableProps) {
                 <TableCell className="text-slate-700">{veiculo.descricao}</TableCell>
                 <TableCell>
                   <Button
-                    variant="outline"
-                    size="sm"
                     onClick={() => handleVisualizarVeiculo(veiculo)}
-                    className="flex items-center gap-1"
+                    className="bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium px-4 py-2 rounded-md transition-all duration-200 hover:shadow-lg flex items-center gap-2"
+                    size="sm"
                   >
                     <Eye className="w-4 h-4" />
                     Visualizar
