@@ -1,6 +1,7 @@
-
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExpandableSection } from "./ExpandableSection";
 import { GridDataDisplay } from "./GridDataDisplay";
 import { DocumentsTable } from "./DocumentsTable";
 import { AnalysisItemsTable } from "./AnalysisItemsTable";
@@ -37,6 +38,15 @@ export function PropostaTabsContent({
   documentosProposta,
   onDownloadDocument
 }: PropostaTabsContentProps) {
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }));
+  };
+
   return (
     <Tabs defaultValue="dados-operacao" className="w-full">
       <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1 rounded-lg">
@@ -63,36 +73,84 @@ export function PropostaTabsContent({
       </TabsList>
 
       <TabsContent value="dados-operacao" className="mt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                <DollarSign className="w-5 h-5" />
-                Valores da Operação
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <GridDataDisplay data={valoresOperacao} columns={2} />
-            </CardContent>
-          </Card>
+        <div className="space-y-4">
+          <ExpandableSection
+            title="Valores da Operação"
+            isOpen={expandedSections["valores-operacao"]}
+            onToggle={() => toggleSection("valores-operacao")}
+          >
+            <GridDataDisplay data={valoresOperacao} columns={2} />
+          </ExpandableSection>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                <Building className="w-5 h-5" />
-                Ajuda Analista
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <label className="text-sm font-medium text-gray-600 block mb-2">Campo de texto preenchido pelo analista:</label>
-                <p className="text-gray-900 leading-relaxed">Cliente aprovado após análise completa dos documentos e verificação de renda. Todos os requisitos foram atendidos.</p>
-              </div>
-            </CardContent>
-          </Card>
+          <ExpandableSection
+            title="Assinantes CCB Digital"
+            isOpen={expandedSections["assinantes"]}
+            onToggle={() => toggleSection("assinantes")}
+          >
+            <div className="space-y-3">
+              {assinantes.map((assinante, index) => (
+                <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-600">Nome:</span>
+                      <p className="text-gray-900">{assinante.nome}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-600">Email:</span>
+                      <p className="text-gray-900">{assinante.email}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-600">Documento:</span>
+                      <p className="text-gray-900">{assinante.documento}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-600">Celular:</span>
+                      <p className="text-gray-900">{assinante.celular}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Dados Pessoais"
+            isOpen={expandedSections["dados-pessoais"]}
+            onToggle={() => toggleSection("dados-pessoais")}
+          >
+            <GridDataDisplay data={dadosCliente} columns={2} />
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Dados Bancários"
+            isOpen={expandedSections["dados-bancarios"]}
+            onToggle={() => toggleSection("dados-bancarios")}
+          >
+            <GridDataDisplay data={referenciasBancarias} columns={2} />
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Endereços"
+            isOpen={expandedSections["enderecos"]}
+            onToggle={() => toggleSection("enderecos")}
+          >
+            <GridDataDisplay data={enderecoCliente} columns={2} />
+          </ExpandableSection>
+
+          <ExpandableSection
+            title="Ajuda Analista"
+            isOpen={expandedSections["ajuda-analista"]}
+            onToggle={() => toggleSection("ajuda-analista")}
+          >
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <label className="text-sm font-medium text-gray-600 block mb-2">Campo de texto preenchido pelo analista:</label>
+              <p className="text-gray-900 leading-relaxed">Cliente aprovado após análise completa dos documentos e verificação de renda. Todos os requisitos foram atendidos.</p>
+            </div>
+          </ExpandableSection>
         </div>
       </TabsContent>
 
+      
       <TabsContent value="dados-cliente" className="mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
