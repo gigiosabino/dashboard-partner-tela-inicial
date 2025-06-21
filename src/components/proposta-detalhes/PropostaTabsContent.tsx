@@ -76,23 +76,17 @@ export function PropostaTabsContent({
       </TabsList>
 
       <TabsContent value="dados-operacao" className="mt-6">
-        <div className="space-y-4">
-          {/* Apenas a seção Operação */}
-          <ExpandableSection
-            title="Operação"
-            isOpen={expandedSections["operacao"]}
-            onToggle={() => toggleSection("operacao")}
-          >
-            <div className="grid grid-cols-4 gap-6">
-              {Object.entries(valoresOperacao).map(([key, value], index) => (
-                <div key={key} className="space-y-1">
-                  <label className="text-xs font-medium text-gray-600 uppercase tracking-wide">{key}</label>
-                  <p className="text-gray-900 font-medium">{value}</p>
-                </div>
-              ))}
-            </div>
-          </ExpandableSection>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+              <DollarSign className="w-5 h-5" />
+              Dados da Operação
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <GridDataDisplay data={valoresOperacao} columns={1} />
+          </CardContent>
+        </Card>
       </TabsContent>
 
       <TabsContent value="dados-cliente" className="mt-6">
