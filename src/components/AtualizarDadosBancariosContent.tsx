@@ -28,8 +28,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useState } from "react";
 import { GlobalHeader } from "@/components/GlobalHeader";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const propostas = [
   {
@@ -108,6 +123,7 @@ export function AtualizarDadosBancariosContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [selectedBanco, setSelectedBanco] = useState("");
+  const [openBanco, setOpenBanco] = useState(false);
   const [tipoConta, setTipoConta] = useState("");
   const [agencia, setAgencia] = useState("");
   const [digitoAgencia, setDigitoAgencia] = useState("");
@@ -157,6 +173,11 @@ export function AtualizarDadosBancariosContent() {
     proposta.nomeCliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
     proposta.documentoCliente.includes(searchTerm)
   );
+
+  const getBancoDisplay = (codigo: string) => {
+    const banco = bancos.find(b => b.codigo === codigo);
+    return banco ? `${banco.codigo} - ${banco.nome}` : "";
+  };
 
   return (
     <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
@@ -284,25 +305,49 @@ export function AtualizarDadosBancariosContent() {
                           <div className="space-y-4 py-4">
                             <div className="space-y-2">
                               <label className="block text-sm font-medium">Banco:</label>
-                              <div className="space-y-2">
-                                <Input
-                                  placeholder="Buscar banco por nome, número ou código"
-                                  value={bancoSearch}
-                                  onChange={(e) => setBancoSearch(e.target.value)}
-                                />
-                                <Select value={selectedBanco} onValueChange={setSelectedBanco}>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Selecione o banco" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {filteredBancos.map((banco) => (
-                                      <SelectItem key={banco.codigo} value={banco.codigo}>
-                                        {banco.codigo} - {banco.nome}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
+                              <Popover open={openBanco} onOpenChange={setOpenBanco}>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={openBanco}
+                                    className="w-full justify-between"
+                                  >
+                                    {selectedBanco
+                                      ? getBancoDisplay(selectedBanco)
+                                      : "Selecione ou busque um banco..."}
+                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0" align="start">
+                                  <Command>
+                                    <CommandInput placeholder="Buscar banco por nome ou código..." />
+                                    <CommandList>
+                                      <CommandEmpty>Nenhum banco encontrado.</CommandEmpty>
+                                      <CommandGroup>
+                                        {bancos.map((banco) => (
+                                          <CommandItem
+                                            key={banco.codigo}
+                                            value={`${banco.codigo} ${banco.nome}`}
+                                            onSelect={() => {
+                                              setSelectedBanco(banco.codigo);
+                                              setOpenBanco(false);
+                                            }}
+                                          >
+                                            <Check
+                                              className={cn(
+                                                "mr-2 h-4 w-4",
+                                                selectedBanco === banco.codigo ? "opacity-100" : "opacity-0"
+                                              )}
+                                            />
+                                            {banco.codigo} - {banco.nome}
+                                          </CommandItem>
+                                        ))}
+                                      </CommandGroup>
+                                    </CommandList>
+                                  </Command>
+                                </PopoverContent>
+                              </Popover>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
@@ -465,25 +510,49 @@ export function AtualizarDadosBancariosContent() {
                                           <div className="space-y-4 py-4">
                                             <div className="space-y-2">
                                               <label className="block text-sm font-medium">Banco:</label>
-                                              <div className="space-y-2">
-                                                <Input
-                                                  placeholder="Buscar banco por nome, número ou código"
-                                                  value={bancoSearch}
-                                                  onChange={(e) => setBancoSearch(e.target.value)}
-                                                />
-                                                <Select value={selectedBanco} onValueChange={setSelectedBanco}>
-                                                  <SelectTrigger>
-                                                    <SelectValue placeholder="Selecione o banco" />
-                                                  </SelectTrigger>
-                                                  <SelectContent>
-                                                    {filteredBancos.map((banco) => (
-                                                      <SelectItem key={banco.codigo} value={banco.codigo}>
-                                                        {banco.codigo} - {banco.nome}
-                                                      </SelectItem>
-                                                    ))}
-                                                  </SelectContent>
-                                                </Select>
-                                              </div>
+                                              <Popover open={openBanco} onOpenChange={setOpenBanco}>
+                                                <PopoverTrigger asChild>
+                                                  <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    aria-expanded={openBanco}
+                                                    className="w-full justify-between"
+                                                  >
+                                                    {selectedBanco
+                                                      ? getBancoDisplay(selectedBanco)
+                                                      : "Selecione ou busque um banco..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                  </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-full p-0" align="start">
+                                                  <Command>
+                                                    <CommandInput placeholder="Buscar banco por nome ou código..." />
+                                                    <CommandList>
+                                                      <CommandEmpty>Nenhum banco encontrado.</CommandEmpty>
+                                                      <CommandGroup>
+                                                        {bancos.map((banco) => (
+                                                          <CommandItem
+                                                            key={banco.codigo}
+                                                            value={`${banco.codigo} ${banco.nome}`}
+                                                            onSelect={() => {
+                                                              setSelectedBanco(banco.codigo);
+                                                              setOpenBanco(false);
+                                                            }}
+                                                          >
+                                                            <Check
+                                                              className={cn(
+                                                                "mr-2 h-4 w-4",
+                                                                selectedBanco === banco.codigo ? "opacity-100" : "opacity-0"
+                                                              )}
+                                                            />
+                                                            {banco.codigo} - {banco.nome}
+                                                          </CommandItem>
+                                                        ))}
+                                                      </CommandGroup>
+                                                    </CommandList>
+                                                  </Command>
+                                                </PopoverContent>
+                                              </Popover>
                                             </div>
 
                                             <div className="grid grid-cols-2 gap-4">
