@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Filter, RefreshCcw, Download, Printer, Trash2 } from "lucide-react";
+import { Filter, RefreshCcw, Download, Printer, MessageSquare } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -18,6 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { GlobalHeader } from "@/components/GlobalHeader";
 
 // Dados simulados para os boletos
@@ -171,14 +178,6 @@ export function BoletosContent() {
     console.log("Imprimindo...");
   };
 
-  const handleDelete = () => {
-    console.log("Excluindo selecionados...");
-  };
-
-  const handleDetalhes = (proposta: string) => {
-    console.log("Visualizando detalhes da proposta:", proposta);
-  };
-
   return (
     <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
       <GlobalHeader 
@@ -226,14 +225,6 @@ export function BoletosContent() {
               >
                 <Printer className="w-4 h-4 mr-2" />
               </Button>
-              
-              <Button 
-                onClick={handleDelete}
-                variant="outline" 
-                className="border-slate-300 hover:bg-slate-50 text-slate-700"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-              </Button>
             </div>
           </div>
         </div>
@@ -243,9 +234,6 @@ export function BoletosContent() {
           <Table>
             <TableHeader>
               <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
-                <TableHead className="text-slate-700 font-semibold">
-                  <input type="checkbox" className="rounded border-slate-300" />
-                </TableHead>
                 <TableHead className="text-slate-700 font-semibold">Proposta</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Boleto</TableHead>
                 <TableHead className="text-slate-700 font-semibold">Tipo</TableHead>
@@ -262,9 +250,6 @@ export function BoletosContent() {
             <TableBody>
               {currentData.map((boleto, index) => (
                 <TableRow key={index} className="hover:bg-slate-50 border-b border-slate-100">
-                  <TableCell>
-                    <input type="checkbox" className="rounded border-slate-300" />
-                  </TableCell>
                   <TableCell className="font-medium text-slate-900">{boleto.proposta}</TableCell>
                   <TableCell className="text-slate-600">{boleto.boleto}</TableCell>
                   <TableCell className="text-slate-600">{boleto.tipo}</TableCell>
@@ -277,13 +262,30 @@ export function BoletosContent() {
                   <TableCell className="font-medium text-slate-900">{boleto.valorBoleto}</TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-2">
-                      <Button
-                        onClick={() => handleDetalhes(boleto.proposta)}
-                        variant="link"
-                        className="text-blue-600 hover:text-blue-800 p-0"
-                      >
-                        DETALHES
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-slate-600 hover:text-slate-800"
+                          >
+                            <MessageSquare className="w-4 h-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Informações de Geração</DialogTitle>
+                            <DialogDescription>
+                              Detalhes sobre como este boleto foi gerado
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="p-4">
+                            <p className="text-sm text-slate-600">
+                              Este boleto foi <strong>Gerado via API</strong>
+                            </p>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                       <Button
                         onClick={handlePrint}
                         variant="ghost"
@@ -291,14 +293,6 @@ export function BoletosContent() {
                         className="text-slate-600 hover:text-slate-800"
                       >
                         <Printer className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        onClick={handleDelete}
-                        variant="ghost"
-                        size="sm"
-                        className="text-slate-600 hover:text-slate-800"
-                      >
-                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   </TableCell>
