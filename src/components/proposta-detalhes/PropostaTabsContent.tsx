@@ -23,6 +23,7 @@ import { User, FileText, DollarSign, Building, CreditCard, AlertCircle, Edit, Se
 import { useToast } from "@/hooks/use-toast";
 import { VeiculosTable } from "./VeiculosTable";
 import { GarantiasTable } from "./GarantiasTable";
+import { AvalistasTable } from "./AvalistasTable";
 
 interface PropostaTabsContentProps {
   valoresOperacao: Record<string, string | number>;
@@ -221,6 +222,24 @@ export function PropostaTabsContent({
     }
   ];
 
+  // Dados mockados dos avalistas para exemplo
+  const avalistasData = [
+    {
+      id: "1",
+      documentoFederal: "123.456.789-10",
+      nome: "JOÃO SILVA SANTOS",
+      email: "joao.silva@email.com",
+      telefone: "(11) 99999-8888"
+    },
+    {
+      id: "2", 
+      documentoFederal: "987.654.321-00",
+      nome: "MARIA OLIVEIRA COSTA",
+      email: "maria.oliveira@email.com",
+      telefone: "(11) 88888-7777"
+    }
+  ];
+
   return (
     <>
       <Tabs defaultValue="operacao" className="w-full">
@@ -235,7 +254,7 @@ export function PropostaTabsContent({
           </TabsTrigger>
           <TabsTrigger value="assinantes" className="flex items-center gap-2">
             <Users className="w-4 h-4" />
-            Assinantes
+            Assinantes e participantes
           </TabsTrigger>
           <TabsTrigger value="garantias" className="flex items-center gap-2">
             <Shield className="w-4 h-4" />
@@ -357,61 +376,75 @@ export function PropostaTabsContent({
         </TabsContent>
 
         <TabsContent value="assinantes" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                <Users className="w-5 h-5" />
-                Assinantes CCB Digital
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="font-medium">Nome</TableHead>
-                    <TableHead className="font-medium">E-mail</TableHead>
-                    <TableHead className="font-medium">Documento</TableHead>
-                    <TableHead className="font-medium">Celular</TableHead>
-                    <TableHead className="font-medium">Identificador</TableHead>
-                    <TableHead className="font-medium">Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {assinantes.map((assinante, index) => (
-                    <TableRow key={index} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">{assinante.nome}</TableCell>
-                      <TableCell>{assinante.email}</TableCell>
-                      <TableCell>{assinante.documento}</TableCell>
-                      <TableCell>{assinante.celular}</TableCell>
-                      <TableCell>{assinante.identificador}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleEditAssinante(assinante)}
-                            className="flex items-center gap-1"
-                          >
-                            <Edit className="w-4 h-4" />
-                            Editar
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleReenviarLink(assinante)}
-                            className="flex items-center gap-1"
-                          >
-                            <Send className="w-4 h-4" />
-                            Reenviar
-                          </Button>
-                        </div>
-                      </TableCell>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Assinantes CCB Digital
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50">
+                      <TableHead className="font-medium">Nome</TableHead>
+                      <TableHead className="font-medium">E-mail</TableHead>
+                      <TableHead className="font-medium">Documento</TableHead>
+                      <TableHead className="font-medium">Celular</TableHead>
+                      <TableHead className="font-medium">Identificador</TableHead>
+                      <TableHead className="font-medium">Ações</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {assinantes.map((assinante, index) => (
+                      <TableRow key={index} className="hover:bg-gray-50">
+                        <TableCell className="font-medium">{assinante.nome}</TableCell>
+                        <TableCell>{assinante.email}</TableCell>
+                        <TableCell>{assinante.documento}</TableCell>
+                        <TableCell>{assinante.celular}</TableCell>
+                        <TableCell>{assinante.identificador}</TableCell>
+                        <TableCell>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEditAssinante(assinante)}
+                              className="flex items-center gap-1"
+                            >
+                              <Edit className="w-4 h-4" />
+                              Editar
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleReenviarLink(assinante)}
+                              className="flex items-center gap-1"
+                            >
+                              <Send className="w-4 h-4" />
+                              Reenviar
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Avalistas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <AvalistasTable avalistas={avalistasData} />
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="garantias" className="mt-6">
