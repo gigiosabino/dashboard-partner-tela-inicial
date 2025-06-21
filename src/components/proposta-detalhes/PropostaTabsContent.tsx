@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -150,7 +151,7 @@ export function PropostaTabsContent({
             <CardHeader>
               <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                 <DollarSign className="w-5 h-5" />
-                Dados da Proposta
+                Dados da operação
               </CardTitle>
             </CardHeader>
             <CardContent>
