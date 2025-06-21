@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Edit } from "lucide-react";
 
 interface AnalysisItem {
   resolvido: boolean;
@@ -52,7 +53,11 @@ export function AnalysisItemsTable({ items }: AnalysisItemsTableProps) {
             <TableCell>{item.alerta}</TableCell>
             <TableCell>{item.automacao}</TableCell>
             <TableCell>
-              <Button size="sm" variant="outline" className="border-slate-300 hover:bg-slate-50">
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium px-4 py-2 rounded-md transition-all duration-200 hover:shadow-lg flex items-center gap-2"
+                size="sm"
+              >
+                <Edit className="w-4 h-4" />
                 Editar
               </Button>
             </TableCell>

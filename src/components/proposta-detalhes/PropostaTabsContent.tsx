@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -332,7 +333,52 @@ export function PropostaTabsContent({
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <AnalysisItemsTable items={itensAnalise} />
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Resolvido?</TableHead>
+                      <TableHead>Descrição Script</TableHead>
+                      <TableHead>Conferido?</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Alerta</TableHead>
+                      <TableHead>Automação</TableHead>
+                      <TableHead>Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {itensAnalise.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <Badge variant={item.resolvido ? "default" : "destructive"}>
+                            {item.resolvido ? "Sim" : "Não"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{item.descricao}</TableCell>
+                        <TableCell>
+                          <Badge variant={item.conferido ? "default" : "secondary"}>
+                            {item.conferido ? "Sim" : "Não"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge className="bg-green-50 text-green-700 border-green-200">
+                            {item.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{item.alerta}</TableCell>
+                        <TableCell>{item.automacao}</TableCell>
+                        <TableCell>
+                          <Button
+                            className="bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium px-4 py-2 rounded-md transition-all duration-200 hover:shadow-lg flex items-center gap-2"
+                            size="sm"
+                          >
+                            <Edit className="w-4 h-4" />
+                            Editar
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
 
@@ -407,19 +453,17 @@ export function PropostaTabsContent({
                         <TableCell>
                           <div className="flex gap-2">
                             <Button
-                              variant="outline"
-                              size="sm"
                               onClick={() => handleEditAssinante(assinante)}
-                              className="flex items-center gap-1"
+                              className="bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium px-3 py-2 rounded-md transition-all duration-200 hover:shadow-lg flex items-center gap-2"
+                              size="sm"
                             >
                               <Edit className="w-4 h-4" />
                               Editar
                             </Button>
                             <Button
-                              variant="outline"
-                              size="sm"
                               onClick={() => handleReenviarLink(assinante)}
-                              className="flex items-center gap-1"
+                              className="bg-green-600 hover:bg-green-700 text-white shadow-md font-medium px-3 py-2 rounded-md transition-all duration-200 hover:shadow-lg flex items-center gap-2"
+                              size="sm"
                             >
                               <Send className="w-4 h-4" />
                               Reenviar

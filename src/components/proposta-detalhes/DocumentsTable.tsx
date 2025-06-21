@@ -36,12 +36,11 @@ export function DocumentsTable({ documents, onDownload }: DocumentsTableProps) {
             <TableCell>{doc.validoAte}</TableCell>
             <TableCell>
               <Button
-                size="sm"
-                variant="outline"
                 onClick={() => onDownload(doc.nome)}
-                className="border-slate-300 hover:bg-slate-50"
+                className="bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium px-4 py-2 rounded-md transition-all duration-200 hover:shadow-lg flex items-center gap-2"
+                size="sm"
               >
-                <Download className="w-4 h-4 mr-1" />
+                <Download className="w-4 h-4" />
                 Download
               </Button>
             </TableCell>
