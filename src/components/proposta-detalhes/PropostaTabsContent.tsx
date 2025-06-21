@@ -74,83 +74,116 @@ export function PropostaTabsContent({
 
       <TabsContent value="dados-operacao" className="mt-6">
         <div className="space-y-4">
+          {/* Primeira linha - Operação completa */}
           <ExpandableSection
-            title="Valores da Operação"
+            title="Operação"
             isOpen={expandedSections["valores-operacao"]}
             onToggle={() => toggleSection("valores-operacao")}
           >
             <GridDataDisplay data={valoresOperacao} columns={2} />
           </ExpandableSection>
 
-          <ExpandableSection
-            title="Assinantes CCB Digital"
-            isOpen={expandedSections["assinantes"]}
-            onToggle={() => toggleSection("assinantes")}
-          >
-            <div className="space-y-3">
-              {assinantes.map((assinante, index) => (
-                <div key={index} className="p-3 bg-gray-50 rounded-lg border">
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div>
-                      <span className="font-medium text-gray-600">Nome:</span>
-                      <p className="text-gray-900">{assinante.nome}</p>
-                    </div>
-                    <div>
-                      <span className="font-medium text-gray-600">Email:</span>
-                      <p className="text-gray-900">{assinante.email}</p>
-                    </div>
-                    <div>
-                      <span className="font-medium text-gray-600">Documento:</span>
-                      <p className="text-gray-900">{assinante.documento}</p>
-                    </div>
-                    <div>
-                      <span className="font-medium text-gray-600">Celular:</span>
-                      <p className="text-gray-900">{assinante.celular}</p>
+          {/* Segunda linha - 4 colunas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <ExpandableSection
+              title="Cliente"
+              isOpen={expandedSections["cliente-1"]}
+              onToggle={() => toggleSection("cliente-1")}
+            >
+              <GridDataDisplay data={dadosCliente} columns={1} />
+            </ExpandableSection>
+
+            <ExpandableSection
+              title="Assinantes"
+              isOpen={expandedSections["assinantes"]}
+              onToggle={() => toggleSection("assinantes")}
+            >
+              <div className="space-y-3">
+                {assinantes.map((assinante, index) => (
+                  <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                    <div className="space-y-2 text-sm">
+                      <div>
+                        <span className="font-medium text-gray-600">Nome:</span>
+                        <p className="text-gray-900">{assinante.nome}</p>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-600">Email:</span>
+                        <p className="text-gray-900">{assinante.email}</p>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-600">Documento:</span>
+                        <p className="text-gray-900">{assinante.documento}</p>
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-600">Celular:</span>
+                        <p className="text-gray-900">{assinante.celular}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </ExpandableSection>
+                ))}
+              </div>
+            </ExpandableSection>
 
-          <ExpandableSection
-            title="Dados Pessoais"
-            isOpen={expandedSections["dados-pessoais"]}
-            onToggle={() => toggleSection("dados-pessoais")}
-          >
-            <GridDataDisplay data={dadosCliente} columns={2} />
-          </ExpandableSection>
+            <ExpandableSection
+              title="Cliente"
+              isOpen={expandedSections["cliente-2"]}
+              onToggle={() => toggleSection("cliente-2")}
+            >
+              <GridDataDisplay data={enderecoCliente} columns={1} />
+            </ExpandableSection>
 
-          <ExpandableSection
-            title="Dados Bancários"
-            isOpen={expandedSections["dados-bancarios"]}
-            onToggle={() => toggleSection("dados-bancarios")}
-          >
-            <GridDataDisplay data={referenciasBancarias} columns={2} />
-          </ExpandableSection>
+            <ExpandableSection
+              title="Cliente"
+              isOpen={expandedSections["cliente-3"]}
+              onToggle={() => toggleSection("cliente-3")}
+            >
+              <GridDataDisplay data={referenciasBancarias} columns={1} />
+            </ExpandableSection>
+          </div>
 
-          <ExpandableSection
-            title="Endereços"
-            isOpen={expandedSections["enderecos"]}
-            onToggle={() => toggleSection("enderecos")}
-          >
-            <GridDataDisplay data={enderecoCliente} columns={2} />
-          </ExpandableSection>
+          {/* Terceira linha - 2 colunas */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <ExpandableSection
+              title="Dados pessoais"
+              isOpen={expandedSections["dados-pessoais"]}
+              onToggle={() => toggleSection("dados-pessoais")}
+            >
+              <GridDataDisplay data={dadosCliente} columns={1} />
+            </ExpandableSection>
 
-          <ExpandableSection
-            title="Ajuda Analista"
-            isOpen={expandedSections["ajuda-analista"]}
-            onToggle={() => toggleSection("ajuda-analista")}
-          >
-            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-              <label className="text-sm font-medium text-gray-600 block mb-2">Campo de texto preenchido pelo analista:</label>
-              <p className="text-gray-900 leading-relaxed">Cliente aprovado após análise completa dos documentos e verificação de renda. Todos os requisitos foram atendidos.</p>
-            </div>
-          </ExpandableSection>
+            <ExpandableSection
+              title="Endereços"
+              isOpen={expandedSections["enderecos"]}
+              onToggle={() => toggleSection("enderecos")}
+            >
+              <GridDataDisplay data={enderecoCliente} columns={1} />
+            </ExpandableSection>
+          </div>
+
+          {/* Quarta linha - 2 colunas */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <ExpandableSection
+              title="Dados bancários"
+              isOpen={expandedSections["dados-bancarios"]}
+              onToggle={() => toggleSection("dados-bancarios")}
+            >
+              <GridDataDisplay data={referenciasBancarias} columns={1} />
+            </ExpandableSection>
+
+            <ExpandableSection
+              title="Ajuda Analista"
+              isOpen={expandedSections["ajuda-analista"]}
+              onToggle={() => toggleSection("ajuda-analista")}
+            >
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <label className="text-sm font-medium text-gray-600 block mb-2">Campo de texto preenchido pelo analista:</label>
+                <p className="text-gray-900 leading-relaxed">Cliente aprovado após análise completa dos documentos e verificação de renda. Todos os requisitos foram atendidos.</p>
+              </div>
+            </ExpandableSection>
+          </div>
         </div>
       </TabsContent>
 
-      
       <TabsContent value="dados-cliente" className="mt-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
