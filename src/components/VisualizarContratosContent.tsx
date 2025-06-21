@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Filter, Download, Calendar, FileText } from "lucide-react";
@@ -143,8 +142,7 @@ export function VisualizarContratosContent() {
     <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
       <GlobalHeader 
         title="Agenda de Recebíveis" 
-        subtitle="Visualize e gerencie contratos e recebíveis" 
-        icon={Calendar}
+        subtitle="Visualize e gerencie contratos e recebíveis"
       />
 
       <main className="p-6">
