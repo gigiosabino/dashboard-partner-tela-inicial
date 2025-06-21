@@ -22,6 +22,7 @@ import CancelarProposta from "./pages/CancelarProposta";
 import ReenviarLinkAssinatura from "./pages/ReenviarLinkAssinatura";
 import ConsultarRegistroBoleto from "./pages/ConsultarRegistroBoleto";
 import ConsultaProposta from "./pages/ConsultaProposta";
+import VisualizarContratos from "./pages/VisualizarContratos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
           <Route path="/reenviar-link-assinatura" element={<ReenviarLinkAssinatura />} />
           <Route path="/consultar-registro-boleto" element={<ConsultarRegistroBoleto />} />
           <Route path="/consulta-proposta" element={<ConsultaProposta />} />
+          <Route path="/visualizar-contratos" element={<VisualizarContratos />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
