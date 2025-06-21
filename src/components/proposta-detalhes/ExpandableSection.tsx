@@ -13,15 +13,15 @@ interface ExpandableSectionProps {
 
 export function ExpandableSection({ title, isOpen, onToggle, children }: ExpandableSectionProps) {
   return (
-    <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-xl rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+    <Card className="bg-white border border-gray-200 shadow-sm rounded-lg overflow-hidden">
       <Collapsible open={isOpen} onOpenChange={onToggle}>
         <CollapsibleTrigger className="w-full">
-          <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 transition-all duration-300 cursor-pointer p-6">
+          <CardHeader className="bg-gray-50 hover:bg-gray-100 transition-colors duration-200 cursor-pointer p-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-slate-800 text-xl font-bold flex items-center gap-3">
+              <CardTitle className="text-gray-800 text-lg font-semibold flex items-center gap-2">
                 {title}
               </CardTitle>
-              <ChevronDown className={`w-6 h-6 text-slate-600 transition-transform duration-300 ${
+              <ChevronDown className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
                 isOpen ? 'rotate-180' : ''
               }`} />
             </div>
