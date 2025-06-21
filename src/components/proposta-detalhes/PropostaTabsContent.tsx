@@ -84,7 +84,7 @@ export function PropostaTabsContent({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <GridDataDisplay data={valoresOperacao} columns={1} />
+            <GridDataDisplay data={valoresOperacao} columns={4} />
           </CardContent>
         </Card>
       </TabsContent>

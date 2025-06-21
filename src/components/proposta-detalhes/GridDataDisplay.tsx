@@ -5,8 +5,10 @@ interface GridDataDisplayProps {
 }
 
 export function GridDataDisplay({ data, columns = 1 }: GridDataDisplayProps) {
+  const gridClass = columns > 1 ? `grid grid-cols-${columns} gap-6` : 'space-y-3';
+  
   return (
-    <div className="space-y-3">
+    <div className={gridClass}>
       {Object.entries(data).map(([key, value]) => (
         <div key={key} className="flex flex-col">
           <label className="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">{key}</label>
