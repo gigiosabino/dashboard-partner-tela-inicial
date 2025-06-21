@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Download, Calendar, FileText } from "lucide-react";
+import { Search, Filter, Download, Calendar, FileText, Menu } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -18,8 +18,18 @@ import {
   Alert,
   AlertDescription,
 } from "@/components/ui/alert";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { useState } from "react";
 import { GlobalHeader } from "@/components/GlobalHeader";
+import { useNavigate } from "react-router-dom";
 
 const contratos = [
   {
@@ -83,12 +93,15 @@ const normalizePropostaNumber = (numero: string) => {
 };
 
 export function VisualizarContratosContent() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
   const [numeroPropostaFilter, setNumeroPropostaFilter] = useState("");
   const [cpfCnpjFilter, setCpfCnpjFilter] = useState("");
   const [nomeRazaoSocialFilter, setNomeRazaoSocialFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredContratos = contratos.filter(contrato => {
     // Filtro por busca geral
@@ -124,6 +137,15 @@ export function VisualizarContratosContent() {
     
     return matchesSearch && matchesNumeroProposta && matchesCpfCnpj && matchesNomeRazaoSocial && matchesData;
   });
+
+  const totalPages = Math.ceil(filteredContratos.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentContratos = filteredContratos.slice(startIndex, endIndex);
+
+  const handleViewContract = (proposta: string) => {
+    navigate(`/visualizar-contratos/${proposta}`);
+  };
 
   const handleLimparFiltros = () => {
     setDataInicial("");
@@ -276,7 +298,7 @@ export function VisualizarContratosContent() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredContratos.map((contrato) => (
+              {currentContratos.map((contrato) => (
                 <TableRow key={contrato.proposta} className="hover:bg-slate-50 border-b border-slate-100">
                   <TableCell className="font-medium text-blue-700">#{contrato.proposta}</TableCell>
                   <TableCell className="text-slate-600">{contrato.cpfCnpj}</TableCell>
@@ -285,22 +307,14 @@ export function VisualizarContratosContent() {
                   <TableCell className="font-medium text-slate-900">{contrato.valorFinanciado}</TableCell>
                   <TableCell className="text-sm text-slate-600">{contrato.prazo}</TableCell>
                   <TableCell>
-                    <div className="flex space-x-1">
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="p-1 h-8 w-8 border-slate-300 text-slate-700 hover:bg-slate-50"
-                      >
-                        <span className="text-xs">≡</span>
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="p-1 h-8 w-8 border-slate-300 text-slate-700 hover:bg-slate-50"
-                      >
-                        <span className="text-xs">⚙</span>
-                      </Button>
-                    </div>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="p-1 h-8 w-8 border-slate-300 text-slate-700 hover:bg-slate-50"
+                      onClick={() => handleViewContract(contrato.proposta)}
+                    >
+                      <Menu className="h-4 w-4" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -308,28 +322,64 @@ export function VisualizarContratosContent() {
           </Table>
         </div>
 
-        {/* Paginação */}
+        {/* Paginação melhorada */}
         <div className="flex items-center justify-between mt-6">
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">◀◀</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">◀</Button>
-            <Button variant="default" size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">1</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">2</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">3</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">4</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">5</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">6</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">7</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">8</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">9</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">10</Button>
-            <span className="text-sm text-slate-600">...</span>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">▶</Button>
-            <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50">▶▶</Button>
+          <div className="text-sm text-slate-600 bg-slate-100 px-3 py-2 rounded-lg border border-slate-200">
+            Exibindo {startIndex + 1} - {Math.min(endIndex, filteredContratos.length)} de {filteredContratos.length} contrato(s)
           </div>
-          <span className="text-sm text-slate-600 bg-slate-100 px-3 py-2 rounded-lg border border-slate-200">
-            Exibindo itens 1 - 10 de 2522
-          </span>
+          
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  href="#" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) setCurrentPage(currentPage - 1);
+                  }}
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+              
+              {[...Array(totalPages)].map((_, index) => {
+                const page = index + 1;
+                if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(page);
+                        }}
+                        isActive={currentPage === page}
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                } else if (page === currentPage - 2 || page === currentPage + 2) {
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  );
+                }
+                return null;
+              })}
+              
+              <PaginationItem>
+                <PaginationNext 
+                  href="#" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+                  }}
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       </main>
     </div>
