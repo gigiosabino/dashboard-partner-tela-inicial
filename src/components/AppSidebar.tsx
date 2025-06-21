@@ -132,7 +132,7 @@ export function AppSidebar() {
                     className={`text-white hover:bg-gray-700 ${
                       isActiveRoute('/') 
                         ? 'bg-blue-600 border border-blue-500 shadow-lg' 
-                        : 'bg-gradient-to-r from-blue-700 to-blue-800 shadow-md border border-blue-600'
+                        : ''
                     }`}
                   >
                     <Link to="/">
