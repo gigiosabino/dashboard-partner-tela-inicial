@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import { AnalysisItemsTable } from "./AnalysisItemsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { User, FileText, DollarSign, Building, CreditCard, AlertCircle, Edit, Send } from "lucide-react";
+import { User, FileText, DollarSign, Building, CreditCard, AlertCircle, Edit, Send, Users } from "lucide-react";
 
 interface PropostaTabsContentProps {
   valoresOperacao: Record<string, string | number>;
@@ -51,23 +52,23 @@ export function PropostaTabsContent({
   };
 
   return (
-    <Tabs defaultValue="dados-operacao" className="w-full">
+    <Tabs defaultValue="operacao" className="w-full">
       <TabsList className="grid w-full grid-cols-5 bg-gray-100 p-1 rounded-lg">
-        <TabsTrigger value="dados-operacao" className="flex items-center gap-2">
+        <TabsTrigger value="operacao" className="flex items-center gap-2">
           <DollarSign className="w-4 h-4" />
           Operação
         </TabsTrigger>
-        <TabsTrigger value="dados-cliente" className="flex items-center gap-2">
+        <TabsTrigger value="cliente" className="flex items-center gap-2">
           <User className="w-4 h-4" />
           Cliente
+        </TabsTrigger>
+        <TabsTrigger value="assinantes" className="flex items-center gap-2">
+          <Users className="w-4 h-4" />
+          Assinantes
         </TabsTrigger>
         <TabsTrigger value="pagamentos" className="flex items-center gap-2">
           <CreditCard className="w-4 h-4" />
           Pagamentos
-        </TabsTrigger>
-        <TabsTrigger value="analise" className="flex items-center gap-2">
-          <AlertCircle className="w-4 h-4" />
-          Análise
         </TabsTrigger>
         <TabsTrigger value="documentos" className="flex items-center gap-2">
           <FileText className="w-4 h-4" />
@@ -75,7 +76,7 @@ export function PropostaTabsContent({
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="dados-operacao" className="mt-6">
+      <TabsContent value="operacao" className="mt-6">
         <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
@@ -89,42 +90,128 @@ export function PropostaTabsContent({
         </Card>
       </TabsContent>
 
-      <TabsContent value="dados-cliente" className="mt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                <User className="w-5 h-5" />
-                Dados Pessoais
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <GridDataDisplay data={dadosCliente} columns={1} />
-            </CardContent>
-          </Card>
+      <TabsContent value="cliente" className="mt-6">
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  Dados Pessoais
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <GridDataDisplay data={dadosCliente} columns={1} />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <Building className="w-5 h-5" />
+                  Endereço
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <GridDataDisplay data={enderecoCliente} columns={1} />
+              </CardContent>
+            </Card>
+          </div>
 
           <Card>
             <CardHeader>
               <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                 <Building className="w-5 h-5" />
-                Endereço
+                Referências Bancárias
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <GridDataDisplay data={enderecoCliente} columns={1} />
+              <GridDataDisplay data={referenciasBancarias} columns={3} />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                <AlertCircle className="w-5 h-5" />
+                Itens da Análise (Resolvido: {itensAnalise.filter(item => item.resolvido).length} de {itensAnalise.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AnalysisItemsTable items={itensAnalise} />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Propostas Anteriores
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="font-medium">Número da Proposta</TableHead>
+                    <TableHead className="font-medium">Data de Criação</TableHead>
+                    <TableHead className="font-medium">Produto</TableHead>
+                    <TableHead className="font-medium">Valor Solicitado</TableHead>
+                    <TableHead className="font-medium">Situação</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {propostasAnteriores.map((proposta, index) => (
+                    <TableRow key={index} className="hover:bg-gray-50">
+                      <TableCell className="font-medium">#{proposta.numero}</TableCell>
+                      <TableCell>{proposta.dataCriacao}</TableCell>
+                      <TableCell>{proposta.produto}</TableCell>
+                      <TableCell>{proposta.valorSolicitado}</TableCell>
+                      <TableCell>
+                        <Badge variant={proposta.situacao === "Finalizada" ? "default" : "destructive"} className="rounded">
+                          {proposta.situacao}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </div>
+      </TabsContent>
 
-        <Card className="mt-6">
+      <TabsContent value="assinantes" className="mt-6">
+        <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-              <Building className="w-5 h-5" />
-              Referências Bancárias
+              <Users className="w-5 h-5" />
+              Assinantes CCB Digital
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <GridDataDisplay data={referenciasBancarias} columns={3} />
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50">
+                  <TableHead className="font-medium">Nome</TableHead>
+                  <TableHead className="font-medium">E-mail</TableHead>
+                  <TableHead className="font-medium">Documento</TableHead>
+                  <TableHead className="font-medium">Celular</TableHead>
+                  <TableHead className="font-medium">Identificador</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {assinantes.map((assinante, index) => (
+                  <TableRow key={index} className="hover:bg-gray-50">
+                    <TableCell className="font-medium">{assinante.nome}</TableCell>
+                    <TableCell>{assinante.email}</TableCell>
+                    <TableCell>{assinante.documento}</TableCell>
+                    <TableCell>{assinante.celular}</TableCell>
+                    <TableCell>{assinante.identificador}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </TabsContent>
@@ -177,59 +264,6 @@ export function PropostaTabsContent({
               ) : (
                 <p className="text-gray-500 text-center py-4">Nenhum método adicional cadastrado</p>
               )}
-            </CardContent>
-          </Card>
-        </div>
-      </TabsContent>
-
-      <TabsContent value="analise" className="mt-6">
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                <AlertCircle className="w-5 h-5" />
-                Itens da Análise (Resolvido: {itensAnalise.filter(item => item.resolvido).length} de {itensAnalise.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <AnalysisItemsTable items={itensAnalise} />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                <FileText className="w-5 h-5" />
-                Propostas Anteriores
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="font-medium">Número da Proposta</TableHead>
-                    <TableHead className="font-medium">Data de Criação</TableHead>
-                    <TableHead className="font-medium">Produto</TableHead>
-                    <TableHead className="font-medium">Valor Solicitado</TableHead>
-                    <TableHead className="font-medium">Situação</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {propostasAnteriores.map((proposta, index) => (
-                    <TableRow key={index} className="hover:bg-gray-50">
-                      <TableCell className="font-medium">#{proposta.numero}</TableCell>
-                      <TableCell>{proposta.dataCriacao}</TableCell>
-                      <TableCell>{proposta.produto}</TableCell>
-                      <TableCell>{proposta.valorSolicitado}</TableCell>
-                      <TableCell>
-                        <Badge variant={proposta.situacao === "Finalizada" ? "default" : "destructive"} className="rounded">
-                          {proposta.situacao}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
             </CardContent>
           </Card>
         </div>
