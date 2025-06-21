@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -23,14 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GlobalHeader } from "@/components/GlobalHeader";
 
 const propostas = [
@@ -125,11 +118,16 @@ const normalizePropostaNumber = (numero: string) => {
 };
 
 export function PropostasContent() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [dataInicial, setDataInicial] = useState("");
   const [dataFinal, setDataFinal] = useState("");
   const [numeroPropostaFilter, setNumeroPropostaFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+
+  const handleDetalhes = (numeroProposta: string) => {
+    navigate(`/propostas/${numeroProposta}`);
+  };
 
   const filteredPropostas = propostas.filter(proposta => {
     // Filtro por busca geral
@@ -319,39 +317,15 @@ export function PropostasContent() {
                   <TableCell className="text-sm text-slate-600">{proposta.dataContratacao}</TableCell>
                   <TableCell className="text-sm text-slate-600">{proposta.prazo}</TableCell>
                   <TableCell>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm">
-                          <Eye className="w-4 h-4 mr-1" />
-                          Detalhes
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-2xl border-slate-200 shadow-xl">
-                        <DialogHeader>
-                          <DialogTitle className="text-slate-900">Detalhes da Proposta #{proposta.numero}</DialogTitle>
-                        </DialogHeader>
-                        <div className="mt-4 space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="text-sm font-medium text-slate-700">Parceiro:</label>
-                              <p className="text-slate-900">{proposta.parceiro}</p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium text-slate-700">Cliente:</label>
-                              <p className="text-slate-900">{proposta.cliente}</p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium text-slate-700">CPF:</label>
-                              <p className="text-slate-900">{proposta.cpf}</p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium text-slate-700">Valor:</label>
-                              <p className="text-slate-900 font-medium">{proposta.valor}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm"
+                      onClick={() => handleDetalhes(proposta.numero)}
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      Detalhes
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
