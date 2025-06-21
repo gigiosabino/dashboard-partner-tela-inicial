@@ -98,6 +98,9 @@ export function AppSidebar() {
   const location = useLocation();
 
   const isActiveRoute = (url: string) => {
+    if (url === '/') {
+      return location.pathname === '/';
+    }
     return location.pathname === url;
   };
 
