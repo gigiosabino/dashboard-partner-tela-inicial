@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +5,7 @@ import { ExpandableSection } from "./ExpandableSection";
 import { GridDataDisplay } from "./GridDataDisplay";
 import { DocumentsTable } from "./DocumentsTable";
 import { AnalysisItemsTable } from "./AnalysisItemsTable";
+import { SplitsTable } from "../atualizar-dados-bancarios/SplitsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -118,6 +118,43 @@ export function PropostaTabsContent({
     } finally {
       setIsReenviando(false);
     }
+  };
+
+  // Dados mockados dos splits para exemplo
+  const splitsData = [
+    {
+      id: "12345",
+      previsaoPagamento: "2025-07-15",
+      situacao: "Liberado",
+      valor: "R$ 250,00",
+      banco: "Banco do Brasil",
+      agencia: "1234-5",
+      conta: "12345-6",
+      favorecido: "TESTE LUCCA",
+      codBarras: null,
+      tipo: "TED"
+    },
+    {
+      id: "12346",
+      previsaoPagamento: "2025-08-15",
+      situacao: "Pendente",
+      valor: "R$ 250,00",
+      banco: "Banco do Brasil",
+      agencia: "1234-5",
+      conta: "12345-6",
+      favorecido: "TESTE LUCCA",
+      codBarras: null,
+      tipo: "TED"
+    }
+  ];
+
+  const handleSaveSplit = (splitId: string) => {
+    console.log(`Salvando dados do split: ${splitId}`);
+    toast({
+      title: "Sucesso",
+      description: "Dados bancários do split atualizados com sucesso",
+      variant: "default",
+    });
   };
 
   return (
@@ -327,36 +364,11 @@ export function PropostaTabsContent({
               <CardHeader>
                 <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                   <CreditCard className="w-5 h-5" />
-                  Outros Métodos de Pagamento
+                  Dados do Split
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {outrosPagamentos.length > 0 ? (
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-gray-50">
-                        <TableHead className="font-medium">Tipo</TableHead>
-                        <TableHead className="font-medium">Chave/Dados</TableHead>
-                        <TableHead className="font-medium">Principal</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {outrosPagamentos.map((pagamento, index) => (
-                        <TableRow key={index} className="hover:bg-gray-50">
-                          <TableCell className="font-medium">{pagamento.tipo}</TableCell>
-                          <TableCell>{pagamento.chave || `${pagamento.banco} - ${pagamento.conta}`}</TableCell>
-                          <TableCell>
-                            <Badge variant={pagamento.principal === "Sim" ? "default" : "secondary"} className="rounded">
-                              {pagamento.principal}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                ) : (
-                  <p className="text-gray-500 text-center py-4">Nenhum método adicional cadastrado</p>
-                )}
+                <SplitsTable splits={splitsData} onSaveSplit={handleSaveSplit} />
               </CardContent>
             </Card>
           </div>
