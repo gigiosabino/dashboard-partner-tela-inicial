@@ -57,6 +57,8 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   };
 
   const handleSliceClick = (data: any) => {
+    console.log("Clicou no status:", data.name);
+    
     const statusMap: { [key: string]: string } = {
       "Pagas": "paga",
       "Cedidas": "cedida", 
@@ -65,8 +67,9 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     
     const status = statusMap[data.name];
     if (status) {
-      // Navegar para a página de propostas com o filtro aplicado via query parameter
-      navigate(`/propostas?status=${status}&filtered=true`);
+      console.log("Navegando para propostas com status:", status);
+      // Navegar diretamente para a página de propostas com o status na URL
+      navigate(`/propostas?status=${status}`, { replace: true });
     }
   };
 
