@@ -70,9 +70,6 @@ export function PropostaSummaryCard({ propostaData, onComentariosClick }: Propos
             <Badge className={`${getStatusColor('liberada')} font-medium px-3 py-1`}>
               Liberada
             </Badge>
-            <Badge className={`${getStatusColor('normal')} font-medium px-3 py-1`}>
-              Normal
-            </Badge>
           </div>
         </div>
       </CardHeader>

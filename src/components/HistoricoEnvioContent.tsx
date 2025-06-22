@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -311,7 +310,12 @@ export function HistoricoEnvioContent() {
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-white shadow-sm hover:shadow-md transition-all duration-200"
+                          style={{ backgroundColor: '#005f73', borderColor: '#005f73' }}
+                        >
                           <Eye className="w-4 h-4 mr-1" />
                           Envio
                         </Button>
@@ -332,7 +336,12 @@ export function HistoricoEnvioContent() {
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-white shadow-sm hover:shadow-md transition-all duration-200"
+                          style={{ backgroundColor: '#80b918', borderColor: '#80b918' }}
+                        >
                           <Eye className="w-4 h-4 mr-1" />
                           Retorno
                         </Button>

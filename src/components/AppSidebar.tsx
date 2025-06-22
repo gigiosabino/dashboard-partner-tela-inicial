@@ -68,16 +68,16 @@ const menuItems = [
     items: [
       { title: "Reenviar link de assinatura", url: "/reenviar-link-assinatura" },
       { title: "Consultar registro de boleto", url: "/consultar-registro-boleto" },
-      { title: "Consulta proposta", url: "/consulta-proposta" },
+      { title: "Consulta proposta", url: "/consulta-prop..." },
       { title: "Mensageria", url: "/mensageria" },
     ]
   },
   {
-    title: "Relatórios",
+    title: "Relatórios CAAS",
     icon: BarChart3,
     items: [
       { title: "Relatórios de Serviços Integrados", url: "/relatorios-servicos" },
-      { title: "Relatórios CAAS", url: "/relatorios-caas" },
+      { title: "Relatórios", url: "/relatorios-caas" },
     ]
   },
   {
