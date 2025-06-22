@@ -101,10 +101,10 @@ export function ClientesCadastradosContent() {
                     <TableCell>{cliente.telefone}</TableCell>
                     <TableCell>
                       <Button
-                        variant="outline"
+                        variant="default"
                         size="sm"
                         onClick={() => handleViewDetails(cliente.id)}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium"
                       >
                         <Eye className="h-4 w-4" />
                         Detalhes
