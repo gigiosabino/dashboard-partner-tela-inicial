@@ -1,0 +1,373 @@
+
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft, Edit2, Save, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+export function ClienteDetalhesContent() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Mock data para o cliente
+  const [clienteData, setClienteData] = useState({
+    // Dados Pessoais
+    nome: "JORGE LUIZ SARAIVA DA COSTA",
+    documento: "327.937.152-04",
+    dataNascimento: "15/03/1985",
+    rg: "12.345.678-9",
+    sexo: "Masculino",
+    escolaridade: "Superior Completo",
+    nomeMae: "MARIA COSTA",
+    estadoCivil: "Solteiro",
+    nacionalidade: "Brasileira",
+    
+    // Dados de Contato
+    email: "jorge@email.com",
+    telefone: "(11) 99999-9999",
+    
+    // Endereços
+    enderecos: [
+      {
+        id: "1",
+        cep: "01234-567",
+        logradouro: "Rua das Flores, 123",
+        bairro: "Centro",
+        cidade: "São Paulo",
+        estado: "SP",
+        complemento: "Apto 45",
+        principal: true
+      },
+      {
+        id: "2",
+        cep: "04567-890",
+        logradouro: "Av. Paulista, 1000",
+        bairro: "Bela Vista",
+        cidade: "São Paulo",
+        estado: "SP",
+        complemento: "Sala 1001",
+        principal: false
+      }
+    ],
+    
+    // Dados Bancários
+    dadosBancarios: [
+      {
+        id: "1",
+        numeroBanco: "001",
+        nomeBanco: "Banco do Brasil",
+        agencia: "1234-5",
+        conta: "12345-6",
+        tipoConta: "Corrente",
+        contaPagamento: true
+      },
+      {
+        id: "2",
+        numeroBanco: "237",
+        nomeBanco: "Banco Bradesco",
+        agencia: "9876-5",
+        conta: "54321-0",
+        tipoConta: "Poupança",
+        contaPagamento: false
+      }
+    ]
+  });
+
+  const handleSave = () => {
+    // Aqui seria feita a chamada para a API para salvar os dados
+    toast({
+      title: "Dados salvos com sucesso!",
+      description: "As informações do cliente foram atualizadas.",
+    });
+    setIsEditing(false);
+  };
+
+  const handleVoltar = () => {
+    navigate('/clientes-cadastrados');
+  };
+
+  return (
+    <div className="flex-1 bg-gray-50 min-h-screen">
+      <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleVoltar}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Voltar
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Detalhes do Cliente</h1>
+              <p className="text-gray-600">{clienteData.nome}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {isEditing ? (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsEditing(false)}
+                  className="flex items-center gap-2"
+                >
+                  <X className="h-4 w-4" />
+                  Cancelar
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  className="flex items-center gap-2"
+                >
+                  <Save className="h-4 w-4" />
+                  Salvar
+                </Button>
+              </>
+            ) : (
+              <Button
+                size="sm"
+                onClick={() => setIsEditing(true)}
+                className="flex items-center gap-2"
+              >
+                <Edit2 className="h-4 w-4" />
+                Editar
+              </Button>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <main className="p-6 space-y-6 max-w-7xl mx-auto">
+        <Tabs defaultValue="pessoais" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="pessoais">Dados Pessoais</TabsTrigger>
+            <TabsTrigger value="contato">Dados de Contato</TabsTrigger>
+            <TabsTrigger value="enderecos">Endereços</TabsTrigger>
+            <TabsTrigger value="bancarios">Dados Bancários</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="pessoais">
+            <Card>
+              <CardHeader>
+                <CardTitle>Dados Pessoais</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="nome">Nome Completo</Label>
+                    <Input
+                      id="nome"
+                      value={clienteData.nome}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, nome: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="documento">Documento Federal</Label>
+                    <Input
+                      id="documento"
+                      value={clienteData.documento}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, documento: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="dataNascimento">Data de Nascimento</Label>
+                    <Input
+                      id="dataNascimento"
+                      value={clienteData.dataNascimento}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, dataNascimento: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="rg">RG</Label>
+                    <Input
+                      id="rg"
+                      value={clienteData.rg}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, rg: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="sexo">Sexo</Label>
+                    <Input
+                      id="sexo"
+                      value={clienteData.sexo}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, sexo: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="escolaridade">Escolaridade</Label>
+                    <Input
+                      id="escolaridade"
+                      value={clienteData.escolaridade}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, escolaridade: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="nomeMae">Nome da Mãe</Label>
+                    <Input
+                      id="nomeMae"
+                      value={clienteData.nomeMae}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, nomeMae: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="estadoCivil">Estado Civil</Label>
+                    <Input
+                      id="estadoCivil"
+                      value={clienteData.estadoCivil}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, estadoCivil: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="nacionalidade">Nacionalidade</Label>
+                    <Input
+                      id="nacionalidade"
+                      value={clienteData.nacionalidade}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, nacionalidade: e.target.value})}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="contato">
+            <Card>
+              <CardHeader>
+                <CardTitle>Dados de Contato</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="email">E-mail</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={clienteData.email}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, email: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="telefone">Telefone Celular</Label>
+                    <Input
+                      id="telefone"
+                      value={clienteData.telefone}
+                      disabled={!isEditing}
+                      onChange={(e) => setClienteData({...clienteData, telefone: e.target.value})}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="enderecos">
+            <Card>
+              <CardHeader>
+                <CardTitle>Endereços</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {clienteData.enderecos.map((endereco, index) => (
+                    <div key={endereco.id} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="font-medium">Endereço {index + 1}</h4>
+                        <span className={`px-2 py-1 rounded text-xs ${endereco.principal ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
+                          {endereco.principal ? 'Principal' : 'Secundário'}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label>CEP</Label>
+                          <Input value={endereco.cep} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Logradouro</Label>
+                          <Input value={endereco.logradouro} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Bairro</Label>
+                          <Input value={endereco.bairro} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Cidade</Label>
+                          <Input value={endereco.cidade} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Estado</Label>
+                          <Input value={endereco.estado} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Complemento</Label>
+                          <Input value={endereco.complemento} disabled={!isEditing} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="bancarios">
+            <Card>
+              <CardHeader>
+                <CardTitle>Dados Bancários</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {clienteData.dadosBancarios.map((banco, index) => (
+                    <div key={banco.id} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="font-medium">Conta {index + 1}</h4>
+                        <span className={`px-2 py-1 rounded text-xs ${banco.contaPagamento ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                          {banco.contaPagamento ? 'Conta Pagamento' : 'Conta Secundária'}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label>Banco</Label>
+                          <Input value={`${banco.numeroBanco} - ${banco.nomeBanco}`} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Agência</Label>
+                          <Input value={banco.agencia} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Conta</Label>
+                          <Input value={banco.conta} disabled={!isEditing} />
+                        </div>
+                        <div>
+                          <Label>Tipo de Conta</Label>
+                          <Input value={banco.tipoConta} disabled={!isEditing} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  );
+}

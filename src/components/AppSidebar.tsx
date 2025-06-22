@@ -1,4 +1,3 @@
-
 import {
   Sidebar,
   SidebarContent,
@@ -37,9 +36,10 @@ import {
 
 const menuItems = [
   {
-    title: "Gestão de propostas",
+    title: "Gestão de Clientes e Propostas",
     icon: FileText,
     items: [
+      { title: "Clientes cadastrados", url: "/clientes-cadastrados" },
       { title: "Propostas contratadas", url: "/propostas" },
       { title: "Atualização de dados bancários", url: "/atualizar-dados-bancarios" },
       { title: "Cancelamento de proposta", url: "/cancelar-proposta" },

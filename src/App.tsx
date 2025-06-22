@@ -25,6 +25,8 @@ import ConsultaProposta from "./pages/ConsultaProposta";
 import VisualizarContratos from "./pages/VisualizarContratos";
 import ContratoDetalhes from "./pages/ContratoDetalhes";
 import Boletos from "./pages/Boletos";
+import ClientesCadastrados from "./pages/ClientesCadastrados";
+import ClienteDetalhes from "./pages/ClienteDetalhes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +42,8 @@ const App = () => (
           <Route path="/relatorios-servicos" element={<RelatoriosServicos />} />
           <Route path="/propostas" element={<Propostas />} />
           <Route path="/propostas/:numero" element={<PropostaDetalhes />} />
+          <Route path="/clientes-cadastrados" element={<ClientesCadastrados />} />
+          <Route path="/clientes-cadastrados/:id" element={<ClienteDetalhes />} />
           <Route path="/gestao-acessos" element={<GestaoAcessos />} />
           <Route path="/relatorios-caas" element={<RelatoriosCaas />} />
           <Route path="/atualizar-dados-bancarios" element={<AtualizarDadosBancarios />} />
