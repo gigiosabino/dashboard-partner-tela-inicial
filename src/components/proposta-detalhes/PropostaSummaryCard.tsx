@@ -33,12 +33,10 @@ export function PropostaSummaryCard({ propostaData, onComentariosClick }: Propos
     switch (status.toLowerCase()) {
       case 'liberada':
         return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'normal':
+      case 'aprovada':
         return 'bg-green-100 text-green-800 border-green-200';
       case 'em análise':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'aprovada':
-        return 'bg-green-100 text-green-800 border-green-200';
       case 'rejeitada':
         return 'bg-red-100 text-red-800 border-red-200';
       default:
@@ -69,9 +67,6 @@ export function PropostaSummaryCard({ propostaData, onComentariosClick }: Propos
             </Button>
             <Badge className={`${getStatusColor('liberada')} font-medium px-3 py-1`}>
               Liberada
-            </Badge>
-            <Badge className={`${getStatusColor('normal')} font-medium px-3 py-1`}>
-              Normal
             </Badge>
           </div>
         </div>
