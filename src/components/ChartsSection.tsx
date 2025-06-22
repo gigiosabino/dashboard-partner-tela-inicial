@@ -56,10 +56,11 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     return statusData;
   };
 
-  const handleSliceClick = (data: any) => {
+  const handleSliceClick = (data: any, event?: any) => {
     console.log("=== CLIQUE NO GRÁFICO ===");
     console.log("Status clicado:", data.name);
     console.log("Dados completos:", data);
+    console.log("Event:", event);
     
     const statusMap: { [key: string]: string } = {
       "Pagas": "paga",
@@ -73,10 +74,10 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     if (status) {
       const targetUrl = `/propostas?status=${status}`;
       console.log("URL de destino:", targetUrl);
-      console.log("Iniciando navegação...");
+      console.log("Navegando via React Router...");
       
-      // Usar window.location para garantir que a navegação aconteça
-      window.location.href = targetUrl;
+      // Usar navigate do React Router
+      navigate(targetUrl);
     } else {
       console.error("Status não encontrado no mapeamento:", data.name);
     }
@@ -108,7 +109,6 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
                 dataKey="value"
                 stroke="white"
                 strokeWidth={3}
-                onClick={handleSliceClick}
                 style={{ cursor: 'pointer' }}
               >
                 {currentData.map((entry, index) => (
@@ -116,7 +116,11 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
                     key={`cell-${index}`} 
                     fill={entry.color}
                     className="hover:opacity-80 transition-opacity duration-200"
-                    onClick={() => handleSliceClick(entry)}
+                    style={{ cursor: 'pointer' }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleSliceClick(entry, event);
+                    }}
                   />
                 ))}
               </Pie>

@@ -59,20 +59,10 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
             />
           </div>
 
-          <Button
-            variant="outline" 
-            size="sm"
-            onClick={handleOpenDocs}
-            className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800 hover:border-blue-300"
-          >
-            <ExternalLink className="w-4 h-4 mr-2" />
-            Docs
-          </Button>
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline"
+              <Button
+                variant="outline" 
                 size="sm"
                 className="flex items-center space-x-2 text-sm text-slate-700 bg-slate-50 border-slate-200 hover:bg-slate-100"
               >
@@ -93,6 +83,16 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          <Button
+            variant="outline" 
+            size="sm"
+            onClick={handleOpenDocs}
+            className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800 hover:border-blue-300"
+          >
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Docs
+          </Button>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
