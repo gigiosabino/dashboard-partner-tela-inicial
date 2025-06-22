@@ -86,22 +86,53 @@ export function PropostaDetalhesContent() {
     "Telefone Celular": "(11) 99999-9999"
   };
 
-  const enderecoCliente = {
-    "CEP": "01234-567",
-    "Logradouro": "Rua das Flores, 123",
-    "Bairro": "Centro",
-    "Cidade": "São Paulo",
-    "Estado": "SP",
-    "Complemento": "Apto 45"
-  };
+  const enderecos = [
+    {
+      cep: "01234-567",
+      logradouro: "Rua das Flores, 123",
+      bairro: "Centro",
+      cidade: "São Paulo",
+      estado: "SP",
+      complemento: "Apto 45",
+      principal: true
+    },
+    {
+      cep: "04567-890",
+      logradouro: "Av. Paulista, 1000",
+      bairro: "Bela Vista",
+      cidade: "São Paulo",
+      estado: "SP",
+      complemento: "Sala 1001",
+      principal: false
+    }
+  ];
 
-  const referenciasBancarias = {
-    "Banco Principal": "Banco do Brasil",
-    "Agência": "1234-5",
-    "Conta": "12345-6",
-    "Tempo de Relacionamento": "5 anos",
-    "Movimentação Média": "R$ 3.500,00"
-  };
+  const referenciasBancarias = [
+    {
+      numeroBanco: "001",
+      nomeBanco: "Banco do Brasil",
+      agencia: "1234-5",
+      conta: "12345-6",
+      tipoConta: "Corrente",
+      contaPagamento: true
+    },
+    {
+      numeroBanco: "237",
+      nomeBanco: "Banco Bradesco",
+      agencia: "9876-5",
+      conta: "54321-0",
+      tipoConta: "Poupança",
+      contaPagamento: false
+    },
+    {
+      numeroBanco: "341",
+      nomeBanco: "Banco Itaú",
+      agencia: "5555-2",
+      conta: "98765-4",
+      tipoConta: "Pagamento",
+      contaPagamento: false
+    }
+  ];
 
   const contaPagamento = {
     "Banco": "Banco do Brasil",
@@ -145,7 +176,7 @@ export function PropostaDetalhesContent() {
         <PropostaTabsContent
           valoresOperacao={valoresOperacao}
           dadosCliente={dadosCliente}
-          enderecoCliente={enderecoCliente}
+          enderecos={enderecos}
           referenciasBancarias={referenciasBancarias}
           contaPagamento={contaPagamento}
           itensAnalise={itensAnalise}

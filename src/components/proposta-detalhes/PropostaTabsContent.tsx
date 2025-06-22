@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,8 +28,8 @@ import { AvalistasTable } from "./AvalistasTable";
 interface PropostaTabsContentProps {
   valoresOperacao: Record<string, string | number>;
   dadosCliente: Record<string, string | number>;
-  enderecoCliente: Record<string, string | number>;
-  referenciasBancarias: Record<string, string | number>;
+  enderecos: any[];
+  referenciasBancarias: any[];
   contaPagamento: Record<string, string | number>;
   itensAnalise: any[];
   propostasAnteriores: any[];
@@ -44,7 +43,7 @@ interface PropostaTabsContentProps {
 export function PropostaTabsContent({
   valoresOperacao,
   dadosCliente,
-  enderecoCliente,
+  enderecos,
   referenciasBancarias,
   contaPagamento,
   itensAnalise,
@@ -304,11 +303,38 @@ export function PropostaTabsContent({
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                     <Building className="w-5 h-5" />
-                    Endereço
+                    Endereços
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <GridDataDisplay data={enderecoCliente} columns={1} />
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50">
+                        <TableHead className="font-medium">CEP</TableHead>
+                        <TableHead className="font-medium">Logradouro</TableHead>
+                        <TableHead className="font-medium">Bairro</TableHead>
+                        <TableHead className="font-medium">Cidade/Estado</TableHead>
+                        <TableHead className="font-medium">Complemento</TableHead>
+                        <TableHead className="font-medium">Endereço Principal</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {enderecos.map((endereco, index) => (
+                        <TableRow key={index} className="hover:bg-gray-50">
+                          <TableCell className="font-medium">{endereco.cep}</TableCell>
+                          <TableCell>{endereco.logradouro}</TableCell>
+                          <TableCell>{endereco.bairro}</TableCell>
+                          <TableCell>{endereco.cidade}/{endereco.estado}</TableCell>
+                          <TableCell>{endereco.complemento || "-"}</TableCell>
+                          <TableCell>
+                            <Badge variant={endereco.principal ? "default" : "secondary"}>
+                              {endereco.principal ? "Sim" : "Não"}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </div>
@@ -321,7 +347,32 @@ export function PropostaTabsContent({
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <GridDataDisplay data={referenciasBancarias} columns={3} />
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50">
+                      <TableHead className="font-medium">Banco</TableHead>
+                      <TableHead className="font-medium">Agência</TableHead>
+                      <TableHead className="font-medium">Conta</TableHead>
+                      <TableHead className="font-medium">Tipo de Conta</TableHead>
+                      <TableHead className="font-medium">Conta Pagamento</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {referenciasBancarias.map((referencia, index) => (
+                      <TableRow key={index} className="hover:bg-gray-50">
+                        <TableCell className="font-medium">{referencia.numeroBanco} - {referencia.nomeBanco}</TableCell>
+                        <TableCell>{referencia.agencia}</TableCell>
+                        <TableCell>{referencia.conta}</TableCell>
+                        <TableCell>{referencia.tipoConta}</TableCell>
+                        <TableCell>
+                          <Badge variant={referencia.contaPagamento ? "default" : "secondary"}>
+                            {referencia.contaPagamento ? "Sim" : "Não"}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
 
