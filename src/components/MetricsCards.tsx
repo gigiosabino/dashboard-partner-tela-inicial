@@ -1,4 +1,5 @@
 
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FileText,
@@ -12,6 +13,7 @@ import {
   TrendingUp,
   Percent,
   Download,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportToCSV, generateMockData } from "@/utils/csvExport";
@@ -79,6 +81,15 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       status: "liberadas",
     },
     {
+      title: "Clientes cadastrados",
+      value: "2,156",
+      subtitle: "total de clientes ativos",
+      icon: Users,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      exportable: false,
+    },
+    {
       title: "Ticket médio",
       value: "R$ 10.089",
       subtitle: "valor médio por proposta",
@@ -135,3 +146,4 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
     </div>
   );
 }
+
