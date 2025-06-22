@@ -1,8 +1,7 @@
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Clock, User, ChevronDown, ExternalLink, RotateCcw, LogOut } from "lucide-react";
+import { Clock, User, ChevronDown, ExternalLink, RotateCcw, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,13 +50,15 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
         </div>
         
         <div className="flex items-center space-x-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-            <Input 
-              placeholder="Search" 
-              className="pl-10 w-64 border-slate-300 focus:border-blue-600 focus:ring-blue-600"
-            />
-          </div>
+          <Button
+            variant="outline" 
+            size="sm"
+            onClick={handleOpenDocs}
+            className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800 hover:border-blue-300"
+          >
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Docs
+          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -83,16 +84,6 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Button
-            variant="outline" 
-            size="sm"
-            onClick={handleOpenDocs}
-            className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 hover:text-blue-800 hover:border-blue-300"
-          >
-            <ExternalLink className="w-4 h-4 mr-2" />
-            Docs
-          </Button>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
