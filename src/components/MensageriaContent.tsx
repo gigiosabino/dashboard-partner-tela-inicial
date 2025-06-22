@@ -131,37 +131,6 @@ export function MensageriaContent() {
               )}
             </CardContent>
           </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Números na Blocklist</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {blocklist.length > 0 ? (
-                <div className="space-y-2">
-                  {blocklist.map((numero) => (
-                    <div key={numero} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <span className="font-mono">{formatarNumero(numero)}</span>
-                      <Button 
-                        onClick={() => {
-                          setBlocklist(prev => prev.filter(num => num !== numero));
-                          console.log(`Número ${numero} removido da blocklist`);
-                        }}
-                        variant="outline" 
-                        size="sm"
-                      >
-                        Remover
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500 text-center py-4">
-                  Nenhum número na blocklist
-                </p>
-              )}
-            </CardContent>
-          </Card>
         </div>
       </main>
     </div>
