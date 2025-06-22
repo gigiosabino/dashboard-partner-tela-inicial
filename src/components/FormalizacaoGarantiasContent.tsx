@@ -1,7 +1,7 @@
-import { SidebarTrigger } from "@/components/ui/sidebar";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, Calendar } from "lucide-react";
+import { Search, Filter } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -18,6 +18,7 @@ import {
 import { DateRangePicker } from "@/components/DateRangePicker";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GlobalHeader } from "@/components/GlobalHeader";
 
 const propostas = [
   {
@@ -103,19 +104,11 @@ export function FormalizacaoGarantiasContent() {
   };
 
   return (
-    <div className="flex-1 bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <SidebarTrigger />
-            <div>
-              <h1 className="text-xl font-semibold text-gray-900">Formalização de Garantias</h1>
-              <p className="text-sm text-gray-600">Gerencie propostas pendentes de documentação</p>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="flex-1">
+      <GlobalHeader 
+        title="Formalização de Garantias" 
+        subtitle="Gerencie propostas pendentes de documentação" 
+      />
 
       {/* Main Content */}
       <main className="p-6">

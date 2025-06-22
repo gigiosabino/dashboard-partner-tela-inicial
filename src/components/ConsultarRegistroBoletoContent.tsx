@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { GlobalHeader } from "@/components/GlobalHeader";
 
 export function ConsultarRegistroBoletoContent() {
   const [linhaDigitavel, setLinhaDigitavel] = useState("");
@@ -58,12 +59,13 @@ export function ConsultarRegistroBoletoContent() {
   };
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Consultar Registro de Boleto</h2>
-      </div>
+    <div className="flex-1">
+      <GlobalHeader 
+        title="Consultar Registro de Boleto" 
+        subtitle="Consulte informações de boletos BMP" 
+      />
 
-      <div className="space-y-4">
+      <main className="p-6 space-y-4">
         <Card className="bg-yellow-50 border-yellow-200">
           <CardContent className="pt-6">
             <div className="flex items-start space-x-2">
@@ -108,7 +110,7 @@ export function ConsultarRegistroBoletoContent() {
             </CardContent>
           </Card>
         )}
-      </div>
+      </main>
     </div>
   );
 }

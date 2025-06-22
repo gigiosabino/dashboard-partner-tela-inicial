@@ -2,7 +2,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { GestaoAcessosContent } from "@/components/GestaoAcessosContent";
-import { Toaster } from "@/components/ui/toaster";
 
 const GestaoAcessos = () => {
   return (
@@ -13,7 +12,6 @@ const GestaoAcessos = () => {
           <GestaoAcessosContent />
         </main>
       </div>
-      <Toaster />
     </SidebarProvider>
   );
 };

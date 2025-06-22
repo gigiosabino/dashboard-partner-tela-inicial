@@ -2,7 +2,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ClientesCadastradosContent } from "@/components/ClientesCadastradosContent";
-import { Toaster } from "@/components/ui/toaster";
 
 const ClientesCadastrados = () => {
   return (
@@ -13,7 +12,6 @@ const ClientesCadastrados = () => {
           <ClientesCadastradosContent />
         </main>
       </div>
-      <Toaster />
     </SidebarProvider>
   );
 };

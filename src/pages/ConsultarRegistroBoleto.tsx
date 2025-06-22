@@ -2,7 +2,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ConsultarRegistroBoletoContent } from "@/components/ConsultarRegistroBoletoContent";
-import { Toaster } from "@/components/ui/toaster";
 
 const ConsultarRegistroBoleto = () => {
   return (
@@ -13,7 +12,6 @@ const ConsultarRegistroBoleto = () => {
           <ConsultarRegistroBoletoContent />
         </main>
       </div>
-      <Toaster />
     </SidebarProvider>
   );
 };
