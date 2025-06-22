@@ -57,7 +57,9 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
   };
 
   const handleSliceClick = (data: any) => {
-    console.log("Clicou no status:", data.name);
+    console.log("=== CLIQUE NO GRÁFICO ===");
+    console.log("Status clicado:", data.name);
+    console.log("Dados completos:", data);
     
     const statusMap: { [key: string]: string } = {
       "Pagas": "paga",
@@ -66,10 +68,17 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     };
     
     const status = statusMap[data.name];
+    console.log("Status mapeado:", status);
+    
     if (status) {
-      console.log("Navegando para propostas com status:", status);
-      // Navegar diretamente para a página de propostas com o status na URL
-      navigate(`/propostas?status=${status}`, { replace: true });
+      const targetUrl = `/propostas?status=${status}`;
+      console.log("URL de destino:", targetUrl);
+      console.log("Iniciando navegação...");
+      
+      // Usar window.location para garantir que a navegação aconteça
+      window.location.href = targetUrl;
+    } else {
+      console.error("Status não encontrado no mapeamento:", data.name);
     }
   };
 
@@ -107,6 +116,7 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
                     key={`cell-${index}`} 
                     fill={entry.color}
                     className="hover:opacity-80 transition-opacity duration-200"
+                    onClick={() => handleSliceClick(entry)}
                   />
                 ))}
               </Pie>
