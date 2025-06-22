@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FileText,
@@ -76,36 +77,6 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       bgColor: "bg-indigo-50",
       exportable: true,
       status: "liberadas",
-    },
-    {
-      title: "Propostas pagas",
-      value: "856",
-      subtitle: "no período selecionado",
-      icon: CheckCircle,
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-      exportable: true,
-      status: "pagas",
-    },
-    {
-      title: "Pendente pagamento",
-      value: "89",
-      subtitle: "tempo real",
-      icon: Clock,
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
-      exportable: true,
-      status: "pendente-pagamento",
-    },
-    {
-      title: "Propostas cedidas",
-      value: "423",
-      subtitle: "no período selecionado",
-      icon: ArrowRightLeft,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-      exportable: true,
-      status: "cedidas",
     },
     {
       title: "Ticket médio",
