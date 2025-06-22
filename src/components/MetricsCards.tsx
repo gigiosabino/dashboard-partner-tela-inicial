@@ -31,6 +31,16 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
   };
 
   const metrics = [
+    // Linha 1
+    {
+      title: "Clientes cadastrados",
+      value: "2,156",
+      subtitle: "total de clientes ativos",
+      icon: Users,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      exportable: false,
+    },
     {
       title: "Propostas criadas",
       value: "1,234",
@@ -60,6 +70,7 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       exportable: true,
       status: "aprovadas",
     },
+    // Linha 2
     {
       title: "Propostas finalizadas",
       value: "789",
@@ -79,15 +90,6 @@ export function MetricsCards({ selectedPeriod }: MetricsCardsProps) {
       bgColor: "bg-indigo-50",
       exportable: true,
       status: "liberadas",
-    },
-    {
-      title: "Clientes cadastrados",
-      value: "2,156",
-      subtitle: "total de clientes ativos",
-      icon: Users,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      exportable: false,
     },
     {
       title: "Ticket médio",
