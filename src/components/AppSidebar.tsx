@@ -73,11 +73,11 @@ const menuItems = [
     ]
   },
   {
-    title: "Relatórios CAAS",
+    title: "Relatórios",
     icon: BarChart3,
     items: [
       { title: "Relatórios de Serviços Integrados", url: "/relatorios-servicos" },
-      { title: "Relatórios", url: "/relatorios-caas" },
+      { title: "Relatórios CAAS", url: "/relatorios-caas" },
     ]
   },
   {
@@ -158,8 +158,7 @@ export function AppSidebar() {
                         </CollapsibleTrigger>
                         <CollapsibleContent>
                           <SidebarMenuSub>
-                            {item.items.map((subItem) =>
-
+                            {item.items.map((subItem) => (
                               <SidebarMenuSubItem key={subItem.title}>
                                 <SidebarMenuSubButton 
                                   asChild 
@@ -174,7 +173,7 @@ export function AppSidebar() {
                                   </Link>
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
-                            )}
+                            ))}
                           </SidebarMenuSub>
                         </CollapsibleContent>
                       </Collapsible>

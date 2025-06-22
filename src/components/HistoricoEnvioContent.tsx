@@ -311,11 +311,7 @@ export function HistoricoEnvioContent() {
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="bg-[#005f73] hover:bg-[#004a5c] text-white border-[#005f73] shadow-sm"
-                        >
+                        <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm">
                           <Eye className="w-4 h-4 mr-1" />
                           Envio
                         </Button>
@@ -336,11 +332,7 @@ export function HistoricoEnvioContent() {
                   <TableCell>
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="bg-[#80b918] hover:bg-[#6ba016] text-white border-[#80b918] shadow-sm"
-                        >
+                        <Button variant="outline" size="sm" className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm">
                           <Eye className="w-4 h-4 mr-1" />
                           Retorno
                         </Button>
