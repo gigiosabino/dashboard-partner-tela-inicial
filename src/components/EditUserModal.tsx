@@ -8,20 +8,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect } from "react";
 
 interface Usuario {
   id: number;
   nome: string;
   email: string;
-  perfil: string;
+  perfil: string | string[];
   status: string;
   ultimoAcesso: string;
 }
@@ -33,18 +27,30 @@ interface EditUserModalProps {
   onSave: (usuario: Usuario) => void;
 }
 
+const perfilOptions = ["Basic", "Manager", "Auditoria", "Import"];
+
 export function EditUserModal({ isOpen, onClose, usuario, onSave }: EditUserModalProps) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [perfil, setPerfil] = useState("");
+  const [perfis, setPerfis] = useState<string[]>([]);
 
   useEffect(() => {
     if (usuario) {
       setNome(usuario.nome);
       setEmail(usuario.email);
-      setPerfil(usuario.perfil);
+      // Handle both string and array formats
+      const userPerfis = Array.isArray(usuario.perfil) ? usuario.perfil : [usuario.perfil];
+      setPerfis(userPerfis);
     }
   }, [usuario]);
+
+  const handlePerfilChange = (perfil: string, checked: boolean) => {
+    if (checked) {
+      setPerfis(prev => [...prev, perfil]);
+    } else {
+      setPerfis(prev => prev.filter(p => p !== perfil));
+    }
+  };
 
   const handleSave = () => {
     if (usuario) {
@@ -52,7 +58,7 @@ export function EditUserModal({ isOpen, onClose, usuario, onSave }: EditUserModa
         ...usuario,
         nome,
         email,
-        perfil,
+        perfil: perfis,
       };
       onSave(updatedUsuario);
       onClose();
@@ -64,7 +70,7 @@ export function EditUserModal({ isOpen, onClose, usuario, onSave }: EditUserModa
     // Reset form
     setNome("");
     setEmail("");
-    setPerfil("");
+    setPerfis([]);
   };
 
   return (
@@ -97,18 +103,21 @@ export function EditUserModal({ isOpen, onClose, usuario, onSave }: EditUserModa
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="perfil">Perfil</Label>
-            <Select value={perfil} onValueChange={setPerfil}>
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione um perfil" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Basic">Basic</SelectItem>
-                <SelectItem value="Manager">Manager</SelectItem>
-                <SelectItem value="Auditoria">Auditoria</SelectItem>
-                <SelectItem value="Import">Import</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label>Perfis</Label>
+            <div className="space-y-2">
+              {perfilOptions.map((perfil) => (
+                <div key={perfil} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={perfil}
+                    checked={perfis.includes(perfil)}
+                    onCheckedChange={(checked) => handlePerfilChange(perfil, checked as boolean)}
+                  />
+                  <Label htmlFor={perfil} className="text-sm font-normal">
+                    {perfil}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         

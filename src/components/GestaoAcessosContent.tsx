@@ -12,7 +12,7 @@ interface Usuario {
   id: number;
   nome: string;
   email: string;
-  perfil: string;
+  perfil: string | string[];
   status: string;
   ultimoAcesso: string;
 }
@@ -28,7 +28,7 @@ export function GestaoAcessosContent() {
       id: 1,
       nome: "João Silva",
       email: "joao.silva@email.com",
-      perfil: "Manager",
+      perfil: ["Manager"],
       status: "Ativo",
       ultimoAcesso: "22/06/2025 14:30"
     },
@@ -36,7 +36,7 @@ export function GestaoAcessosContent() {
       id: 2,
       nome: "Maria Santos",
       email: "maria.santos@email.com",
-      perfil: "Basic",
+      perfil: ["Basic"],
       status: "Ativo",
       ultimoAcesso: "22/06/2025 13:15"
     },
@@ -44,7 +44,7 @@ export function GestaoAcessosContent() {
       id: 3,
       nome: "Pedro Costa",
       email: "pedro.costa@email.com",
-      perfil: "Auditoria",
+      perfil: ["Auditoria", "Manager"],
       status: "Inativo",
       ultimoAcesso: "20/06/2025 16:45"
     },
@@ -52,7 +52,7 @@ export function GestaoAcessosContent() {
       id: 4,
       nome: "Ana Oliveira",
       email: "ana.oliveira@email.com",
-      perfil: "Import",
+      perfil: ["Import", "Basic"],
       status: "Ativo",
       ultimoAcesso: "22/06/2025 15:20"
     }
@@ -75,12 +75,19 @@ export function GestaoAcessosContent() {
     );
   };
 
-  const getPerfilIcon = (perfil: string) => {
-    return perfil === "Manager" || perfil === "Import" ? (
+  const getPerfilIcon = (perfil: string | string[]) => {
+    const perfis = Array.isArray(perfil) ? perfil : [perfil];
+    const hasHighPermission = perfis.some(p => p === "Manager" || p === "Import");
+    return hasHighPermission ? (
       <Shield className="w-4 h-4 text-red-600" />
     ) : (
       <User className="w-4 h-4 text-blue-600" />
     );
+  };
+
+  const formatPerfis = (perfil: string | string[]) => {
+    const perfis = Array.isArray(perfil) ? perfil : [perfil];
+    return perfis.join(", ");
   };
 
   const handleEditUser = (usuario: Usuario) => {
@@ -153,7 +160,7 @@ export function GestaoAcessosContent() {
                     
                     <div className="flex items-center space-x-4">
                       <div className="text-right">
-                        <p className="text-sm font-medium text-gray-900">{usuario.perfil}</p>
+                        <p className="text-sm font-medium text-gray-900">{formatPerfis(usuario.perfil)}</p>
                         {getStatusBadge(usuario.status)}
                       </div>
                       
