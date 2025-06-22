@@ -65,7 +65,8 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     
     const status = statusMap[data.name];
     if (status) {
-      navigate(`/propostas?status=${status}`);
+      // Navegar para a página de propostas com o filtro aplicado via query parameter
+      navigate(`/propostas?status=${status}&filtered=true`);
     }
   };
 

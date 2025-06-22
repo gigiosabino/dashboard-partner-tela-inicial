@@ -2,12 +2,13 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Clock, User, ChevronDown, ExternalLink } from "lucide-react";
+import { Search, Clock, User, ChevronDown, ExternalLink, RotateCcw, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 interface GlobalHeaderProps {
@@ -26,6 +27,16 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
 
   const handleOpenDocs = () => {
     window.open("https://bmpdocs.moneyp.com.br/caas/sobre-o-caas", "_blank");
+  };
+
+  const handleRenovarSessao = () => {
+    console.log("Renovar sessão clicado");
+    // Aqui você implementaria a lógica de renovação de sessão
+  };
+
+  const handleSair = () => {
+    console.log("Sair clicado");
+    // Aqui você implementaria a lógica de logout
   };
 
   return (
@@ -47,11 +58,6 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
               className="pl-10 w-64 border-slate-300 focus:border-blue-600 focus:ring-blue-600"
             />
           </div>
-          
-          <div className="flex items-center space-x-2 text-sm text-slate-700 bg-slate-50 px-3 py-2 rounded-lg border border-slate-200">
-            <Clock className="w-4 h-4 text-blue-600" />
-            <span>59:51</span>
-          </div>
 
           <Button
             variant="outline" 
@@ -62,6 +68,31 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
             <ExternalLink className="w-4 h-4 mr-2" />
             Docs
           </Button>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline"
+                size="sm"
+                className="flex items-center space-x-2 text-sm text-slate-700 bg-slate-50 border-slate-200 hover:bg-slate-100"
+              >
+                <Clock className="w-4 h-4 text-blue-600" />
+                <span>59:51</span>
+                <ChevronDown className="w-3 h-3" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-white border-slate-200 shadow-lg">
+              <DropdownMenuItem onClick={handleRenovarSessao} className="text-slate-700 hover:bg-slate-50">
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Renovar sessão
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSair} className="text-red-600 hover:bg-red-50">
+                <LogOut className="w-4 h-4 mr-2" />
+                Sair
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
