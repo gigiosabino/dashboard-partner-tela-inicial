@@ -6,17 +6,29 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, Edit, Trash2, Shield, User } from "lucide-react";
 import { useState } from "react";
+import { EditUserModal } from "./EditUserModal";
+
+interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  perfil: string;
+  status: string;
+  ultimoAcesso: string;
+}
 
 export function GestaoAcessosContent() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedUsuario, setSelectedUsuario] = useState<Usuario | null>(null);
 
   // Dados mockados para exemplo
-  const usuarios = [
+  const [usuarios, setUsuarios] = useState<Usuario[]>([
     {
       id: 1,
       nome: "João Silva",
       email: "joao.silva@email.com",
-      perfil: "Administrador",
+      perfil: "Manager",
       status: "Ativo",
       ultimoAcesso: "22/06/2025 14:30"
     },
@@ -24,7 +36,7 @@ export function GestaoAcessosContent() {
       id: 2,
       nome: "Maria Santos",
       email: "maria.santos@email.com",
-      perfil: "Operador",
+      perfil: "Basic",
       status: "Ativo",
       ultimoAcesso: "22/06/2025 13:15"
     },
@@ -32,7 +44,7 @@ export function GestaoAcessosContent() {
       id: 3,
       nome: "Pedro Costa",
       email: "pedro.costa@email.com",
-      perfil: "Consultor",
+      perfil: "Auditoria",
       status: "Inativo",
       ultimoAcesso: "20/06/2025 16:45"
     },
@@ -40,11 +52,11 @@ export function GestaoAcessosContent() {
       id: 4,
       nome: "Ana Oliveira",
       email: "ana.oliveira@email.com",
-      perfil: "Supervisor",
+      perfil: "Import",
       status: "Ativo",
       ultimoAcesso: "22/06/2025 15:20"
     }
-  ];
+  ]);
 
   const filteredUsuarios = usuarios.filter(usuario =>
     usuario.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -64,11 +76,23 @@ export function GestaoAcessosContent() {
   };
 
   const getPerfilIcon = (perfil: string) => {
-    return perfil === "Administrador" ? (
+    return perfil === "Manager" || perfil === "Import" ? (
       <Shield className="w-4 h-4 text-red-600" />
     ) : (
       <User className="w-4 h-4 text-blue-600" />
     );
+  };
+
+  const handleEditUser = (usuario: Usuario) => {
+    setSelectedUsuario(usuario);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveUser = (updatedUsuario: Usuario) => {
+    setUsuarios(usuarios.map(user => 
+      user.id === updatedUsuario.id ? updatedUsuario : user
+    ));
+    console.log("Usuário atualizado:", updatedUsuario);
   };
 
   return (
@@ -134,7 +158,11 @@ export function GestaoAcessosContent() {
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleEditUser(usuario)}
+                        >
                           <Edit className="w-4 h-4" />
                         </Button>
                         <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
@@ -155,6 +183,13 @@ export function GestaoAcessosContent() {
           </CardContent>
         </Card>
       </main>
+
+      <EditUserModal
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        usuario={selectedUsuario}
+        onSave={handleSaveUser}
+      />
     </div>
   );
 }
