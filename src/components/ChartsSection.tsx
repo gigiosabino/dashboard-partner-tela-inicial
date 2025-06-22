@@ -56,11 +56,10 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     return statusData;
   };
 
-  const handleSliceClick = (data: any, event?: any) => {
+  const handleSliceClick = (data: any) => {
     console.log("=== CLIQUE NO GRÁFICO ===");
     console.log("Status clicado:", data.name);
     console.log("Dados completos:", data);
-    console.log("Event:", event);
     
     const statusMap: { [key: string]: string } = {
       "Pagas": "paga",
@@ -74,10 +73,12 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
     if (status) {
       const targetUrl = `/propostas?status=${status}`;
       console.log("URL de destino:", targetUrl);
-      console.log("Navegando via React Router...");
+      console.log("Navegando...");
       
-      // Usar navigate do React Router
-      navigate(targetUrl);
+      // Força a navegação
+      setTimeout(() => {
+        navigate(targetUrl);
+      }, 0);
     } else {
       console.error("Status não encontrado no mapeamento:", data.name);
     }
@@ -109,17 +110,15 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
                 dataKey="value"
                 stroke="white"
                 strokeWidth={3}
-                style={{ cursor: 'pointer' }}
               >
                 {currentData.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={entry.color}
-                    className="hover:opacity-80 transition-opacity duration-200"
-                    style={{ cursor: 'pointer' }}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleSliceClick(entry, event);
+                    className="hover:opacity-80 transition-opacity duration-200 cursor-pointer"
+                    onClick={() => {
+                      console.log("Cell clicada:", entry);
+                      handleSliceClick(entry);
                     }}
                   />
                 ))}
@@ -143,7 +142,10 @@ export function ChartsSection({ selectedPeriod }: ChartsSectionProps) {
           {currentData.map((entry, index) => (
             <div 
               key={`legend-${index}`}
-              onClick={() => handleSliceClick(entry)}
+              onClick={() => {
+                console.log("Legend clicada:", entry);
+                handleSliceClick(entry);
+              }}
               className="flex items-center space-x-2 cursor-pointer hover:scale-105 transition-transform duration-200 bg-white px-3 py-2 rounded-lg shadow-sm border"
             >
               <div 
