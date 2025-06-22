@@ -1,11 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { PropostaHeader } from "./proposta-detalhes/PropostaHeader";
 import { PropostaSummaryCard } from "./proposta-detalhes/PropostaSummaryCard";
 import { PropostaTabsContent } from "./proposta-detalhes/PropostaTabsContent";
+import { ComentariosModal } from "./proposta-detalhes/ComentariosModal";
 
 export function PropostaDetalhesContent() {
   const { numero } = useParams();
   const navigate = useNavigate();
+  const [isComentariosModalOpen, setIsComentariosModalOpen] = useState(false);
 
   const handleDownloadDocument = (documentName: string) => {
     console.log(`Baixando documento: ${documentName}`);
@@ -15,15 +18,19 @@ export function PropostaDetalhesContent() {
     navigate('/propostas');
   };
 
+  const handleComentariosClick = () => {
+    setIsComentariosModalOpen(true);
+  };
+
   // Dados mockados para exemplo
   const propostaData = {
-    numero: numero || "004935629",
-    cliente: "TESTE LUCCA",
-    cpf: "422.817.188-59",
-    dataEnvio: "05/06/2025",
-    valorSolicitado: "R$ 500,00",
+    numero: numero || "057792368",
+    cliente: "JORGE LUIZ SARAIVA DA COSTA",
+    cpf: "327.937.152-04",
+    dataEnvio: "21/06/2025 21:01:19",
+    valorSolicitado: "R$ 21,77",
     situacao: "Em análise",
-    parceiro: "Parceiro Exemplo",
+    parceiro: "SKUDRA DESENVOLVIMENTO DE SOFTWARE LTDA",
     status: "Ativa"
   };
 
@@ -130,7 +137,10 @@ export function PropostaDetalhesContent() {
       />
 
       <main className="p-6 space-y-6 max-w-7xl mx-auto">
-        <PropostaSummaryCard propostaData={propostaData} />
+        <PropostaSummaryCard 
+          propostaData={propostaData} 
+          onComentariosClick={handleComentariosClick}
+        />
         
         <PropostaTabsContent
           valoresOperacao={valoresOperacao}
@@ -147,6 +157,11 @@ export function PropostaDetalhesContent() {
           onDownloadDocument={handleDownloadDocument}
         />
       </main>
+
+      <ComentariosModal
+        isOpen={isComentariosModalOpen}
+        onClose={() => setIsComentariosModalOpen(false)}
+      />
     </div>
   );
 }
