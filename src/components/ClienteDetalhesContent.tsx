@@ -333,11 +333,13 @@ export function ClienteDetalhesContent() {
 
           <TabsContent value="pessoais">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle>{isCNPJ ? 'Dados da Empresa' : 'Dados Pessoais'}</CardTitle>
               </CardHeader>
-              <Separator />
-              <CardContent className="space-y-4">
+              <div className="px-6">
+                <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[2px]" />
+              </div>
+              <CardContent className="space-y-4 pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="nome">{isCNPJ ? 'Razão Social' : 'Nome Completo'}</Label>
@@ -440,11 +442,13 @@ export function ClienteDetalhesContent() {
 
           <TabsContent value="contato">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle>Dados de Contato</CardTitle>
               </CardHeader>
-              <Separator />
-              <CardContent className="space-y-4">
+              <div className="px-6">
+                <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[2px]" />
+              </div>
+              <CardContent className="space-y-4 pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="email">E-mail</Label>
@@ -474,11 +478,13 @@ export function ClienteDetalhesContent() {
 
           <TabsContent value="enderecos">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle>Endereços</CardTitle>
               </CardHeader>
-              <Separator />
-              <CardContent>
+              <div className="px-6">
+                <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[2px]" />
+              </div>
+              <CardContent className="pt-6">
                 <div className="space-y-6">
                   {clienteData.enderecos.map((endereco, index) => (
                     <div key={endereco.id} className="border rounded-lg p-4">
@@ -553,11 +559,13 @@ export function ClienteDetalhesContent() {
 
           <TabsContent value="bancarios">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle>Dados Bancários</CardTitle>
               </CardHeader>
-              <Separator />
-              <CardContent>
+              <div className="px-6">
+                <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[2px]" />
+              </div>
+              <CardContent className="pt-6">
                 <div className="space-y-6">
                   {clienteData.dadosBancarios.map((banco, index) => (
                     <div key={banco.id} className="border rounded-lg p-4">
@@ -623,11 +631,13 @@ export function ClienteDetalhesContent() {
 
           <TabsContent value="limites">
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle>Limites de Crédito Importados</CardTitle>
               </CardHeader>
-              <Separator />
-              <CardContent>
+              <div className="px-6">
+                <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[2px]" />
+              </div>
+              <CardContent className="pt-6">
                 <div className="space-y-6">
                   {clienteData.limitesCredito.map((limite, index) => (
                     <div key={limite.id} className="border rounded-lg p-4">
@@ -775,11 +785,13 @@ export function ClienteDetalhesContent() {
           {isCNPJ && (
             <TabsContent value="assinantes">
               <Card>
-                <CardHeader>
+                <CardHeader className="pb-3">
                   <CardTitle>Assinantes Cadastrados</CardTitle>
                 </CardHeader>
-                <Separator />
-                <CardContent>
+                <div className="px-6">
+                  <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[2px]" />
+                </div>
+                <CardContent className="pt-6">
                   <div className="space-y-6">
                     {clienteData.assinantes.map((assinante, index) => (
                       <div key={assinante.id} className="border rounded-lg p-4">
