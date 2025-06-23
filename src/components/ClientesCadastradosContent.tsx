@@ -36,6 +36,14 @@ export function ClientesCadastradosContent() {
       dataNascimento: "10/12/1988",
       email: "maria@email.com",
       telefone: "(11) 97777-7777"
+    },
+    {
+      id: "4",
+      documento: "12.345.678/0001-90",
+      nome: "EMPRESA MODELO LTDA",
+      dataNascimento: "01/06/2015",
+      email: "contato@empresamodelo.com.br",
+      telefone: "(11) 3456-7890"
     }
   ];
 

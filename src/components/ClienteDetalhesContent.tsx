@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,109 +14,198 @@ export function ClienteDetalhesContent() {
   const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
 
-  // Mock data para o cliente
-  const [clienteData, setClienteData] = useState({
-    // Dados Pessoais
-    nome: "JORGE LUIZ SARAIVA DA COSTA",
-    documento: "327.937.152-04",
-    dataNascimento: "15/03/1985",
-    rg: "12.345.678-9",
-    sexo: "Masculino",
-    escolaridade: "Superior Completo",
-    nomeMae: "MARIA COSTA",
-    estadoCivil: "Solteiro",
-    nacionalidade: "Brasileira",
-    
-    // Dados de Contato
-    email: "jorge@email.com",
-    telefone: "(11) 99999-9999",
-    
-    // Endereços
-    enderecos: [
-      {
-        id: "1",
-        cep: "01234-567",
-        logradouro: "Rua das Flores, 123",
-        bairro: "Centro",
-        cidade: "São Paulo",
-        estado: "SP",
-        complemento: "Apto 45",
-        principal: true
-      },
-      {
-        id: "2",
-        cep: "04567-890",
-        logradouro: "Av. Paulista, 1000",
-        bairro: "Bela Vista",
-        cidade: "São Paulo",
-        estado: "SP",
-        complemento: "Sala 1001",
-        principal: false
-      }
-    ],
-    
-    // Dados Bancários
-    dadosBancarios: [
-      {
-        id: "1",
-        numeroBanco: "001",
-        nomeBanco: "Banco do Brasil",
-        agencia: "1234-5",
-        conta: "12345-6",
-        tipoConta: "Corrente",
-        contaPagamento: true
-      },
-      {
-        id: "2",
-        numeroBanco: "237",
-        nomeBanco: "Banco Bradesco",
-        agencia: "9876-5",
-        conta: "54321-0",
-        tipoConta: "Poupança",
-        contaPagamento: false
-      }
-    ],
+  // Mock data baseado no ID - exemplo de CNPJ com assinantes
+  const getClienteData = (clienteId: string) => {
+    if (clienteId === "4") {
+      return {
+        // Dados da Empresa (CNPJ)
+        nome: "EMPRESA MODELO LTDA",
+        documento: "12.345.678/0001-90",
+        dataNascimento: "01/06/2015", // Data de abertura da empresa
+        rg: "",
+        sexo: "",
+        escolaridade: "",
+        nomeMae: "",
+        estadoCivil: "",
+        nacionalidade: "Brasileira",
+        
+        // Dados de Contato
+        email: "contato@empresamodelo.com.br",
+        telefone: "(11) 3456-7890",
+        
+        // Endereços
+        enderecos: [
+          {
+            id: "1",
+            cep: "01310-100",
+            logradouro: "Av. Paulista, 1578",
+            bairro: "Bela Vista",
+            cidade: "São Paulo",
+            estado: "SP",
+            complemento: "Conj. 1405",
+            principal: true
+          }
+        ],
+        
+        // Dados Bancários
+        dadosBancarios: [
+          {
+            id: "1",
+            numeroBanco: "237",
+            nomeBanco: "Banco Bradesco",
+            agencia: "0532-1",
+            conta: "123456-7",
+            tipoConta: "Corrente",
+            contaPagamento: true
+          }
+        ],
 
-    // Limites de Crédito
-    limitesCredito: [
-      {
-        id: "1",
-        numeroLimite: "LIM001234",
-        dataInclusao: "15/12/2024",
-        dataInicioVigencia: "01/01/2025",
-        dataFimVigencia: "31/12/2025",
-        tipoContrato: "CAPITAL DE GIRO",
-        valorConcedido: "R$ 1.500,00",
-        percentualJurosConcedido: "1,50",
-        prazoMinimoVencimento: "20",
-        prazoMaximoVencimento: "60",
-        tipoTarifa: "Valor fixo",
-        tarifa: "R$ 500,00",
-        parcelaMinima: "R$ 150,00",
-        parcelaMaxima: "R$ 300,00",
-        modalidade: "CDC",
-        observacoes: "Limite aprovado para pessoa física"
-      },
-      {
-        id: "2",
-        numeroLimite: "LIM005678",
-        dataInclusao: "20/11/2024",
-        dataInicioVigencia: "01/12/2024",
-        dataFimVigencia: "30/11/2025",
-        tipoContrato: "CARTÃO DE CRÉDITO",
-        valorConcedido: "R$ 2.500,00",
-        percentualJurosConcedido: "2,80",
-        prazoMinimoVencimento: "30",
-        prazoMaximoVencimento: "90",
-        tipoTarifa: "Percentual",
-        tarifa: "1,2%",
-        parcelaMinima: "R$ 200,00",
-        parcelaMaxima: "R$ 500,00",
-        modalidade: "ROT",
-        observacoes: "Limite complementar aprovado"
-      }
-    ]
-  });
+        // Limites de Crédito
+        limitesCredito: [
+          {
+            id: "1",
+            numeroLimite: "LIM987654",
+            dataInclusao: "10/12/2024",
+            dataInicioVigencia: "01/01/2025",
+            dataFimVigencia: "31/12/2025",
+            tipoContrato: "CAPITAL DE GIRO",
+            valorConcedido: "R$ 50.000,00",
+            percentualJurosConcedido: "2,30",
+            prazoMinimoVencimento: "30",
+            prazoMaximoVencimento: "180",
+            tipoTarifa: "Percentual",
+            tarifa: "2,5%",
+            parcelaMinima: "R$ 500,00",
+            parcelaMaxima: "R$ 2.000,00",
+            modalidade: "CDC",
+            observacoes: "Limite aprovado para pessoa jurídica"
+          }
+        ],
+
+        // Assinantes (somente para CNPJ)
+        assinantes: [
+          {
+            id: "1",
+            documentoFederal: "123.456.789-10",
+            nome: "CARLOS SILVA SANTOS",
+            telefone: "(11) 99123-4567",
+            email: "carlos@empresamodelo.com.br",
+            dataNascimento: "15/03/1980",
+            papel: "Sócio Administrador",
+            estadoCivil: "Casado",
+            rg: "12.345.678-9",
+            banco: "Banco do Brasil",
+            endereco: {
+              logradouro: "Rua das Flores",
+              numero: "456",
+              complemento: "Apto 201",
+              bairro: "Centro",
+              cidade: "São Paulo",
+              estado: "SP",
+              cep: "01234-567"
+            },
+            ordemAssinatura: "1"
+          },
+          {
+            id: "2",
+            documentoFederal: "987.654.321-00",
+            nome: "MARIA OLIVEIRA COSTA",
+            telefone: "(11) 99987-6543",
+            email: "maria@empresamodelo.com.br",
+            dataNascimento: "22/07/1985",
+            papel: "Sócia",
+            estadoCivil: "Solteira",
+            rg: "98.765.432-1",
+            banco: "Itaú",
+            endereco: {
+              logradouro: "Avenida Paulista",
+              numero: "1000",
+              complemento: "Cobertura",
+              bairro: "Bela Vista",
+              cidade: "São Paulo",
+              estado: "SP",
+              cep: "01310-100"
+            },
+            ordemAssinatura: "2"
+          }
+        ]
+      };
+    }
+    
+    // Retorna dados padrão para CPF
+    return {
+      // Dados Pessoais
+      nome: "JORGE LUIZ SARAIVA DA COSTA",
+      documento: "327.937.152-04",
+      dataNascimento: "15/03/1985",
+      rg: "12.345.678-9",
+      sexo: "Masculino",
+      escolaridade: "Superior Completo",
+      nomeMae: "MARIA COSTA",
+      estadoCivil: "Solteiro",
+      nacionalidade: "Brasileira",
+      
+      // Dados de Contato
+      email: "jorge@email.com",
+      telefone: "(11) 99999-9999",
+      
+      // Endereços
+      enderecos: [
+        {
+          id: "1",
+          cep: "01234-567",
+          logradouro: "Rua das Flores, 123",
+          bairro: "Centro",
+          cidade: "São Paulo",
+          estado: "SP",
+          complemento: "Apto 45",
+          principal: true
+        }
+      ],
+      
+      // Dados Bancários
+      dadosBancarios: [
+        {
+          id: "1",
+          numeroBanco: "001",
+          nomeBanco: "Banco do Brasil",
+          agencia: "1234-5",
+          conta: "12345-6",
+          tipoConta: "Corrente",
+          contaPagamento: true
+        }
+      ],
+
+      // Limites de Crédito
+      limitesCredito: [
+        {
+          id: "1",
+          numeroLimite: "LIM001234",
+          dataInclusao: "15/12/2024",
+          dataInicioVigencia: "01/01/2025",
+          dataFimVigencia: "31/12/2025",
+          tipoContrato: "CAPITAL DE GIRO",
+          valorConcedido: "R$ 1.500,00",
+          percentualJurosConcedido: "1,50",
+          prazoMinimoVencimento: "20",
+          prazoMaximoVencimento: "60",
+          tipoTarifa: "Valor fixo",
+          tarifa: "R$ 500,00",
+          parcelaMinima: "R$ 150,00",
+          parcelaMaxima: "R$ 300,00",
+          modalidade: "CDC",
+          observacoes: "Limite aprovado para pessoa física"
+        }
+      ],
+
+      assinantes: []
+    };
+  };
+
+  const [clienteData, setClienteData] = useState(getClienteData(id || "1"));
+
+  // Verifica se é CNPJ
+  const isCNPJ = clienteData.documento.includes("/");
 
   const handleSave = () => {
     // Aqui seria feita a chamada para a API para salvar os dados
@@ -149,6 +237,23 @@ export function ClienteDetalhesContent() {
     newLimitesCredito[index] = { ...newLimitesCredito[index], [field]: value };
     setClienteData({ ...clienteData, limitesCredito: newLimitesCredito });
   };
+
+  const updateAssinante = (index: number, field: string, value: string) => {
+    const newAssinantes = [...clienteData.assinantes];
+    if (field.includes('endereco.')) {
+      const enderecoField = field.split('.')[1];
+      newAssinantes[index] = { 
+        ...newAssinantes[index], 
+        endereco: { ...newAssinantes[index].endereco, [enderecoField]: value }
+      };
+    } else {
+      newAssinantes[index] = { ...newAssinantes[index], [field]: value };
+    }
+    setClienteData({ ...clienteData, assinantes: newAssinantes });
+  };
+
+  const tabsCount = isCNPJ ? 6 : 5;
+  const gridCols = isCNPJ ? "grid-cols-6" : "grid-cols-5";
 
   return (
     <div className="flex-1 bg-gray-50 min-h-screen">
@@ -206,23 +311,24 @@ export function ClienteDetalhesContent() {
 
       <main className="p-6 space-y-6 max-w-7xl mx-auto">
         <Tabs defaultValue="pessoais" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="pessoais">Dados Pessoais</TabsTrigger>
+          <TabsList className={`grid w-full ${gridCols}`}>
+            <TabsTrigger value="pessoais">{isCNPJ ? 'Dados da Empresa' : 'Dados Pessoais'}</TabsTrigger>
             <TabsTrigger value="contato">Dados de Contato</TabsTrigger>
             <TabsTrigger value="enderecos">Endereços</TabsTrigger>
             <TabsTrigger value="bancarios">Dados Bancários</TabsTrigger>
             <TabsTrigger value="limites">Limites de Crédito</TabsTrigger>
+            {isCNPJ && <TabsTrigger value="assinantes">Assinantes</TabsTrigger>}
           </TabsList>
 
           <TabsContent value="pessoais">
             <Card>
               <CardHeader>
-                <CardTitle>Dados Pessoais</CardTitle>
+                <CardTitle>{isCNPJ ? 'Dados da Empresa' : 'Dados Pessoais'}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="nome">Nome Completo</Label>
+                    <Label htmlFor="nome">{isCNPJ ? 'Razão Social' : 'Nome Completo'}</Label>
                     <Input
                       id="nome"
                       value={clienteData.nome}
@@ -240,7 +346,7 @@ export function ClienteDetalhesContent() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="dataNascimento">Data de Nascimento</Label>
+                    <Label htmlFor="dataNascimento">{isCNPJ ? 'Data de Abertura' : 'Data de Nascimento'}</Label>
                     <Input
                       id="dataNascimento"
                       value={clienteData.dataNascimento}
@@ -248,51 +354,55 @@ export function ClienteDetalhesContent() {
                       onChange={(e) => setClienteData({...clienteData, dataNascimento: e.target.value})}
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="rg">RG</Label>
-                    <Input
-                      id="rg"
-                      value={clienteData.rg}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, rg: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="sexo">Sexo</Label>
-                    <Input
-                      id="sexo"
-                      value={clienteData.sexo}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, sexo: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="escolaridade">Escolaridade</Label>
-                    <Input
-                      id="escolaridade"
-                      value={clienteData.escolaridade}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, escolaridade: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="nomeMae">Nome da Mãe</Label>
-                    <Input
-                      id="nomeMae"
-                      value={clienteData.nomeMae}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, nomeMae: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="estadoCivil">Estado Civil</Label>
-                    <Input
-                      id="estadoCivil"
-                      value={clienteData.estadoCivil}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, estadoCivil: e.target.value})}
-                    />
-                  </div>
+                  {!isCNPJ && (
+                    <>
+                      <div>
+                        <Label htmlFor="rg">RG</Label>
+                        <Input
+                          id="rg"
+                          value={clienteData.rg}
+                          disabled={!isEditing}
+                          onChange={(e) => setClienteData({...clienteData, rg: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="sexo">Sexo</Label>
+                        <Input
+                          id="sexo"
+                          value={clienteData.sexo}
+                          disabled={!isEditing}
+                          onChange={(e) => setClienteData({...clienteData, sexo: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="escolaridade">Escolaridade</Label>
+                        <Input
+                          id="escolaridade"
+                          value={clienteData.escolaridade}
+                          disabled={!isEditing}
+                          onChange={(e) => setClienteData({...clienteData, escolaridade: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="nomeMae">Nome da Mãe</Label>
+                        <Input
+                          id="nomeMae"
+                          value={clienteData.nomeMae}
+                          disabled={!isEditing}
+                          onChange={(e) => setClienteData({...clienteData, nomeMae: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="estadoCivil">Estado Civil</Label>
+                        <Input
+                          id="estadoCivil"
+                          value={clienteData.estadoCivil}
+                          disabled={!isEditing}
+                          onChange={(e) => setClienteData({...clienteData, estadoCivil: e.target.value})}
+                        />
+                      </div>
+                    </>
+                  )}
                   <div>
                     <Label htmlFor="nacionalidade">Nacionalidade</Label>
                     <Input
@@ -623,6 +733,191 @@ export function ClienteDetalhesContent() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {isCNPJ && (
+            <TabsContent value="assinantes">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Assinantes Cadastrados</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {clienteData.assinantes.map((assinante, index) => (
+                      <div key={assinante.id} className="border rounded-lg p-4 bg-green-50">
+                        <div className="flex justify-between items-center mb-4">
+                          <h4 className="font-medium text-green-900">Assinante {index + 1} - {assinante.papel}</h4>
+                          <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
+                            Ordem: {assinante.ordemAssinatura}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div>
+                            <Label className="text-green-800">Documento Federal</Label>
+                            <Input 
+                              value={assinante.documentoFederal} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'documentoFederal', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">Nome</Label>
+                            <Input 
+                              value={assinante.nome} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'nome', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">Telefone/Celular</Label>
+                            <Input 
+                              value={assinante.telefone} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'telefone', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">E-mail</Label>
+                            <Input 
+                              value={assinante.email} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'email', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">Data de Nascimento</Label>
+                            <Input 
+                              value={assinante.dataNascimento} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'dataNascimento', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">Papel</Label>
+                            <Input 
+                              value={assinante.papel} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'papel', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">Estado Civil</Label>
+                            <Input 
+                              value={assinante.estadoCivil} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'estadoCivil', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">RG</Label>
+                            <Input 
+                              value={assinante.rg} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'rg', e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-green-800">Banco</Label>
+                            <Input 
+                              value={assinante.banco} 
+                              disabled={!isEditing} 
+                              className="bg-white"
+                              onChange={(e) => updateAssinante(index, 'banco', e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="mt-4">
+                          <h5 className="font-medium text-green-900 mb-3">Endereço do Assinante</h5>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                              <Label className="text-green-800">Logradouro</Label>
+                              <Input 
+                                value={assinante.endereco.logradouro} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'endereco.logradouro', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-green-800">Número</Label>
+                              <Input 
+                                value={assinante.endereco.numero} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'endereco.numero', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-green-800">Complemento</Label>
+                              <Input 
+                                value={assinante.endereco.complemento || ""} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'endereco.complemento', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-green-800">Bairro</Label>
+                              <Input 
+                                value={assinante.endereco.bairro} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'endereco.bairro', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-green-800">Cidade</Label>
+                              <Input 
+                                value={assinante.endereco.cidade} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'endereco.cidade', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-green-800">Estado</Label>
+                              <Input 
+                                value={assinante.endereco.estado} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'endereco.estado', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-green-800">CEP</Label>
+                              <Input 
+                                value={assinante.endereco.cep} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'endereco.cep', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-green-800">Ordem Assinatura</Label>
+                              <Input 
+                                value={assinante.ordemAssinatura} 
+                                disabled={!isEditing} 
+                                className="bg-white"
+                                onChange={(e) => updateAssinante(index, 'ordemAssinatura', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
         </Tabs>
       </main>
     </div>
