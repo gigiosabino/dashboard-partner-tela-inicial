@@ -1,4 +1,3 @@
-
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { GlobalHeader } from "@/components/GlobalHeader";
@@ -333,9 +332,9 @@ export function NovaImportacaoContent() {
                     </Card>
 
                     {/* Seção Pessoa Endereço */}
-                    <Card className="border-l-4 border-l-green-500">
-                      <CardHeader className="bg-green-50">
-                        <CardTitle className="text-lg text-green-700">Pessoa Endereço</CardTitle>
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardHeader className="bg-blue-50">
+                        <CardTitle className="text-lg text-blue-700">Pessoa Endereço</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-4 gap-4">
@@ -383,9 +382,9 @@ export function NovaImportacaoContent() {
                     </Card>
 
                     {/* Seção Solicitação Análise de Crédito */}
-                    <Card className="border-l-4 border-l-orange-500">
-                      <CardHeader className="bg-orange-50">
-                        <CardTitle className="text-lg text-orange-700">Solicitação Análise de Crédito</CardTitle>
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardHeader className="bg-blue-50">
+                        <CardTitle className="text-lg text-blue-700">Solicitação Análise de Crédito</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-2 gap-4">
@@ -459,9 +458,9 @@ export function NovaImportacaoContent() {
                     </Card>
 
                     {/* Seção Assinante */}
-                    <Card className="border-l-4 border-l-purple-500">
-                      <CardHeader className="bg-purple-50">
-                        <CardTitle className="text-lg text-purple-700">Assinante</CardTitle>
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardHeader className="bg-blue-50">
+                        <CardTitle className="text-lg text-blue-700">Assinante</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-3 gap-4">
