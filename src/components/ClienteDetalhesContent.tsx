@@ -494,6 +494,9 @@ export function ClienteDetalhesContent() {
                           {endereco.principal ? 'Principal' : 'Secundário'}
                         </span>
                       </div>
+                      <div className="px-2 mb-4">
+                        <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[1px]" />
+                      </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label>CEP</Label>
@@ -575,6 +578,9 @@ export function ClienteDetalhesContent() {
                           {banco.contaPagamento ? 'Conta Pagamento' : 'Conta Secundária'}
                         </span>
                       </div>
+                      <div className="px-2 mb-4">
+                        <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[1px]" />
+                      </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label>Número do Banco</Label>
@@ -646,6 +652,9 @@ export function ClienteDetalhesContent() {
                         <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
                           {limite.numeroLimite}
                         </span>
+                      </div>
+                      <div className="px-2 mb-4">
+                        <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[1px]" />
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
@@ -801,6 +810,9 @@ export function ClienteDetalhesContent() {
                             Ordem: {assinante.ordemAssinatura}
                           </span>
                         </div>
+                        <div className="px-2 mb-4">
+                          <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[1px]" />
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div>
                             <Label>Documento Federal</Label>
@@ -887,6 +899,9 @@ export function ClienteDetalhesContent() {
                         
                         <div className="mt-4">
                           <h5 className="font-medium mb-3">Endereço do Assinante</h5>
+                          <div className="px-2 mb-4">
+                            <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[1px]" />
+                          </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
                               <Label>Logradouro</Label>
