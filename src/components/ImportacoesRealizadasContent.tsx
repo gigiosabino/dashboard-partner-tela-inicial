@@ -1,4 +1,3 @@
-
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { GlobalHeader } from "@/components/GlobalHeader";
@@ -41,6 +40,74 @@ export function ImportacoesRealizadasContent() {
       sucessos: 145,
       erros: 5,
       status: "Concluída",
+      dadosImportacao: {
+        pessoa: {
+          documentoFederal: "12.345.678/0001-90",
+          tipoPessoa: "Pessoa Jurídica",
+          nomeRazaoSocial: "Empresa Modelo LTDA",
+          nomeFantasia: "Modelo Empresa",
+          email: "contato@empresa.com.br",
+          telefoneFixo: "(11) 3456-7890",
+          telefoneCelular: "(11) 99876-5432"
+        },
+        endereco: {
+          cep: "01234-567",
+          logradouro: "Rua das Empresas",
+          numero: "123",
+          complemento: "Sala 101",
+          bairro: "Centro",
+          cidade: "São Paulo",
+          uf: "SP"
+        },
+        solicitacao: {
+          situacaoInicial: "CAPITAL DE GIRO",
+          tipoOperacao: "CAPITAL DE GIRO",
+          valorSolicitado: "R$ 50.000,00",
+          percentualJuros: "2,50%",
+          prazoMinimo: "30",
+          prazoMaximo: "180",
+          tipoTarifa: "Porcentagem",
+          tarifa: "3,00%",
+          parcelaMinima: "1",
+          parcelaMaxima: "6"
+        },
+        assinantes: [
+          {
+            documentoFederal: "123.456.789-10",
+            nome: "Carlos Silva Santos",
+            telefone: "(11) 99123-4567",
+            email: "carlos@empresa.com.br",
+            dataNascimento: "15/03/1980",
+            papel: "Sócio Administrador",
+            estadoCivil: "Casado",
+            rg: "12.345.678-9",
+            banco: "Banco do Brasil",
+            logradouro: "Rua das Flores",
+            numeroLogradouro: "456",
+            complemento: "Apto 201",
+            cidade: "São Paulo",
+            uf: "SP",
+            ordemAssinatura: "1"
+          },
+          {
+            documentoFederal: "987.654.321-00",
+            nome: "Maria Oliveira Costa",
+            telefone: "(11) 99987-6543",
+            email: "maria@empresa.com.br",
+            dataNascimento: "22/07/1985",
+            papel: "Sócia",
+            estadoCivil: "Solteira",
+            rg: "98.765.432-1",
+            banco: "Itaú",
+            logradouro: "Avenida Paulista",
+            numeroLogradouro: "1000",
+            complemento: "Cobertura",
+            cidade: "São Paulo",
+            uf: "SP",
+            ordemAssinatura: "2"
+          }
+        ]
+      }
     },
     {
       id: "IMP002",
@@ -206,7 +273,7 @@ export function ImportacoesRealizadasContent() {
                 <DialogHeader>
                   <DialogTitle>Detalhes da Importação - {selectedImportacao?.id}</DialogTitle>
                 </DialogHeader>
-                {selectedImportacao && (
+                {selectedImportacao && selectedImportacao.dadosImportacao && (
                   <div className="space-y-6">
                     {/* Seção Pessoa */}
                     <Card className="border-l-4 border-l-blue-500">
@@ -217,35 +284,35 @@ export function ImportacoesRealizadasContent() {
                         <div className="grid grid-cols-3 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">CPF/CNPJ:</label>
-                            <p className="text-sm">011.075.550-27</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.documentoFederal}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Tipo de Pessoa:</label>
-                            <p className="text-sm">Pessoa Jurídica</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.tipoPessoa}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Nome/Razão Social:</label>
-                            <p className="text-sm">Nome Modelo Teste</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.nomeRazaoSocial}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">Nome Fantasia:</label>
-                            <p className="text-sm">-</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.nomeFantasia}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">E-mail:</label>
-                            <p className="text-sm">emailTeste@emails.com.br</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.email}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Telefone Fixo:</label>
-                            <p className="text-sm">(11) 3435-3208</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.telefoneFixo}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-1 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">Telefone Celular:</label>
-                            <p className="text-sm">(11) 94178-9929</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.telefoneCelular}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -260,33 +327,33 @@ export function ImportacoesRealizadasContent() {
                         <div className="grid grid-cols-4 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">CEP:</label>
-                            <p className="text-sm">65.095-361</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.cep}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Logradouro:</label>
-                            <p className="text-sm">Rua Major Palma</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.logradouro}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Número:</label>
-                            <p className="text-sm">1787</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.numero}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Complemento:</label>
-                            <p className="text-sm">CJ 10</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.complemento}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-3 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">Bairro:</label>
-                            <p className="text-sm">Floresta</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.bairro}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Cidade:</label>
-                            <p className="text-sm">Guarulhos</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.cidade}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">UF:</label>
-                            <p className="text-sm">SP</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.uf}</p>
                           </div>
                         </div>
                       </CardContent>
@@ -301,133 +368,147 @@ export function ImportacoesRealizadasContent() {
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">Situação Inicial:</label>
-                            <p className="text-sm">CAPITAL DE GIRO</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.situacaoInicial}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Tipo de Operação:</label>
-                            <p className="text-sm">CAPITAL DE GIRO</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.tipoOperacao}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-4 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">Valor Solicitado:</label>
-                            <p className="text-sm">R$ 1.500,00</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.valorSolicitado}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Percentual de Juros:</label>
-                            <p className="text-sm">1,50%</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.percentualJuros}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Prazo Mínimo (dias):</label>
-                            <p className="text-sm">10</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.prazoMinimo}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Prazo Máximo (dias):</label>
-                            <p className="text-sm">90</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.prazoMaximo}</p>
                           </div>
                         </div>
                         <div className="grid grid-cols-4 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-1">Tipo de Tarifa (TA):</label>
-                            <p className="text-sm">Porcentagem</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.tipoTarifa}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Tarifa (TA):</label>
-                            <p className="text-sm">2,00%</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.tarifa}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Parcela Mínima:</label>
-                            <p className="text-sm">50</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.parcelaMinima}</p>
                           </div>
                           <div>
                             <label className="block text-sm font-medium mb-1">Parcela Máxima:</label>
-                            <p className="text-sm">50</p>
+                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.parcelaMaxima}</p>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
 
-                    {/* Seção Assinante */}
-                    <Card className="border-l-4 border-l-blue-500">
-                      <CardHeader className="bg-blue-50">
-                        <CardTitle className="text-lg text-blue-700">Dados do Assinante</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4 pt-6">
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Documento Federal:</label>
-                            <p className="text-sm">590.496.170-14</p>
+                    {/* Seções de Assinantes */}
+                    {selectedImportacao.dadosImportacao.assinantes.map((assinante: any, index: number) => (
+                      <Card key={index} className="border-l-4 border-l-blue-500">
+                        <CardHeader className="bg-blue-50">
+                          <CardTitle className="text-lg text-blue-700">
+                            Assinante {index + 1} - {assinante.papel}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4 pt-6">
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Documento Federal:</label>
+                              <p className="text-sm">{assinante.documentoFederal}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Nome:</label>
+                              <p className="text-sm">{assinante.nome}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Telefone/Celular:</label>
+                              <p className="text-sm">{assinante.telefone}</p>
+                            </div>
                           </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Nome:</label>
-                            <p className="text-sm">modelo teste</p>
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-1">E-mail:</label>
+                              <p className="text-sm">{assinante.email}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Data de Nascimento:</label>
+                              <p className="text-sm">{assinante.dataNascimento}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Papel:</label>
+                              <p className="text-sm">{assinante.papel}</p>
+                            </div>
                           </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Telefone/Celular:</label>
-                            <p className="text-sm">(11) 99999-9999</p>
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Estado Civil:</label>
+                              <p className="text-sm">{assinante.estadoCivil}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">RG:</label>
+                              <p className="text-sm">{assinante.rg}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Banco:</label>
+                              <p className="text-sm">{assinante.banco}</p>
+                            </div>
                           </div>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">E-mail:</label>
-                            <p className="text-sm">modelo@teste.com.br</p>
+                          <div className="grid grid-cols-4 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Logradouro:</label>
+                              <p className="text-sm">{assinante.logradouro}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Número:</label>
+                              <p className="text-sm">{assinante.numeroLogradouro}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Complemento:</label>
+                              <p className="text-sm">{assinante.complemento || "-"}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Cidade:</label>
+                              <p className="text-sm">{assinante.cidade}</p>
+                            </div>
                           </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Data de Nascimento:</label>
-                            <p className="text-sm">01/04/2001</p>
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium mb-1">UF:</label>
+                              <p className="text-sm">{assinante.uf}</p>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium mb-1">Ordem Assinatura:</label>
+                              <p className="text-sm">{assinante.ordemAssinatura}</p>
+                            </div>
+                            <div></div>
                           </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Papel:</label>
-                            <p className="text-sm">Assinante</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Estado Civil:</label>
-                            <p className="text-sm">Casado</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">RG:</label>
-                            <p className="text-sm">29.108-440</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Banco:</label>
-                            <p className="text-sm">IBES</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-4 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Logradouro:</label>
-                            <p className="text-sm">Rua Presidente John Kennedy</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Número:</label>
-                            <p className="text-sm">127</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Complemento:</label>
-                            <p className="text-sm">-</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Cidade:</label>
-                            <p className="text-sm">Vila Velha</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">UF:</label>
-                            <p className="text-sm">ES</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Ordem Assinatura:</label>
-                            <p className="text-sm">1</p>
-                          </div>
-                          <div></div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        </CardContent>
+                      </Card>
+                    ))}
 
                     <div className="flex justify-end">
+                      <Button variant="outline" onClick={() => setIsViewModalOpen(false)}>
+                        Fechar
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                {selectedImportacao && !selectedImportacao.dadosImportacao && (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">Dados detalhados não disponíveis para esta importação.</p>
+                    <div className="flex justify-end mt-4">
                       <Button variant="outline" onClick={() => setIsViewModalOpen(false)}>
                         Fechar
                       </Button>
