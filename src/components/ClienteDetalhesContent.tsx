@@ -76,6 +76,36 @@ export function ClienteDetalhesContent() {
         tipoConta: "Poupança",
         contaPagamento: false
       }
+    ],
+
+    // Limites de Crédito
+    limitesCredito: [
+      {
+        id: "1",
+        numeroLimite: "LIM001234",
+        dataInclusao: "15/12/2024",
+        dataInicioVigencia: "01/01/2025",
+        dataFimVigencia: "31/12/2025",
+        valorLimite: "50.000,00",
+        valorUtilizado: "15.000,00",
+        valorDisponivel: "35.000,00",
+        tipoLimite: "Crediário",
+        modalidade: "CDC",
+        observacoes: "Limite aprovado para pessoa física"
+      },
+      {
+        id: "2",
+        numeroLimite: "LIM005678",
+        dataInclusao: "20/11/2024",
+        dataInicioVigencia: "01/12/2024",
+        dataFimVigencia: "30/11/2025",
+        valorLimite: "25.000,00",
+        valorUtilizado: "8.500,00",
+        valorDisponivel: "16.500,00",
+        tipoLimite: "Cartão de Crédito",
+        modalidade: "ROT",
+        observacoes: "Limite complementar aprovado"
+      }
     ]
   });
 
@@ -148,11 +178,12 @@ export function ClienteDetalhesContent() {
 
       <main className="p-6 space-y-6 max-w-7xl mx-auto">
         <Tabs defaultValue="pessoais" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="pessoais">Dados Pessoais</TabsTrigger>
             <TabsTrigger value="contato">Dados de Contato</TabsTrigger>
             <TabsTrigger value="enderecos">Endereços</TabsTrigger>
             <TabsTrigger value="bancarios">Dados Bancários</TabsTrigger>
+            <TabsTrigger value="limites">Limites de Crédito</TabsTrigger>
           </TabsList>
 
           <TabsContent value="pessoais">
@@ -358,6 +389,66 @@ export function ClienteDetalhesContent() {
                         <div>
                           <Label>Tipo de Conta</Label>
                           <Input value={banco.tipoConta} disabled={!isEditing} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="limites">
+            <Card>
+              <CardHeader>
+                <CardTitle>Limites de Crédito Importados</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {clienteData.limitesCredito.map((limite, index) => (
+                    <div key={limite.id} className="border rounded-lg p-4 bg-blue-50">
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="font-medium text-blue-900">Limite {index + 1}</h4>
+                        <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
+                          {limite.tipoLimite}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div>
+                          <Label className="text-blue-800">Número do Limite</Label>
+                          <Input value={limite.numeroLimite} disabled={!isEditing} className="bg-white" />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Data de Inclusão</Label>
+                          <Input value={limite.dataInclusao} disabled={!isEditing} className="bg-white" />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Data Início Vigência</Label>
+                          <Input value={limite.dataInicioVigencia} disabled={!isEditing} className="bg-white" />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Data Fim Vigência</Label>
+                          <Input value={limite.dataFimVigencia} disabled={!isEditing} className="bg-white" />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Valor do Limite (R$)</Label>
+                          <Input value={limite.valorLimite} disabled={!isEditing} className="bg-white font-medium" />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Valor Utilizado (R$)</Label>
+                          <Input value={limite.valorUtilizado} disabled={!isEditing} className="bg-white" />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Valor Disponível (R$)</Label>
+                          <Input value={limite.valorDisponivel} disabled={!isEditing} className="bg-white font-medium text-green-600" />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Modalidade</Label>
+                          <Input value={limite.modalidade} disabled={!isEditing} className="bg-white" />
+                        </div>
+                        <div className="md:col-span-2 lg:col-span-1">
+                          <Label className="text-blue-800">Observações</Label>
+                          <Input value={limite.observacoes} disabled={!isEditing} className="bg-white" />
                         </div>
                       </div>
                     </div>
