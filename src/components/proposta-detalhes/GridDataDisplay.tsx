@@ -1,6 +1,6 @@
 
 interface GridDataDisplayProps {
-  data: Record<string, string>;
+  data: Record<string, string | number>;
   columns?: number;
 }
 
@@ -12,7 +12,7 @@ export function GridDataDisplay({ data, columns = 2 }: GridDataDisplayProps) {
           <label className="text-xs font-bold text-gray-700 uppercase tracking-wide">
             {key}
           </label>
-          <p className="text-gray-900 font-normal">{value}</p>
+          <p className="text-gray-900 font-normal">{String(value)}</p>
         </div>
       ))}
     </div>
