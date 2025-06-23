@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -72,7 +71,7 @@ export function CancelarPropostaContent() {
           cliente: "TESTE LUCCA",
           cpf: "422.817.188-59",
           valor: "R$ 500,00",
-          status: "Ativa",
+          status: "Em análise", // Corrigido para mostrar o status real da proposta
           dataEnvio: "05/06/2025",
           valorSolicitado: "R$ 500,00",
           parceiro: "Parceiro Exemplo",
@@ -242,7 +241,7 @@ export function CancelarPropostaContent() {
                       </div>
                       <div>
                         <label className="text-xs font-medium text-blue-700 uppercase tracking-wide">Status</label>
-                        <span className="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span className="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                           {propostaEncontrada.status}
                         </span>
                       </div>

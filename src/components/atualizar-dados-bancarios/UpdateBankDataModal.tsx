@@ -32,6 +32,7 @@ export function UpdateBankDataModal({ title, onSave }: UpdateBankDataModalProps)
   const [digitoConta, setDigitoConta] = useState("");
   const [documentoBeneficiario, setDocumentoBeneficiario] = useState("");
   const [nomeBeneficiario, setNomeBeneficiario] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSave = () => {
     console.log("Salvando dados bancários:", {
@@ -45,10 +46,24 @@ export function UpdateBankDataModal({ title, onSave }: UpdateBankDataModalProps)
       nomeBeneficiario
     });
     onSave();
+    setIsOpen(false);
+  };
+
+  const handleCancel = () => {
+    // Reset form
+    setSelectedBanco("");
+    setTipoConta("");
+    setAgencia("");
+    setDigitoAgencia("");
+    setContaCorrente("");
+    setDigitoConta("");
+    setDocumentoBeneficiario("");
+    setNomeBeneficiario("");
+    setIsOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md" size="sm">
           Atualizar
@@ -139,7 +154,7 @@ export function UpdateBankDataModal({ title, onSave }: UpdateBankDataModalProps)
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
-            <Button variant="outline">Cancelar</Button>
+            <Button variant="outline" onClick={handleCancel}>Cancelar</Button>
             <Button 
               onClick={handleSave}
               className="bg-blue-600 hover:bg-blue-700"

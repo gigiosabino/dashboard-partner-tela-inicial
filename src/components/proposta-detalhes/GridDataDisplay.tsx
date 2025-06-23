@@ -1,22 +1,20 @@
 
-
 interface GridDataDisplayProps {
-  data: Record<string, string | number>;
+  data: Record<string, string>;
   columns?: number;
 }
 
-export function GridDataDisplay({ data, columns = 1 }: GridDataDisplayProps) {
-  const gridClass = columns > 1 ? `grid grid-cols-${columns} gap-6` : 'space-y-3';
-  
+export function GridDataDisplay({ data, columns = 2 }: GridDataDisplayProps) {
   return (
-    <div className={gridClass}>
+    <div className={`grid grid-cols-1 md:grid-cols-${columns} gap-4`}>
       {Object.entries(data).map(([key, value]) => (
-        <div key={key} className="flex flex-col">
-          <label className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-1">{key}</label>
-          <p className="text-gray-900 font-medium">{value}</p>
+        <div key={key}>
+          <label className="text-xs font-bold text-gray-700 uppercase tracking-wide">
+            {key}
+          </label>
+          <p className="text-gray-900 font-normal">{value}</p>
         </div>
       ))}
     </div>
   );
 }
-
