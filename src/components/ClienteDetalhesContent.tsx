@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -86,10 +85,15 @@ export function ClienteDetalhesContent() {
         dataInclusao: "15/12/2024",
         dataInicioVigencia: "01/01/2025",
         dataFimVigencia: "31/12/2025",
-        valorLimite: "50.000,00",
-        valorUtilizado: "15.000,00",
-        valorDisponivel: "35.000,00",
-        tipoLimite: "Crediário",
+        tipoContrato: "CAPITAL DE GIRO",
+        valorConcedido: "R$ 1.500,00",
+        percentualJurosConcedido: "1,50",
+        prazoMinimoVencimento: "20",
+        prazoMaximoVencimento: "60",
+        tipoTarifa: "Valor fixo",
+        tarifa: "R$ 500,00",
+        parcelaMinima: "R$ 150,00",
+        parcelaMaxima: "R$ 300,00",
         modalidade: "CDC",
         observacoes: "Limite aprovado para pessoa física"
       },
@@ -99,10 +103,15 @@ export function ClienteDetalhesContent() {
         dataInclusao: "20/11/2024",
         dataInicioVigencia: "01/12/2024",
         dataFimVigencia: "30/11/2025",
-        valorLimite: "25.000,00",
-        valorUtilizado: "8.500,00",
-        valorDisponivel: "16.500,00",
-        tipoLimite: "Cartão de Crédito",
+        tipoContrato: "CARTÃO DE CRÉDITO",
+        valorConcedido: "R$ 2.500,00",
+        percentualJurosConcedido: "2,80",
+        prazoMinimoVencimento: "30",
+        prazoMaximoVencimento: "90",
+        tipoTarifa: "Percentual",
+        tarifa: "1,2%",
+        parcelaMinima: "R$ 200,00",
+        parcelaMaxima: "R$ 500,00",
         modalidade: "ROT",
         observacoes: "Limite complementar aprovado"
       }
@@ -410,43 +419,47 @@ export function ClienteDetalhesContent() {
                       <div className="flex justify-between items-center mb-4">
                         <h4 className="font-medium text-blue-900">Limite {index + 1}</h4>
                         <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
-                          {limite.tipoLimite}
+                          {limite.numeroLimite}
                         </span>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
-                          <Label className="text-blue-800">Número do Limite</Label>
-                          <Input value={limite.numeroLimite} disabled={!isEditing} className="bg-white" />
+                          <Label className="text-blue-800">Tipo de Contrato</Label>
+                          <Input value={limite.tipoContrato} disabled={!isEditing} className="bg-white" />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Data de Inclusão</Label>
-                          <Input value={limite.dataInclusao} disabled={!isEditing} className="bg-white" />
+                          <Label className="text-blue-800">Valor Concedido</Label>
+                          <Input value={limite.valorConcedido} disabled={!isEditing} className="bg-white font-medium" />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Data Início Vigência</Label>
-                          <Input value={limite.dataInicioVigencia} disabled={!isEditing} className="bg-white" />
+                          <Label className="text-blue-800">Percentual de Juros Concedido (%)</Label>
+                          <Input value={limite.percentualJurosConcedido} disabled={!isEditing} className="bg-white" />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Data Fim Vigência</Label>
-                          <Input value={limite.dataFimVigencia} disabled={!isEditing} className="bg-white" />
+                          <Label className="text-blue-800">Prazo Mínimo para Vencimento</Label>
+                          <Input value={limite.prazoMinimoVencimento} disabled={!isEditing} className="bg-white" />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Valor do Limite (R$)</Label>
-                          <Input value={limite.valorLimite} disabled={!isEditing} className="bg-white font-medium" />
+                          <Label className="text-blue-800">Prazo Máximo para Vencimento</Label>
+                          <Input value={limite.prazoMaximoVencimento} disabled={!isEditing} className="bg-white" />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Valor Utilizado (R$)</Label>
-                          <Input value={limite.valorUtilizado} disabled={!isEditing} className="bg-white" />
+                          <Label className="text-blue-800">Tipo de Tarifa (TC)</Label>
+                          <Input value={limite.tipoTarifa} disabled={!isEditing} className="bg-white" />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Valor Disponível (R$)</Label>
-                          <Input value={limite.valorDisponivel} disabled={!isEditing} className="bg-white font-medium text-green-600" />
+                          <Label className="text-blue-800">Tarifa (TC)</Label>
+                          <Input value={limite.tarifa} disabled={!isEditing} className="bg-white" />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Modalidade</Label>
-                          <Input value={limite.modalidade} disabled={!isEditing} className="bg-white" />
+                          <Label className="text-blue-800">Parcela Mínima</Label>
+                          <Input value={limite.parcelaMinima} disabled={!isEditing} className="bg-white" />
                         </div>
-                        <div className="md:col-span-2 lg:col-span-1">
+                        <div>
+                          <Label className="text-blue-800">Parcela Máxima</Label>
+                          <Input value={limite.parcelaMaxima} disabled={!isEditing} className="bg-white" />
+                        </div>
+                        <div className="md:col-span-2 lg:col-span-3">
                           <Label className="text-blue-800">Observações</Label>
                           <Input value={limite.observacoes} disabled={!isEditing} className="bg-white" />
                         </div>
