@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -216,6 +217,16 @@ export function ClienteDetalhesContent() {
     setIsEditing(false);
   };
 
+  const handleCancel = () => {
+    // Restaura os dados originais cancelando as alterações
+    setClienteData(getClienteData(id || "1"));
+    setIsEditing(false);
+    toast({
+      title: "Edição cancelada",
+      description: "As alterações foram descartadas.",
+    });
+  };
+
   const handleVoltar = () => {
     navigate('/clientes-cadastrados');
   };
@@ -280,7 +291,7 @@ export function ClienteDetalhesContent() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setIsEditing(false)}
+                  onClick={handleCancel}
                   className="flex items-center gap-2"
                 >
                   <X className="h-4 w-4" />
@@ -334,6 +345,7 @@ export function ClienteDetalhesContent() {
                       value={clienteData.nome}
                       disabled={!isEditing}
                       onChange={(e) => setClienteData({...clienteData, nome: e.target.value})}
+                      className={!isEditing ? "bg-gray-100" : ""}
                     />
                   </div>
                   <div>
@@ -343,6 +355,7 @@ export function ClienteDetalhesContent() {
                       value={clienteData.documento}
                       disabled={!isEditing}
                       onChange={(e) => setClienteData({...clienteData, documento: e.target.value})}
+                      className={!isEditing ? "bg-gray-100" : ""}
                     />
                   </div>
                   <div>
@@ -352,6 +365,7 @@ export function ClienteDetalhesContent() {
                       value={clienteData.dataNascimento}
                       disabled={!isEditing}
                       onChange={(e) => setClienteData({...clienteData, dataNascimento: e.target.value})}
+                      className={!isEditing ? "bg-gray-100" : ""}
                     />
                   </div>
                   {!isCNPJ && (
@@ -363,6 +377,7 @@ export function ClienteDetalhesContent() {
                           value={clienteData.rg}
                           disabled={!isEditing}
                           onChange={(e) => setClienteData({...clienteData, rg: e.target.value})}
+                          className={!isEditing ? "bg-gray-100" : ""}
                         />
                       </div>
                       <div>
@@ -372,6 +387,7 @@ export function ClienteDetalhesContent() {
                           value={clienteData.sexo}
                           disabled={!isEditing}
                           onChange={(e) => setClienteData({...clienteData, sexo: e.target.value})}
+                          className={!isEditing ? "bg-gray-100" : ""}
                         />
                       </div>
                       <div>
@@ -381,6 +397,7 @@ export function ClienteDetalhesContent() {
                           value={clienteData.escolaridade}
                           disabled={!isEditing}
                           onChange={(e) => setClienteData({...clienteData, escolaridade: e.target.value})}
+                          className={!isEditing ? "bg-gray-100" : ""}
                         />
                       </div>
                       <div>
@@ -390,6 +407,7 @@ export function ClienteDetalhesContent() {
                           value={clienteData.nomeMae}
                           disabled={!isEditing}
                           onChange={(e) => setClienteData({...clienteData, nomeMae: e.target.value})}
+                          className={!isEditing ? "bg-gray-100" : ""}
                         />
                       </div>
                       <div>
@@ -399,6 +417,7 @@ export function ClienteDetalhesContent() {
                           value={clienteData.estadoCivil}
                           disabled={!isEditing}
                           onChange={(e) => setClienteData({...clienteData, estadoCivil: e.target.value})}
+                          className={!isEditing ? "bg-gray-100" : ""}
                         />
                       </div>
                     </>
@@ -410,6 +429,7 @@ export function ClienteDetalhesContent() {
                       value={clienteData.nacionalidade}
                       disabled={!isEditing}
                       onChange={(e) => setClienteData({...clienteData, nacionalidade: e.target.value})}
+                      className={!isEditing ? "bg-gray-100" : ""}
                     />
                   </div>
                 </div>
@@ -432,6 +452,7 @@ export function ClienteDetalhesContent() {
                       value={clienteData.email}
                       disabled={!isEditing}
                       onChange={(e) => setClienteData({...clienteData, email: e.target.value})}
+                      className={!isEditing ? "bg-gray-100" : ""}
                     />
                   </div>
                   <div>
@@ -441,6 +462,7 @@ export function ClienteDetalhesContent() {
                       value={clienteData.telefone}
                       disabled={!isEditing}
                       onChange={(e) => setClienteData({...clienteData, telefone: e.target.value})}
+                      className={!isEditing ? "bg-gray-100" : ""}
                     />
                   </div>
                 </div>
@@ -470,6 +492,7 @@ export function ClienteDetalhesContent() {
                             value={endereco.cep} 
                             disabled={!isEditing}
                             onChange={(e) => updateEndereco(index, 'cep', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -478,6 +501,7 @@ export function ClienteDetalhesContent() {
                             value={endereco.logradouro} 
                             disabled={!isEditing}
                             onChange={(e) => updateEndereco(index, 'logradouro', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -486,6 +510,7 @@ export function ClienteDetalhesContent() {
                             value={endereco.bairro} 
                             disabled={!isEditing}
                             onChange={(e) => updateEndereco(index, 'bairro', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -494,6 +519,7 @@ export function ClienteDetalhesContent() {
                             value={endereco.cidade} 
                             disabled={!isEditing}
                             onChange={(e) => updateEndereco(index, 'cidade', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -502,6 +528,7 @@ export function ClienteDetalhesContent() {
                             value={endereco.estado} 
                             disabled={!isEditing}
                             onChange={(e) => updateEndereco(index, 'estado', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -510,6 +537,7 @@ export function ClienteDetalhesContent() {
                             value={endereco.complemento} 
                             disabled={!isEditing}
                             onChange={(e) => updateEndereco(index, 'complemento', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                       </div>
@@ -542,6 +570,7 @@ export function ClienteDetalhesContent() {
                             value={banco.numeroBanco} 
                             disabled={!isEditing}
                             onChange={(e) => updateDadoBancario(index, 'numeroBanco', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -550,6 +579,7 @@ export function ClienteDetalhesContent() {
                             value={banco.nomeBanco} 
                             disabled={!isEditing}
                             onChange={(e) => updateDadoBancario(index, 'nomeBanco', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -558,6 +588,7 @@ export function ClienteDetalhesContent() {
                             value={banco.agencia} 
                             disabled={!isEditing}
                             onChange={(e) => updateDadoBancario(index, 'agencia', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -566,6 +597,7 @@ export function ClienteDetalhesContent() {
                             value={banco.conta} 
                             disabled={!isEditing}
                             onChange={(e) => updateDadoBancario(index, 'conta', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
@@ -574,6 +606,7 @@ export function ClienteDetalhesContent() {
                             value={banco.tipoConta} 
                             disabled={!isEditing}
                             onChange={(e) => updateDadoBancario(index, 'tipoConta', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                       </div>
@@ -592,138 +625,138 @@ export function ClienteDetalhesContent() {
               <CardContent>
                 <div className="space-y-6">
                   {clienteData.limitesCredito.map((limite, index) => (
-                    <div key={limite.id} className="border rounded-lg p-4 bg-blue-50">
+                    <div key={limite.id} className="border rounded-lg p-4">
                       <div className="flex justify-between items-center mb-4">
-                        <h4 className="font-medium text-blue-900">Limite {index + 1}</h4>
+                        <h4 className="font-medium">Limite {index + 1}</h4>
                         <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
                           {limite.numeroLimite}
                         </span>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
-                          <Label className="text-blue-800">Data de Inclusão</Label>
+                          <Label>Data de Inclusão</Label>
                           <Input 
                             value={limite.dataInclusao} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'dataInclusao', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Data Início Vigência</Label>
+                          <Label>Data Início Vigência</Label>
                           <Input 
                             value={limite.dataInicioVigencia} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'dataInicioVigencia', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Data Fim Vigência</Label>
+                          <Label>Data Fim Vigência</Label>
                           <Input 
                             value={limite.dataFimVigencia} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'dataFimVigencia', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Tipo de Contrato</Label>
+                          <Label>Tipo de Contrato</Label>
                           <Input 
                             value={limite.tipoContrato} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'tipoContrato', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Valor Concedido</Label>
+                          <Label>Valor Concedido</Label>
                           <Input 
                             value={limite.valorConcedido} 
                             disabled={!isEditing} 
-                            className="bg-white font-medium"
+                            className={`font-medium ${!isEditing ? "bg-gray-100" : ""}`}
                             onChange={(e) => updateLimiteCredito(index, 'valorConcedido', e.target.value)}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Percentual de Juros Concedido (%)</Label>
+                          <Label>Percentual de Juros Concedido (%)</Label>
                           <Input 
                             value={limite.percentualJurosConcedido} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'percentualJurosConcedido', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Prazo Mínimo para Vencimento</Label>
+                          <Label>Prazo Mínimo para Vencimento</Label>
                           <Input 
                             value={limite.prazoMinimoVencimento} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'prazoMinimoVencimento', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Prazo Máximo para Vencimento</Label>
+                          <Label>Prazo Máximo para Vencimento</Label>
                           <Input 
                             value={limite.prazoMaximoVencimento} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'prazoMaximoVencimento', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Tipo de Tarifa (TC)</Label>
+                          <Label>Tipo de Tarifa (TC)</Label>
                           <Input 
                             value={limite.tipoTarifa} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'tipoTarifa', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Tarifa (TC)</Label>
+                          <Label>Tarifa (TC)</Label>
                           <Input 
                             value={limite.tarifa} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'tarifa', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Parcela Mínima</Label>
+                          <Label>Parcela Mínima</Label>
                           <Input 
                             value={limite.parcelaMinima} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'parcelaMinima', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Parcela Máxima</Label>
+                          <Label>Parcela Máxima</Label>
                           <Input 
                             value={limite.parcelaMaxima} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'parcelaMaxima', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div>
-                          <Label className="text-blue-800">Modalidade</Label>
+                          <Label>Modalidade</Label>
                           <Input 
                             value={limite.modalidade} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'modalidade', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                         <div className="md:col-span-2 lg:col-span-3">
-                          <Label className="text-blue-800">Observações</Label>
+                          <Label>Observações</Label>
                           <Input 
                             value={limite.observacoes} 
                             disabled={!isEditing} 
-                            className="bg-white"
                             onChange={(e) => updateLimiteCredito(index, 'observacoes', e.target.value)}
+                            className={!isEditing ? "bg-gray-100" : ""}
                           />
                         </div>
                       </div>
@@ -743,170 +776,170 @@ export function ClienteDetalhesContent() {
                 <CardContent>
                   <div className="space-y-6">
                     {clienteData.assinantes.map((assinante, index) => (
-                      <div key={assinante.id} className="border rounded-lg p-4 bg-green-50">
+                      <div key={assinante.id} className="border rounded-lg p-4">
                         <div className="flex justify-between items-center mb-4">
-                          <h4 className="font-medium text-green-900">Assinante {index + 1} - {assinante.papel}</h4>
+                          <h4 className="font-medium">Assinante {index + 1} - {assinante.papel}</h4>
                           <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
                             Ordem: {assinante.ordemAssinatura}
                           </span>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div>
-                            <Label className="text-green-800">Documento Federal</Label>
+                            <Label>Documento Federal</Label>
                             <Input 
                               value={assinante.documentoFederal} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'documentoFederal', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">Nome</Label>
+                            <Label>Nome</Label>
                             <Input 
                               value={assinante.nome} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'nome', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">Telefone/Celular</Label>
+                            <Label>Telefone/Celular</Label>
                             <Input 
                               value={assinante.telefone} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'telefone', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">E-mail</Label>
+                            <Label>E-mail</Label>
                             <Input 
                               value={assinante.email} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'email', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">Data de Nascimento</Label>
+                            <Label>Data de Nascimento</Label>
                             <Input 
                               value={assinante.dataNascimento} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'dataNascimento', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">Papel</Label>
+                            <Label>Papel</Label>
                             <Input 
                               value={assinante.papel} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'papel', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">Estado Civil</Label>
+                            <Label>Estado Civil</Label>
                             <Input 
                               value={assinante.estadoCivil} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'estadoCivil', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">RG</Label>
+                            <Label>RG</Label>
                             <Input 
                               value={assinante.rg} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'rg', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                           <div>
-                            <Label className="text-green-800">Banco</Label>
+                            <Label>Banco</Label>
                             <Input 
                               value={assinante.banco} 
                               disabled={!isEditing} 
-                              className="bg-white"
                               onChange={(e) => updateAssinante(index, 'banco', e.target.value)}
+                              className={!isEditing ? "bg-gray-100" : ""}
                             />
                           </div>
                         </div>
                         
                         <div className="mt-4">
-                          <h5 className="font-medium text-green-900 mb-3">Endereço do Assinante</h5>
+                          <h5 className="font-medium mb-3">Endereço do Assinante</h5>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
-                              <Label className="text-green-800">Logradouro</Label>
+                              <Label>Logradouro</Label>
                               <Input 
                                 value={assinante.endereco.logradouro} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'endereco.logradouro', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                             <div>
-                              <Label className="text-green-800">Número</Label>
+                              <Label>Número</Label>
                               <Input 
                                 value={assinante.endereco.numero} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'endereco.numero', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                             <div>
-                              <Label className="text-green-800">Complemento</Label>
+                              <Label>Complemento</Label>
                               <Input 
                                 value={assinante.endereco.complemento || ""} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'endereco.complemento', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                             <div>
-                              <Label className="text-green-800">Bairro</Label>
+                              <Label>Bairro</Label>
                               <Input 
                                 value={assinante.endereco.bairro} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'endereco.bairro', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                             <div>
-                              <Label className="text-green-800">Cidade</Label>
+                              <Label>Cidade</Label>
                               <Input 
                                 value={assinante.endereco.cidade} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'endereco.cidade', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                             <div>
-                              <Label className="text-green-800">Estado</Label>
+                              <Label>Estado</Label>
                               <Input 
                                 value={assinante.endereco.estado} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'endereco.estado', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                             <div>
-                              <Label className="text-green-800">CEP</Label>
+                              <Label>CEP</Label>
                               <Input 
                                 value={assinante.endereco.cep} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'endereco.cep', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                             <div>
-                              <Label className="text-green-800">Ordem Assinatura</Label>
+                              <Label>Ordem Assinatura</Label>
                               <Input 
                                 value={assinante.ordemAssinatura} 
                                 disabled={!isEditing} 
-                                className="bg-white"
                                 onChange={(e) => updateAssinante(index, 'ordemAssinatura', e.target.value)}
+                                className={!isEditing ? "bg-gray-100" : ""}
                               />
                             </div>
                           </div>
