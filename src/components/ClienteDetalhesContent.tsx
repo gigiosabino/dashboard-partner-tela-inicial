@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -129,6 +130,24 @@ export function ClienteDetalhesContent() {
 
   const handleVoltar = () => {
     navigate('/clientes-cadastrados');
+  };
+
+  const updateEndereco = (index: number, field: string, value: string) => {
+    const newEnderecos = [...clienteData.enderecos];
+    newEnderecos[index] = { ...newEnderecos[index], [field]: value };
+    setClienteData({ ...clienteData, enderecos: newEnderecos });
+  };
+
+  const updateDadoBancario = (index: number, field: string, value: string) => {
+    const newDadosBancarios = [...clienteData.dadosBancarios];
+    newDadosBancarios[index] = { ...newDadosBancarios[index], [field]: value };
+    setClienteData({ ...clienteData, dadosBancarios: newDadosBancarios });
+  };
+
+  const updateLimiteCredito = (index: number, field: string, value: string) => {
+    const newLimitesCredito = [...clienteData.limitesCredito];
+    newLimitesCredito[index] = { ...newLimitesCredito[index], [field]: value };
+    setClienteData({ ...clienteData, limitesCredito: newLimitesCredito });
   };
 
   return (
@@ -337,27 +356,51 @@ export function ClienteDetalhesContent() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label>CEP</Label>
-                          <Input value={endereco.cep} disabled={!isEditing} />
+                          <Input 
+                            value={endereco.cep} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateEndereco(index, 'cep', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Logradouro</Label>
-                          <Input value={endereco.logradouro} disabled={!isEditing} />
+                          <Input 
+                            value={endereco.logradouro} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateEndereco(index, 'logradouro', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Bairro</Label>
-                          <Input value={endereco.bairro} disabled={!isEditing} />
+                          <Input 
+                            value={endereco.bairro} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateEndereco(index, 'bairro', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Cidade</Label>
-                          <Input value={endereco.cidade} disabled={!isEditing} />
+                          <Input 
+                            value={endereco.cidade} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateEndereco(index, 'cidade', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Estado</Label>
-                          <Input value={endereco.estado} disabled={!isEditing} />
+                          <Input 
+                            value={endereco.estado} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateEndereco(index, 'estado', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Complemento</Label>
-                          <Input value={endereco.complemento} disabled={!isEditing} />
+                          <Input 
+                            value={endereco.complemento} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateEndereco(index, 'complemento', e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -384,20 +427,44 @@ export function ClienteDetalhesContent() {
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <Label>Banco</Label>
-                          <Input value={`${banco.numeroBanco} - ${banco.nomeBanco}`} disabled={!isEditing} />
+                          <Label>Número do Banco</Label>
+                          <Input 
+                            value={banco.numeroBanco} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateDadoBancario(index, 'numeroBanco', e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <Label>Nome do Banco</Label>
+                          <Input 
+                            value={banco.nomeBanco} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateDadoBancario(index, 'nomeBanco', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Agência</Label>
-                          <Input value={banco.agencia} disabled={!isEditing} />
+                          <Input 
+                            value={banco.agencia} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateDadoBancario(index, 'agencia', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Conta</Label>
-                          <Input value={banco.conta} disabled={!isEditing} />
+                          <Input 
+                            value={banco.conta} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateDadoBancario(index, 'conta', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label>Tipo de Conta</Label>
-                          <Input value={banco.tipoConta} disabled={!isEditing} />
+                          <Input 
+                            value={banco.tipoConta} 
+                            disabled={!isEditing}
+                            onChange={(e) => updateDadoBancario(index, 'tipoConta', e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -424,44 +491,130 @@ export function ClienteDetalhesContent() {
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
+                          <Label className="text-blue-800">Data de Inclusão</Label>
+                          <Input 
+                            value={limite.dataInclusao} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'dataInclusao', e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Data Início Vigência</Label>
+                          <Input 
+                            value={limite.dataInicioVigencia} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'dataInicioVigencia', e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Data Fim Vigência</Label>
+                          <Input 
+                            value={limite.dataFimVigencia} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'dataFimVigencia', e.target.value)}
+                          />
+                        </div>
+                        <div>
                           <Label className="text-blue-800">Tipo de Contrato</Label>
-                          <Input value={limite.tipoContrato} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.tipoContrato} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'tipoContrato', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Valor Concedido</Label>
-                          <Input value={limite.valorConcedido} disabled={!isEditing} className="bg-white font-medium" />
+                          <Input 
+                            value={limite.valorConcedido} 
+                            disabled={!isEditing} 
+                            className="bg-white font-medium"
+                            onChange={(e) => updateLimiteCredito(index, 'valorConcedido', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Percentual de Juros Concedido (%)</Label>
-                          <Input value={limite.percentualJurosConcedido} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.percentualJurosConcedido} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'percentualJurosConcedido', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Prazo Mínimo para Vencimento</Label>
-                          <Input value={limite.prazoMinimoVencimento} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.prazoMinimoVencimento} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'prazoMinimoVencimento', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Prazo Máximo para Vencimento</Label>
-                          <Input value={limite.prazoMaximoVencimento} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.prazoMaximoVencimento} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'prazoMaximoVencimento', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Tipo de Tarifa (TC)</Label>
-                          <Input value={limite.tipoTarifa} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.tipoTarifa} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'tipoTarifa', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Tarifa (TC)</Label>
-                          <Input value={limite.tarifa} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.tarifa} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'tarifa', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Parcela Mínima</Label>
-                          <Input value={limite.parcelaMinima} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.parcelaMinima} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'parcelaMinima', e.target.value)}
+                          />
                         </div>
                         <div>
                           <Label className="text-blue-800">Parcela Máxima</Label>
-                          <Input value={limite.parcelaMaxima} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.parcelaMaxima} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'parcelaMaxima', e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-blue-800">Modalidade</Label>
+                          <Input 
+                            value={limite.modalidade} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'modalidade', e.target.value)}
+                          />
                         </div>
                         <div className="md:col-span-2 lg:col-span-3">
                           <Label className="text-blue-800">Observações</Label>
-                          <Input value={limite.observacoes} disabled={!isEditing} className="bg-white" />
+                          <Input 
+                            value={limite.observacoes} 
+                            disabled={!isEditing} 
+                            className="bg-white"
+                            onChange={(e) => updateLimiteCredito(index, 'observacoes', e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
