@@ -165,7 +165,7 @@ export function ImportacoesRealizadasContent() {
                       <TableHead>Sucessos</TableHead>
                       <TableHead>Erros</TableHead>
                       <TableHead>Status</TableHead>
-                      <Table Head>Ações</TableHead>
+                      <TableHead>Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
