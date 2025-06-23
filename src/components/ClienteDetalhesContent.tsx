@@ -1,96 +1,67 @@
 
-import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ArrowLeft, Edit2, Save, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { ArrowLeft, Edit, MapPin, Phone, Mail, Calendar, FileText, CreditCard } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function ClienteDetalhesContent() {
-  const { id } = useParams();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [isEditing, setIsEditing] = useState(false);
+  const { id } = useParams();
 
   // Mock data para o cliente
-  const [clienteData, setClienteData] = useState({
-    // Dados Pessoais
-    nome: "JORGE LUIZ SARAIVA DA COSTA",
+  const cliente = {
+    id: id,
     documento: "327.937.152-04",
+    nome: "JORGE LUIZ SARAIVA DA COSTA",
     dataNascimento: "15/03/1985",
-    rg: "12.345.678-9",
-    sexo: "Masculino",
-    escolaridade: "Superior Completo",
-    nomeMae: "MARIA COSTA",
-    estadoCivil: "Solteiro",
-    nacionalidade: "Brasileira",
-    
-    // Dados de Contato
     email: "jorge@email.com",
     telefone: "(11) 99999-9999",
-    
-    // Endereços
-    enderecos: [
-      {
-        id: "1",
-        cep: "01234-567",
-        logradouro: "Rua das Flores, 123",
-        bairro: "Centro",
-        cidade: "São Paulo",
-        estado: "SP",
-        complemento: "Apto 45",
-        principal: true
-      },
-      {
-        id: "2",
-        cep: "04567-890",
-        logradouro: "Av. Paulista, 1000",
-        bairro: "Bela Vista",
-        cidade: "São Paulo",
-        estado: "SP",
-        complemento: "Sala 1001",
-        principal: false
-      }
-    ],
-    
-    // Dados Bancários
-    dadosBancarios: [
-      {
-        id: "1",
-        numeroBanco: "001",
-        nomeBanco: "Banco do Brasil",
-        agencia: "1234-5",
-        conta: "12345-6",
-        tipoConta: "Corrente",
-        contaPagamento: true
-      },
-      {
-        id: "2",
-        numeroBanco: "237",
-        nomeBanco: "Banco Bradesco",
-        agencia: "9876-5",
-        conta: "54321-0",
-        tipoConta: "Poupança",
-        contaPagamento: false
-      }
-    ]
-  });
-
-  const handleSave = () => {
-    // Aqui seria feita a chamada para a API para salvar os dados
-    toast({
-      title: "Dados salvos com sucesso!",
-      description: "As informações do cliente foram atualizadas.",
-    });
-    setIsEditing(false);
+    endereco: {
+      logradouro: "Rua das Flores, 123",
+      complemento: "Apto 45",
+      bairro: "Centro",
+      cidade: "São Paulo",
+      uf: "SP",
+      cep: "01234-567"
+    },
+    status: "Ativo",
+    dataInclusao: "10/01/2024",
+    ultimaAtualizacao: "15/06/2024"
   };
 
-  const handleVoltar = () => {
-    navigate('/clientes-cadastrados');
-  };
+  // Mock data para limites de crédito importados
+  const limitesCredito = [
+    {
+      id: 1,
+      tipoContrato: "CAPITAL DE GIRO",
+      valorConcedido: "R$ 1.500,00",
+      percentualJuros: "1,50%",
+      prazoMinimo: "20",
+      prazoMaximo: "60",
+      tipoTarifa: "Valor fixo",
+      tarifa: "R$ 500,00",
+      parcelaMinima: "1",
+      parcelaMaxima: "6",
+      dataImportacao: "15/06/2024"
+    },
+    {
+      id: 2,
+      tipoContrato: "CREDIÁRIO",
+      valorConcedido: "R$ 3.000,00",
+      percentualJuros: "2,00%",
+      prazoMinimo: "30",
+      prazoMaximo: "90",
+      tipoTarifa: "Porcentagem",
+      tarifa: "3,50%",
+      parcelaMinima: "2",
+      parcelaMaxima: "12",
+      dataImportacao: "10/06/2024"
+    }
+  ];
 
   return (
     <div className="flex-1 bg-gray-50 min-h-screen">
@@ -100,7 +71,7 @@ export function ClienteDetalhesContent() {
             <Button
               variant="outline"
               size="sm"
-              onClick={handleVoltar}
+              onClick={() => navigate("/clientes-cadastrados")}
               className="flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -108,260 +79,187 @@ export function ClienteDetalhesContent() {
             </Button>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Detalhes do Cliente</h1>
-              <p className="text-gray-600">{clienteData.nome}</p>
+              <p className="text-gray-600">Informações completas do cliente selecionado</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {isEditing ? (
-              <>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsEditing(false)}
-                  className="flex items-center gap-2"
-                >
-                  <X className="h-4 w-4" />
-                  Cancelar
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={handleSave}
-                  className="flex items-center gap-2"
-                >
-                  <Save className="h-4 w-4" />
-                  Salvar
-                </Button>
-              </>
-            ) : (
-              <Button
-                size="sm"
-                onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2"
-              >
-                <Edit2 className="h-4 w-4" />
-                Editar
-              </Button>
-            )}
-          </div>
+          <Button className="flex items-center gap-2">
+            <Edit className="h-4 w-4" />
+            Editar Cliente
+          </Button>
         </div>
       </header>
 
       <main className="p-6 space-y-6 max-w-7xl mx-auto">
-        <Tabs defaultValue="pessoais" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="pessoais">Dados Pessoais</TabsTrigger>
-            <TabsTrigger value="contato">Dados de Contato</TabsTrigger>
-            <TabsTrigger value="enderecos">Endereços</TabsTrigger>
-            <TabsTrigger value="bancarios">Dados Bancários</TabsTrigger>
+        <Tabs defaultValue="geral" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="geral">Informações Gerais</TabsTrigger>
+            <TabsTrigger value="limites">Limites de Crédito</TabsTrigger>
+            <TabsTrigger value="historico">Histórico</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="pessoais">
+          <TabsContent value="geral" className="space-y-6">
+            {/* Informações Básicas */}
             <Card>
               <CardHeader>
-                <CardTitle>Dados Pessoais</CardTitle>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-xl">{cliente.nome}</CardTitle>
+                    <CardDescription className="flex items-center gap-2 mt-2">
+                      <FileText className="h-4 w-4" />
+                      {cliente.documento}
+                    </CardDescription>
+                  </div>
+                  <Badge variant={cliente.status === "Ativo" ? "default" : "secondary"}>
+                    {cliente.status}
+                  </Badge>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3">
+                    <Calendar className="h-4 w-4 text-gray-500" />
+                    <div>
+                      <p className="text-sm font-medium">Data de Nascimento</p>
+                      <p className="text-sm text-gray-600">{cliente.dataNascimento}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-4 w-4 text-gray-500" />
+                    <div>
+                      <p className="text-sm font-medium">E-mail</p>
+                      <p className="text-sm text-gray-600">{cliente.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Phone className="h-4 w-4 text-gray-500" />
+                    <div>
+                      <p className="text-sm font-medium">Telefone</p>
+                      <p className="text-sm text-gray-600">{cliente.telefone}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <MapPin className="h-4 w-4 text-gray-500" />
+                    <h3 className="font-semibold">Endereço</h3>
+                  </div>
+                  <div className="pl-6 space-y-1">
+                    <p className="text-sm">{cliente.endereco.logradouro}</p>
+                    {cliente.endereco.complemento && (
+                      <p className="text-sm text-gray-600">{cliente.endereco.complemento}</p>
+                    )}
+                    <p className="text-sm">
+                      {cliente.endereco.bairro}, {cliente.endereco.cidade} - {cliente.endereco.uf}
+                    </p>
+                    <p className="text-sm text-gray-600">CEP: {cliente.endereco.cep}</p>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <Label htmlFor="nome">Nome Completo</Label>
-                    <Input
-                      id="nome"
-                      value={clienteData.nome}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, nome: e.target.value})}
-                    />
+                    <p className="font-medium">Data de Inclusão</p>
+                    <p className="text-gray-600">{cliente.dataInclusao}</p>
                   </div>
                   <div>
-                    <Label htmlFor="documento">Documento Federal</Label>
-                    <Input
-                      id="documento"
-                      value={clienteData.documento}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, documento: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="dataNascimento">Data de Nascimento</Label>
-                    <Input
-                      id="dataNascimento"
-                      value={clienteData.dataNascimento}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, dataNascimento: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="rg">RG</Label>
-                    <Input
-                      id="rg"
-                      value={clienteData.rg}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, rg: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="sexo">Sexo</Label>
-                    <Input
-                      id="sexo"
-                      value={clienteData.sexo}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, sexo: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="escolaridade">Escolaridade</Label>
-                    <Input
-                      id="escolaridade"
-                      value={clienteData.escolaridade}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, escolaridade: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="nomeMae">Nome da Mãe</Label>
-                    <Input
-                      id="nomeMae"
-                      value={clienteData.nomeMae}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, nomeMae: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="estadoCivil">Estado Civil</Label>
-                    <Input
-                      id="estadoCivil"
-                      value={clienteData.estadoCivil}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, estadoCivil: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="nacionalidade">Nacionalidade</Label>
-                    <Input
-                      id="nacionalidade"
-                      value={clienteData.nacionalidade}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, nacionalidade: e.target.value})}
-                    />
+                    <p className="font-medium">Última Atualização</p>
+                    <p className="text-gray-600">{cliente.ultimaAtualizacao}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="contato">
+          <TabsContent value="limites" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Dados de Contato</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5" />
+                  Limites de Crédito Importados
+                </CardTitle>
+                <CardDescription>
+                  Visualize os limites de crédito importados para este cliente
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="email">E-mail</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={clienteData.email}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, email: e.target.value})}
-                    />
+              <CardContent className="space-y-6">
+                {limitesCredito.map((limite) => (
+                  <Card key={limite.id} className="border-l-4 border-l-blue-500">
+                    <CardHeader className="bg-blue-50">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg text-blue-700">
+                          {limite.tipoContrato}
+                        </CardTitle>
+                        <Badge variant="outline">
+                          Importado em {limite.dataImportacao}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4 pt-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Valor concedido:</label>
+                          <p className="text-sm font-semibold text-green-600">{limite.valorConcedido}</p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Percentual de juros concedido:</label>
+                          <p className="text-sm">{limite.percentualJuros}</p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Prazo mínimo para Vencimento (em dias):</label>
+                          <p className="text-sm">{limite.prazoMinimo}</p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Prazo máximo para Vencimento (em dias):</label>
+                          <p className="text-sm">{limite.prazoMaximo}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Tipo de Tarifa (TC):</label>
+                          <p className="text-sm">{limite.tipoTarifa}</p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Tarifa (TC):</label>
+                          <p className="text-sm">{limite.tarifa}</p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Parcela Mínima:</label>
+                          <p className="text-sm">{limite.parcelaMinima}</p>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1">Parcela Máxima:</label>
+                          <p className="text-sm">{limite.parcelaMaxima}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+                
+                {limitesCredito.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    <CreditCard className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>Nenhum limite de crédito importado para este cliente.</p>
                   </div>
-                  <div>
-                    <Label htmlFor="telefone">Telefone Celular</Label>
-                    <Input
-                      id="telefone"
-                      value={clienteData.telefone}
-                      disabled={!isEditing}
-                      onChange={(e) => setClienteData({...clienteData, telefone: e.target.value})}
-                    />
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="enderecos">
+          <TabsContent value="historico" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Endereços</CardTitle>
+                <CardTitle>Histórico de Atividades</CardTitle>
+                <CardDescription>
+                  Acompanhe o histórico de atividades e alterações do cliente
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-6">
-                  {clienteData.enderecos.map((endereco, index) => (
-                    <div key={endereco.id} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <h4 className="font-medium">Endereço {index + 1}</h4>
-                        <span className={`px-2 py-1 rounded text-xs ${endereco.principal ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
-                          {endereco.principal ? 'Principal' : 'Secundário'}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label>CEP</Label>
-                          <Input value={endereco.cep} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Logradouro</Label>
-                          <Input value={endereco.logradouro} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Bairro</Label>
-                          <Input value={endereco.bairro} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Cidade</Label>
-                          <Input value={endereco.cidade} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Estado</Label>
-                          <Input value={endereco.estado} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Complemento</Label>
-                          <Input value={endereco.complemento} disabled={!isEditing} />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="bancarios">
-            <Card>
-              <CardHeader>
-                <CardTitle>Dados Bancários</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {clienteData.dadosBancarios.map((banco, index) => (
-                    <div key={banco.id} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <h4 className="font-medium">Conta {index + 1}</h4>
-                        <span className={`px-2 py-1 rounded text-xs ${banco.contaPagamento ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                          {banco.contaPagamento ? 'Conta Pagamento' : 'Conta Secundária'}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label>Banco</Label>
-                          <Input value={`${banco.numeroBanco} - ${banco.nomeBanco}`} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Agência</Label>
-                          <Input value={banco.agencia} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Conta</Label>
-                          <Input value={banco.conta} disabled={!isEditing} />
-                        </div>
-                        <div>
-                          <Label>Tipo de Conta</Label>
-                          <Input value={banco.tipoConta} disabled={!isEditing} />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                <div className="text-center py-8 text-gray-500">
+                  <p>Histórico de atividades será implementado em breve.</p>
                 </div>
               </CardContent>
             </Card>
