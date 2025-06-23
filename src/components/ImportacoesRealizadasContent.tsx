@@ -207,55 +207,11 @@ export function ImportacoesRealizadasContent() {
                   <DialogTitle>Detalhes da Importação - {selectedImportacao?.id}</DialogTitle>
                 </DialogHeader>
                 {selectedImportacao && (
-                  <div className="space-y-8">
-                    {/* Resumo da Importação */}
+                  <div className="space-y-6">
+                    {/* Seção Pessoa */}
                     <Card className="border-l-4 border-l-blue-500">
                       <CardHeader className="bg-blue-50">
-                        <CardTitle className="text-lg text-blue-700">Resumo da Importação</CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-6">
-                        <div className="grid grid-cols-2 gap-4 mb-6">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Data da Importação:</label>
-                            <p className="text-sm">{new Date(selectedImportacao.dataImportacao).toLocaleDateString('pt-BR')}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Usuário:</label>
-                            <p className="text-sm">{selectedImportacao.usuario}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Arquivo:</label>
-                            <p className="text-sm">{selectedImportacao.arquivo}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Status:</label>
-                            <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(selectedImportacao.status)}`}>
-                              {selectedImportacao.status}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="text-center p-4 bg-gray-50 rounded">
-                            <p className="text-2xl font-bold text-blue-600">{selectedImportacao.totalRegistros}</p>
-                            <p className="text-sm text-gray-600">Total</p>
-                          </div>
-                          <div className="text-center p-4 bg-green-50 rounded">
-                            <p className="text-2xl font-bold text-green-600">{selectedImportacao.sucessos}</p>
-                            <p className="text-sm text-gray-600">Sucessos</p>
-                          </div>
-                          <div className="text-center p-4 bg-red-50 rounded">
-                            <p className="text-2xl font-bold text-red-600">{selectedImportacao.erros}</p>
-                            <p className="text-sm text-gray-600">Erros</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Seção Pessoa */}
-                    <Card className="border-l-4 border-l-green-500">
-                      <CardHeader className="bg-green-50">
-                        <CardTitle className="text-lg text-green-700">Dados da Pessoa</CardTitle>
+                        <CardTitle className="text-lg text-blue-700">Dados da Pessoa</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-3 gap-4">
@@ -296,9 +252,9 @@ export function ImportacoesRealizadasContent() {
                     </Card>
 
                     {/* Seção Pessoa Endereço */}
-                    <Card className="border-l-4 border-l-orange-500">
-                      <CardHeader className="bg-orange-50">
-                        <CardTitle className="text-lg text-orange-700">Endereço da Pessoa</CardTitle>
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardHeader className="bg-blue-50">
+                        <CardTitle className="text-lg text-blue-700">Endereço da Pessoa</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-4 gap-4">
@@ -337,9 +293,9 @@ export function ImportacoesRealizadasContent() {
                     </Card>
 
                     {/* Seção Solicitação Análise de Crédito */}
-                    <Card className="border-l-4 border-l-purple-500">
-                      <CardHeader className="bg-purple-50">
-                        <CardTitle className="text-lg text-purple-700">Solicitação Análise de Crédito</CardTitle>
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardHeader className="bg-blue-50">
+                        <CardTitle className="text-lg text-blue-700">Solicitação Análise de Crédito</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-2 gap-4">
@@ -392,9 +348,9 @@ export function ImportacoesRealizadasContent() {
                     </Card>
 
                     {/* Seção Assinante */}
-                    <Card className="border-l-4 border-l-red-500">
-                      <CardHeader className="bg-red-50">
-                        <CardTitle className="text-lg text-red-700">Dados do Assinante</CardTitle>
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardHeader className="bg-blue-50">
+                        <CardTitle className="text-lg text-blue-700">Dados do Assinante</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 pt-6">
                         <div className="grid grid-cols-3 gap-4">
