@@ -27,6 +27,7 @@ import {
   Send,
   Receipt,
   Search,
+  Upload,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -61,6 +62,14 @@ const menuItems = [
     items: [
       { title: "Visualizar contratos", url: "/visualizar-contratos" },
       { title: "Boletos", url: "/boletos" },
+    ]
+  },
+  {
+    title: "Importações",
+    icon: Upload,
+    items: [
+      { title: "Nova importação", url: "/nova-importacao" },
+      { title: "Importações realizadas", url: "/importacoes-realizadas" },
     ]
   },
   {
