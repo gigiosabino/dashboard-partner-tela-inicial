@@ -38,6 +38,14 @@ import {
 
 const menuItems = [
   {
+    title: "Importações",
+    icon: Upload,
+    items: [
+      { title: "Nova importação", url: "/nova-importacao" },
+      { title: "Importações realizadas", url: "/importacoes-realizadas" },
+    ]
+  },
+  {
     title: "Gestão de Clientes e Propostas",
     icon: FileText,
     items: [
@@ -62,14 +70,6 @@ const menuItems = [
     items: [
       { title: "Visualizar contratos", url: "/visualizar-contratos" },
       { title: "Boletos", url: "/boletos" },
-    ]
-  },
-  {
-    title: "Importações",
-    icon: Upload,
-    items: [
-      { title: "Nova importação", url: "/nova-importacao" },
-      { title: "Importações realizadas", url: "/importacoes-realizadas" },
     ]
   },
   {

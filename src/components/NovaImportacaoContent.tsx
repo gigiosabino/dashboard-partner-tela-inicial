@@ -1,4 +1,3 @@
-
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { GlobalHeader } from "@/components/GlobalHeader";
@@ -19,6 +18,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import {
@@ -268,30 +274,274 @@ export function NovaImportacaoContent() {
 
             {/* Modal de Edição */}
             <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-              <DialogContent className="max-w-2xl">
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle>Editar Importação</DialogTitle>
+                  <DialogTitle>Importação Pessoa</DialogTitle>
                 </DialogHeader>
                 {editingItem && (
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">ID da Importação:</label>
-                      <Input value={editingItem.id} readOnly />
+                  <div className="space-y-6">
+                    {/* Seção Pessoa */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold">Pessoa</h3>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">CPF/CNPJ *</label>
+                          <Input value={editingItem.documentoFederal} />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Tipo de Pessoa *</label>
+                          <Select defaultValue="pessoa-juridica">
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pessoa-fisica">Pessoa Física</SelectItem>
+                              <SelectItem value="pessoa-juridica">Pessoa Jurídica</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Nome/Razão Social *</label>
+                          <Input placeholder="Nome Modelo Teste" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Nome fantasia</label>
+                          <Input />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">E-mail</label>
+                          <Input placeholder="emailTeste@emails.com.br" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Telefone Fixo</label>
+                          <Input placeholder="(11) 3435-3208" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Telefone Celular</label>
+                          <Input placeholder="(11) 94178-9929" />
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Documento Federal:</label>
-                      <Input value={editingItem.documentoFederal} />
+
+                    {/* Seção Pessoa Endereço */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold">Pessoa Endereço</h3>
+                      <div className="grid grid-cols-4 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Logradouro *</label>
+                          <Input placeholder="65.095-361" />
+                        </div>
+                        <div className="flex-1">
+                          <label className="block text-sm font-medium mb-2">Rua Major Palma</label>
+                          <Input />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">N° Logradouro *</label>
+                          <Input placeholder="1787" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Complemento</label>
+                          <Input placeholder="CJ 10" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Bairro</label>
+                          <Input placeholder="Floresta" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Cidade</label>
+                          <Input placeholder="Guarulhos" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">UF</label>
+                          <Select defaultValue="SP">
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="SP">SP</SelectItem>
+                              <SelectItem value="RJ">RJ</SelectItem>
+                              <SelectItem value="MG">MG</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Descrição do Erro:</label>
-                      <Input value={editingItem.descricaoErro} />
+
+                    {/* Seção Solicitação Análise de Crédito */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold">Solicitação Análise de Crédito</h3>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Situação Inicial *</label>
+                          <Select defaultValue="capital-de-giro">
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="capital-de-giro">CAPITAL DE GIRO</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Tipo de Operação</label>
+                          <Select defaultValue="capital-de-giro">
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="capital-de-giro">CAPITAL DE GIRO</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Valor solicitado *</label>
+                          <Input placeholder="R$ 1.500,00" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Percentual de juros considerado *</label>
+                          <Input placeholder="1,50 %" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Prazo mínimo para Vencimento (em ...</label>
+                          <Input placeholder="10" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Prazo máximo para Vencimento (em ...</label>
+                          <Input placeholder="90" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Tipo de Tarifa (TA) *</label>
+                          <Select defaultValue="porcentagem">
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="porcentagem">Porcentagem</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Tarifa (TA) *</label>
+                          <Input placeholder="2,00 %" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Parcela Mínima *</label>
+                          <Input placeholder="50" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Parcela Máxima *</label>
+                          <Input placeholder="50" />
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Seção Assinante */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold">Assinante</h3>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Documento Federal *</label>
+                          <Input placeholder="590.496.170-14" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Nome *</label>
+                          <Input placeholder="modelo teste" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Telefone/Celular *</label>
+                          <Input placeholder="(11) 99999-9999" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">E-mail</label>
+                          <Input placeholder="modelo@teste.com.br" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Data de Nascimento *</label>
+                          <Input type="date" defaultValue="2001-04-01" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Papel *</label>
+                          <Select>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="assinante">Assinante</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Estado Civil *</label>
+                          <Select defaultValue="casado">
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="casado">Casado</SelectItem>
+                              <SelectItem value="solteiro">Solteiro</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">CPF</label>
+                          <Input placeholder="29.108-440" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Banco</label>
+                          <Input placeholder="IBES" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Logradouro</label>
+                          <Input placeholder="Rua Presidente John Kennedy" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">N° Logradouro</label>
+                          <Input placeholder="127" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Complemento</label>
+                          <Input />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Cidade</label>
+                          <Input placeholder="Vila Velha" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">UF</label>
+                          <Input placeholder="ES" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Ordem Assinatura *</label>
+                          <Input placeholder="1" />
+                        </div>
+                        <div></div>
+                      </div>
+                    </div>
+
                     <div className="flex justify-end space-x-2">
                       <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
-                        Cancelar
+                        CANCELAR
                       </Button>
-                      <Button onClick={() => setIsEditModalOpen(false)}>
-                        Salvar
+                      <Button onClick={() => setIsEditModalOpen(false)} className="bg-blue-600 hover:bg-blue-700">
+                        SALVAR
                       </Button>
                     </div>
                   </div>

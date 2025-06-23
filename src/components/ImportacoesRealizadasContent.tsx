@@ -1,4 +1,3 @@
-
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { GlobalHeader } from "@/components/GlobalHeader";
@@ -21,12 +20,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { Search, FileText, Download } from "lucide-react";
+import { Search, FileText, Eye } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export function ImportacoesRealizadasContent() {
   const [filtroData, setFiltroData] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("");
   const [filtroUsuario, setFiltroUsuario] = useState("");
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedImportacao, setSelectedImportacao] = useState<any>(null);
 
   const importacoesRealizadas = [
     {
@@ -63,6 +65,11 @@ export function ImportacoesRealizadasContent() {
 
   const handleDownloadRelatorio = (id: string) => {
     console.log(`Baixando relatório da importação ${id}`);
+  };
+
+  const handleViewImportacao = (importacao: any) => {
+    setSelectedImportacao(importacao);
+    setIsViewModalOpen(true);
   };
 
   const getStatusColor = (status: string) => {
@@ -183,10 +190,10 @@ export function ImportacoesRealizadasContent() {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleDownloadRelatorio(importacao.id)}
+                            onClick={() => handleViewImportacao(importacao)}
                           >
-                            <Download className="w-4 h-4 mr-2" />
-                            Relatório
+                            <Eye className="w-4 h-4 mr-2" />
+                            Visualizar
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -195,6 +202,62 @@ export function ImportacoesRealizadasContent() {
                 </Table>
               </CardContent>
             </Card>
+
+            {/* Modal de Visualização */}
+            <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Detalhes da Importação - {selectedImportacao?.id}</DialogTitle>
+                </DialogHeader>
+                {selectedImportacao && (
+                  <div className="space-y-6">
+                    {/* Informações Gerais */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Data da Importação:</label>
+                        <p className="text-sm">{new Date(selectedImportacao.dataImportacao).toLocaleDateString('pt-BR')}</p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Usuário:</label>
+                        <p className="text-sm">{selectedImportacao.usuario}</p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Arquivo:</label>
+                        <p className="text-sm">{selectedImportacao.arquivo}</p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Status:</label>
+                        <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(selectedImportacao.status)}`}>
+                          {selectedImportacao.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Resumo */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center p-4 bg-gray-50 rounded">
+                        <p className="text-2xl font-bold text-blue-600">{selectedImportacao.totalRegistros}</p>
+                        <p className="text-sm text-gray-600">Total</p>
+                      </div>
+                      <div className="text-center p-4 bg-green-50 rounded">
+                        <p className="text-2xl font-bold text-green-600">{selectedImportacao.sucessos}</p>
+                        <p className="text-sm text-gray-600">Sucessos</p>
+                      </div>
+                      <div className="text-center p-4 bg-red-50 rounded">
+                        <p className="text-2xl font-bold text-red-600">{selectedImportacao.erros}</p>
+                        <p className="text-sm text-gray-600">Erros</p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end">
+                      <Button variant="outline" onClick={() => setIsViewModalOpen(false)}>
+                        Fechar
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </DialogContent>
+            </Dialog>
           </div>
         </main>
       </div>
