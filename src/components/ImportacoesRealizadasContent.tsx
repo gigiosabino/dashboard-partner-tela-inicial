@@ -1,3 +1,4 @@
+
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { GlobalHeader } from "@/components/GlobalHeader";
@@ -20,8 +21,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { Search, FileText, Eye } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Search, Eye } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export function ImportacoesRealizadasContent() {
   const [filtroData, setFiltroData] = useState("");
@@ -62,10 +63,6 @@ export function ImportacoesRealizadasContent() {
       status: "Concluída com Erros",
     },
   ];
-
-  const handleDownloadRelatorio = (id: string) => {
-    console.log(`Baixando relatório da importação ${id}`);
-  };
 
   const handleViewImportacao = (importacao: any) => {
     setSelectedImportacao(importacao);
@@ -168,7 +165,7 @@ export function ImportacoesRealizadasContent() {
                       <TableHead>Sucessos</TableHead>
                       <TableHead>Erros</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Ações</TableHead>
+                      <Table Head>Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -205,49 +202,274 @@ export function ImportacoesRealizadasContent() {
 
             {/* Modal de Visualização */}
             <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Detalhes da Importação - {selectedImportacao?.id}</DialogTitle>
                 </DialogHeader>
                 {selectedImportacao && (
-                  <div className="space-y-6">
-                    {/* Informações Gerais */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Data da Importação:</label>
-                        <p className="text-sm">{new Date(selectedImportacao.dataImportacao).toLocaleDateString('pt-BR')}</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Usuário:</label>
-                        <p className="text-sm">{selectedImportacao.usuario}</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Arquivo:</label>
-                        <p className="text-sm">{selectedImportacao.arquivo}</p>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-1">Status:</label>
-                        <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(selectedImportacao.status)}`}>
-                          {selectedImportacao.status}
-                        </span>
-                      </div>
-                    </div>
+                  <div className="space-y-8">
+                    {/* Resumo da Importação */}
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardHeader className="bg-blue-50">
+                        <CardTitle className="text-lg text-blue-700">Resumo da Importação</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-6">
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Data da Importação:</label>
+                            <p className="text-sm">{new Date(selectedImportacao.dataImportacao).toLocaleDateString('pt-BR')}</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Usuário:</label>
+                            <p className="text-sm">{selectedImportacao.usuario}</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Arquivo:</label>
+                            <p className="text-sm">{selectedImportacao.arquivo}</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Status:</label>
+                            <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(selectedImportacao.status)}`}>
+                              {selectedImportacao.status}
+                            </span>
+                          </div>
+                        </div>
 
-                    {/* Resumo */}
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="text-center p-4 bg-gray-50 rounded">
-                        <p className="text-2xl font-bold text-blue-600">{selectedImportacao.totalRegistros}</p>
-                        <p className="text-sm text-gray-600">Total</p>
-                      </div>
-                      <div className="text-center p-4 bg-green-50 rounded">
-                        <p className="text-2xl font-bold text-green-600">{selectedImportacao.sucessos}</p>
-                        <p className="text-sm text-gray-600">Sucessos</p>
-                      </div>
-                      <div className="text-center p-4 bg-red-50 rounded">
-                        <p className="text-2xl font-bold text-red-600">{selectedImportacao.erros}</p>
-                        <p className="text-sm text-gray-600">Erros</p>
-                      </div>
-                    </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="text-center p-4 bg-gray-50 rounded">
+                            <p className="text-2xl font-bold text-blue-600">{selectedImportacao.totalRegistros}</p>
+                            <p className="text-sm text-gray-600">Total</p>
+                          </div>
+                          <div className="text-center p-4 bg-green-50 rounded">
+                            <p className="text-2xl font-bold text-green-600">{selectedImportacao.sucessos}</p>
+                            <p className="text-sm text-gray-600">Sucessos</p>
+                          </div>
+                          <div className="text-center p-4 bg-red-50 rounded">
+                            <p className="text-2xl font-bold text-red-600">{selectedImportacao.erros}</p>
+                            <p className="text-sm text-gray-600">Erros</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Seção Pessoa */}
+                    <Card className="border-l-4 border-l-green-500">
+                      <CardHeader className="bg-green-50">
+                        <CardTitle className="text-lg text-green-700">Dados da Pessoa</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4 pt-6">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">CPF/CNPJ:</label>
+                            <p className="text-sm">011.075.550-27</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Tipo de Pessoa:</label>
+                            <p className="text-sm">Pessoa Jurídica</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Nome/Razão Social:</label>
+                            <p className="text-sm">Nome Modelo Teste</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Nome Fantasia:</label>
+                            <p className="text-sm">-</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">E-mail:</label>
+                            <p className="text-sm">emailTeste@emails.com.br</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Telefone Fixo:</label>
+                            <p className="text-sm">(11) 3435-3208</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Telefone Celular:</label>
+                            <p className="text-sm">(11) 94178-9929</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Seção Pessoa Endereço */}
+                    <Card className="border-l-4 border-l-orange-500">
+                      <CardHeader className="bg-orange-50">
+                        <CardTitle className="text-lg text-orange-700">Endereço da Pessoa</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4 pt-6">
+                        <div className="grid grid-cols-4 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">CEP:</label>
+                            <p className="text-sm">65.095-361</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Logradouro:</label>
+                            <p className="text-sm">Rua Major Palma</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Número:</label>
+                            <p className="text-sm">1787</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Complemento:</label>
+                            <p className="text-sm">CJ 10</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Bairro:</label>
+                            <p className="text-sm">Floresta</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Cidade:</label>
+                            <p className="text-sm">Guarulhos</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">UF:</label>
+                            <p className="text-sm">SP</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Seção Solicitação Análise de Crédito */}
+                    <Card className="border-l-4 border-l-purple-500">
+                      <CardHeader className="bg-purple-50">
+                        <CardTitle className="text-lg text-purple-700">Solicitação Análise de Crédito</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4 pt-6">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Situação Inicial:</label>
+                            <p className="text-sm">CAPITAL DE GIRO</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Tipo de Operação:</label>
+                            <p className="text-sm">CAPITAL DE GIRO</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Valor Solicitado:</label>
+                            <p className="text-sm">R$ 1.500,00</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Percentual de Juros:</label>
+                            <p className="text-sm">1,50%</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Prazo Mínimo (dias):</label>
+                            <p className="text-sm">10</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Prazo Máximo (dias):</label>
+                            <p className="text-sm">90</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Tipo de Tarifa (TA):</label>
+                            <p className="text-sm">Porcentagem</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Tarifa (TA):</label>
+                            <p className="text-sm">2,00%</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Parcela Mínima:</label>
+                            <p className="text-sm">50</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Parcela Máxima:</label>
+                            <p className="text-sm">50</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Seção Assinante */}
+                    <Card className="border-l-4 border-l-red-500">
+                      <CardHeader className="bg-red-50">
+                        <CardTitle className="text-lg text-red-700">Dados do Assinante</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4 pt-6">
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Documento Federal:</label>
+                            <p className="text-sm">590.496.170-14</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Nome:</label>
+                            <p className="text-sm">modelo teste</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Telefone/Celular:</label>
+                            <p className="text-sm">(11) 99999-9999</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">E-mail:</label>
+                            <p className="text-sm">modelo@teste.com.br</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Data de Nascimento:</label>
+                            <p className="text-sm">01/04/2001</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Papel:</label>
+                            <p className="text-sm">Assinante</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Estado Civil:</label>
+                            <p className="text-sm">Casado</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">RG:</label>
+                            <p className="text-sm">29.108-440</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Banco:</label>
+                            <p className="text-sm">IBES</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Logradouro:</label>
+                            <p className="text-sm">Rua Presidente John Kennedy</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Número:</label>
+                            <p className="text-sm">127</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Complemento:</label>
+                            <p className="text-sm">-</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Cidade:</label>
+                            <p className="text-sm">Vila Velha</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium mb-1">UF:</label>
+                            <p className="text-sm">ES</p>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium mb-1">Ordem Assinatura:</label>
+                            <p className="text-sm">1</p>
+                          </div>
+                          <div></div>
+                        </div>
+                      </CardContent>
+                    </Card>
 
                     <div className="flex justify-end">
                       <Button variant="outline" onClick={() => setIsViewModalOpen(false)}>
