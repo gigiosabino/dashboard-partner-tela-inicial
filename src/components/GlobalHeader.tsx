@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
 
 interface GlobalHeaderProps {
   title: string;
@@ -16,6 +17,8 @@ interface GlobalHeaderProps {
 }
 
 export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
+  const { toast } = useToast();
+
   const handleAlterarSenha = () => {
     console.log("Alterar senha clicado");
   };
@@ -30,12 +33,23 @@ export function GlobalHeader({ title, subtitle }: GlobalHeaderProps) {
 
   const handleRenovarSessao = () => {
     console.log("Renovar sessão clicado");
-    // Aqui você implementaria a lógica de renovação de sessão
+    toast({
+      title: "Sessão renovada",
+      description: "Sua sessão foi renovada com sucesso.",
+    });
   };
 
   const handleSair = () => {
     console.log("Sair clicado");
-    // Aqui você implementaria a lógica de logout
+    toast({
+      title: "Logout realizado",
+      description: "Você foi desconectado do sistema.",
+    });
+    
+    // Redirecionar para a página de login após um breve delay
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 1000);
   };
 
   return (
