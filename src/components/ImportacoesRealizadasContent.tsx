@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -266,23 +264,13 @@ export function ImportacoesRealizadasContent() {
                       </TableCell>
                       <TableCell>{importacao.usuarioResponsavel}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Button 
-                            size="sm" 
-                            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white shadow-sm font-medium"
-                          >
-                            <Eye className="h-3.5 w-3.5" />
-                            Visualizar
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="flex items-center gap-1"
-                          >
-                            <Download className="h-3.5 w-3.5" />
-                            Download
-                          </Button>
-                        </div>
+                        <Button 
+                          size="sm" 
+                          className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white shadow-sm font-medium"
+                        >
+                          <Eye className="h-3.5 w-3.5" />
+                          Visualizar
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -295,4 +283,3 @@ export function ImportacoesRealizadasContent() {
     </div>
   );
 }
-
