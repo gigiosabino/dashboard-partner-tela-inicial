@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,29 +7,29 @@ import { useState } from "react";
 // Gerar dados mock para 30 propostas
 const generateMockPropostas = () => {
   const nomes = [
-    "IZABELA MARIA PEREIRA DE AZEVEDO",
-    "BMP MONEY PLUS", 
-    "BETANIA MARIA SILVA DE LIRA",
-    "JOÃO CARLOS SANTOS",
-    "MARIA FERNANDA OLIVEIRA",
-    "ANTONIO SILVA COSTA",
-    "ANA PAULA RODRIGUES",
-    "CARLOS EDUARDO LIMA",
-    "FERNANDA SANTOS ALVES",
-    "RICARDO PEREIRA SOUSA"
+    "Nome do cliente",
+    "Nome do cliente", 
+    "Nome do cliente",
+    "Nome do cliente",
+    "Nome do cliente",
+    "Nome do cliente",
+    "Nome do cliente",
+    "Nome do cliente",
+    "Nome do cliente",
+    "Nome do cliente"
   ];
   
   const cpfs = [
-    "077.445.417-23",
-    "123.983.910-35",
-    "066.742.374-50", 
-    "111.222.333-44",
-    "555.666.777-88",
-    "999.888.777-66",
-    "333.444.555-22",
-    "777.888.999-11",
-    "222.333.444-55",
-    "666.777.888-99"
+    "123.456.789-10",
+    "123.456.789-10",
+    "123.456.789-10", 
+    "123.456.789-10",
+    "123.456.789-10",
+    "123.456.789-10",
+    "123.456.789-10",
+    "123.456.789-10",
+    "123.456.789-10",
+    "123.456.789-10"
   ];
 
   const valores = [
