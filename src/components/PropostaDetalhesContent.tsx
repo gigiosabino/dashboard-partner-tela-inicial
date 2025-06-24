@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PropostaHeader } from "./proposta-detalhes/PropostaHeader";
@@ -30,7 +31,7 @@ export function PropostaDetalhesContent() {
     dataEnvio: "21/06/2025 21:01:19",
     valorSolicitado: "R$ 21,77",
     situacao: "Em análise",
-    parceiro: "SKUDRA DESENVOLVIMENTO DE SOFTWARE LTDA",
+    parceiro: "Nome do parceiro",
     status: "Ativa"
   };
 

@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +30,7 @@ import { GlobalHeader } from "@/components/GlobalHeader";
 const propostas = [
   {
     numero: "056939510",
-    parceiro: "BMP Money Plus",
+    parceiro: "Nome do parceiro",
     cliente: "Nome do cliente",
     cpf: "123.456.789-10",
     valor: "R$ 20.000,00",
@@ -39,7 +40,7 @@ const propostas = [
   },
   {
     numero: "056441261",
-    parceiro: "Financeira XYZ",
+    parceiro: "Nome do parceiro",
     cliente: "Nome do cliente",
     cpf: "123.456.789-10",
     valor: "R$ 15.000,00",
@@ -49,7 +50,7 @@ const propostas = [
   },
   {
     numero: "056411663",
-    parceiro: "Crédito ABC",
+    parceiro: "Nome do parceiro",
     cliente: "Nome do cliente",
     cpf: "123.456.789-10",
     valor: "R$ 30.000,00",
@@ -59,7 +60,7 @@ const propostas = [
   },
   {
     numero: "056386138",
-    parceiro: "BMP Money Plus",
+    parceiro: "Nome do parceiro",
     cliente: "Nome do cliente",
     cpf: "123.456.789-10",
     valor: "R$ 10.000,00",
