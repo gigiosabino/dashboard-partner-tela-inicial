@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -133,6 +134,7 @@ export function ImportacoesRealizadasContent() {
                 </label>
                 <DatePickerWithRange
                   date={selectedDate}
+                  setDate={setSelectedDate}
                 />
               </div>
               <div className="flex items-end">
