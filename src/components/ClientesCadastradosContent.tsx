@@ -15,34 +15,34 @@ export function ClientesCadastradosContent() {
   const clientes = [
     {
       id: "1",
-      documento: "327.937.152-04",
-      nome: "JORGE LUIZ SARAIVA DA COSTA",
+      documento: "123.456.789-10",
+      nome: "Nome do cliente",
       dataNascimento: "15/03/1985",
-      email: "jorge@email.com",
+      email: "cliente@email.com",
       telefone: "(11) 99999-9999"
     },
     {
       id: "2",
-      documento: "422.817.188-59",
-      nome: "TESTE LUCCA",
+      documento: "123.456.789-10",
+      nome: "Nome do cliente",
       dataNascimento: "22/08/1990",
-      email: "teste@email.com",
+      email: "cliente@email.com",
       telefone: "(11) 98888-8888"
     },
     {
       id: "3",
       documento: "123.456.789-10",
-      nome: "MARIA SILVA SANTOS",
+      nome: "Nome do cliente",
       dataNascimento: "10/12/1988",
-      email: "maria@email.com",
+      email: "cliente@email.com",
       telefone: "(11) 97777-7777"
     },
     {
       id: "4",
-      documento: "12.345.678/0001-90",
-      nome: "EMPRESA MODELO LTDA",
+      documento: "12.345.678/0001-00",
+      nome: "Nome do cliente",
       dataNascimento: "01/06/2015",
-      email: "contato@empresamodelo.com.br",
+      email: "contato@empresa.com.br",
       telefone: "(11) 3456-7890"
     }
   ];
