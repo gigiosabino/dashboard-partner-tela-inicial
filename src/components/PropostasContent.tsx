@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -318,9 +319,8 @@ export function PropostasContent() {
                   <TableCell className="text-sm text-slate-600">{proposta.prazo}</TableCell>
                   <TableCell>
                     <Button 
-                      variant="outline" 
                       size="sm" 
-                      className="border-slate-300 text-slate-700 hover:bg-slate-50 shadow-sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white shadow-md"
                       onClick={() => handleDetalhes(proposta.numero)}
                     >
                       <Eye className="w-4 h-4 mr-1" />
