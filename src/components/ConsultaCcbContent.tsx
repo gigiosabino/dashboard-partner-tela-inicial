@@ -169,7 +169,7 @@ export function ConsultaCcbContent() {
                       <TableHead>Nro Proposta</TableHead>
                       <TableHead>CCB Encontrada</TableHead>
                       <TableHead>Data Inclusão</TableHead>
-                      <TableHead className="text-center">Ações</TableHead>
+                      <TableHead className="text-right">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -190,7 +190,7 @@ export function ConsultaCcbContent() {
                         <TableCell>
                           {resultado.dataInclusao || '-'}
                         </TableCell>
-                        <TableCell className="text-center">
+                        <TableCell className="text-right">
                           {resultado.ccbEncontrada && (
                             <Button
                               size="sm"
