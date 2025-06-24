@@ -9,14 +9,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { X, Building2 } from "lucide-react";
+import { Building2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Empresa {
   id: string;
-  cnpj: string;
-  razaoSocial: string;
-  ativa: boolean;
+  nomeEmpresa: string;
+  codigoParametro: string;
 }
 
 interface AlterarEmpresaModalProps {
@@ -32,21 +31,28 @@ export function AlterarEmpresaModal({ open, onOpenChange }: AlterarEmpresaModalP
   const empresas: Empresa[] = [
     {
       id: "1",
-      cnpj: "12.345.678/0001-90",
-      razaoSocial: "BMP Tecnologia e Serviços LTDA",
-      ativa: true
+      nomeEmpresa: "BMP Tecnologia e Serviços LTDA",
+      codigoParametro: "BMP_TECH_001"
     },
     {
       id: "2", 
-      cnpj: "98.765.432/0001-10",
-      razaoSocial: "BMP Consultoria Empresarial LTDA",
-      ativa: true
+      nomeEmpresa: "BMP Consultoria Empresarial LTDA",
+      codigoParametro: "BMP_CONS_002"
     },
     {
       id: "3",
-      cnpj: "11.222.333/0001-44",
-      razaoSocial: "BMP Soluções Financeiras LTDA", 
-      ativa: true
+      nomeEmpresa: "BMP Soluções Financeiras LTDA", 
+      codigoParametro: "BMP_FIN_003"
+    },
+    {
+      id: "4",
+      nomeEmpresa: "BMP Desenvolvimento de Software LTDA",
+      codigoParametro: "BMP_DEV_004"
+    },
+    {
+      id: "5",
+      nomeEmpresa: "BMP Investimentos e Participações LTDA",
+      codigoParametro: "BMP_INV_005"
     }
   ];
 
@@ -64,7 +70,7 @@ export function AlterarEmpresaModal({ open, onOpenChange }: AlterarEmpresaModalP
     
     toast({
       title: "Empresa alterada",
-      description: `Você foi direcionado para ${empresa?.razaoSocial}`,
+      description: `Você foi direcionado para ${empresa?.nomeEmpresa}`,
     });
     
     // Aqui você faria a troca do contexto da empresa
@@ -76,47 +82,36 @@ export function AlterarEmpresaModal({ open, onOpenChange }: AlterarEmpresaModalP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader className="flex flex-row items-center justify-between">
+      <DialogContent className="sm:max-w-lg" hideCloseButton>
+        <DialogHeader>
           <DialogTitle className="text-lg font-medium">Alterar Empresa</DialogTitle>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onOpenChange(false)}
-            className="h-6 w-6 p-0"
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </DialogHeader>
         
         <div className="space-y-4">
           <div className="space-y-3">
             <Label className="text-sm font-medium">Selecione a empresa:</Label>
             
-            <RadioGroup value={empresaSelecionada} onValueChange={setEmpresaSelecionada}>
-              {empresas.map((empresa) => (
-                <div key={empresa.id} className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-slate-50">
-                  <RadioGroupItem value={empresa.id} id={empresa.id} className="mt-1" />
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <Building2 className="h-4 w-4 text-slate-500" />
-                      <Label 
-                        htmlFor={empresa.id} 
-                        className="text-sm font-medium cursor-pointer"
-                      >
-                        {empresa.razaoSocial}
-                      </Label>
+            <div className="max-h-80 overflow-y-auto">
+              <RadioGroup value={empresaSelecionada} onValueChange={setEmpresaSelecionada}>
+                {empresas.map((empresa) => (
+                  <div key={empresa.id} className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-slate-50">
+                    <RadioGroupItem value={empresa.id} id={empresa.id} className="mt-1" />
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <Building2 className="h-4 w-4 text-slate-500" />
+                        <Label 
+                          htmlFor={empresa.id} 
+                          className="text-sm font-medium cursor-pointer"
+                        >
+                          {empresa.nomeEmpresa}
+                        </Label>
+                      </div>
+                      <p className="text-xs text-slate-600">{empresa.codigoParametro}</p>
                     </div>
-                    <p className="text-xs text-slate-600">CNPJ: {empresa.cnpj}</p>
-                    {empresa.ativa && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                        Ativa
-                      </span>
-                    )}
                   </div>
-                </div>
-              ))}
-            </RadioGroup>
+                ))}
+              </RadioGroup>
+            </div>
           </div>
 
           <div className="flex space-x-2 pt-4">
