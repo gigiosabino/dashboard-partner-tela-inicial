@@ -1,8 +1,6 @@
-
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -106,13 +104,6 @@ export function ConsultaCcbContent() {
             Consulte a disponibilidade de CCBs no SFTP
           </p>
         </div>
-
-        <Alert className="border-amber-200 bg-amber-50">
-          <AlertDescription className="text-amber-800">
-            ⚠️ Atenção: A CCB estará disponível no SFTP apenas se a proposta já tiver passado pelo status "Finalizada".
-            Status anteriores ou sem finalização não geram CCB.
-          </AlertDescription>
-        </Alert>
 
         <Card>
           <CardHeader>
