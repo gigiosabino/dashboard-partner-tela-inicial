@@ -22,6 +22,7 @@ import CancelarProposta from "./pages/CancelarProposta";
 import ReenviarLinkAssinatura from "./pages/ReenviarLinkAssinatura";
 import ConsultarRegistroBoleto from "./pages/ConsultarRegistroBoleto";
 import ConsultaProposta from "./pages/ConsultaProposta";
+import ConsultaCcb from "./pages/ConsultaCcb";
 import VisualizarContratos from "./pages/VisualizarContratos";
 import ContratoDetalhes from "./pages/ContratoDetalhes";
 import Boletos from "./pages/Boletos";
@@ -59,6 +60,7 @@ const App = () => (
           <Route path="/reenviar-link-assinatura" element={<ReenviarLinkAssinatura />} />
           <Route path="/consultar-registro-boleto" element={<ConsultarRegistroBoleto />} />
           <Route path="/consulta-proposta" element={<ConsultaProposta />} />
+          <Route path="/consulta-ccb" element={<ConsultaCcb />} />
           <Route path="/visualizar-contratos" element={<VisualizarContratos />} />
           <Route path="/visualizar-contratos/:numero" element={<ContratoDetalhes />} />
           <Route path="/boletos" element={<Boletos />} />

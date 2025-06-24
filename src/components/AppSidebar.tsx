@@ -79,6 +79,7 @@ const menuItems = [
       { title: "Reenviar link de assinatura", url: "/reenviar-link-assinatura" },
       { title: "Consultar registro de boleto", url: "/consultar-registro-boleto" },
       { title: "Consultar propostas", url: "/consulta-proposta" },
+      { title: "Consulta CCB", url: "/consulta-ccb" },
       { title: "Mensageria", url: "/mensageria" },
     ]
   },
