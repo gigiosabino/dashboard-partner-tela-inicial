@@ -25,8 +25,8 @@ export function PropostaDetalhesContent() {
   // Dados mockados para exemplo
   const propostaData = {
     numero: numero || "057792368",
-    cliente: "JORGE LUIZ SARAIVA DA COSTA",
-    cpf: "327.937.152-04",
+    cliente: "Nome do cliente",
+    cpf: "123.456.789-10",
     dataEnvio: "21/06/2025 21:01:19",
     valorSolicitado: "R$ 21,77",
     situacao: "Em análise",
@@ -69,27 +69,27 @@ export function PropostaDetalhesContent() {
   ];
 
   const assinantes = [
-    { nome: "TESTE LUCCA", email: "teste@email.com", documento: "422.817.188-59", celular: "(11) 99999-9999", identificador: "ID123" }
+    { nome: "Nome do cliente", email: "cliente@email.com", documento: "123.456.789-10", celular: "(11) 99999-9999", identificador: "ID123" }
   ];
 
   const dadosCliente = {
-    "Nome": "TESTE LUCCA",
-    "Documento Federal": "422.817.188-59",
+    "Nome": "Nome do cliente",
+    "Documento Federal": "123.456.789-10",
     "Data de Nascimento": "15/03/1985",
     "RG": "12.345.678-9",
     "Sexo": "Masculino",
     "Escolaridade": "Superior Completo",
-    "Nome da Mãe": "MARIA TESTE",
+    "Nome da Mãe": "Nome da mãe do cliente",
     "Estado Civil": "Solteiro",
     "Nacionalidade": "Brasileira",
-    "E-mail": "teste@email.com",
+    "E-mail": "cliente@email.com",
     "Telefone Celular": "(11) 99999-9999"
   };
 
   const enderecos = [
     {
       cep: "01234-567",
-      logradouro: "Rua das Flores, 123",
+      logradouro: "Endereço do cliente, 123",
       bairro: "Centro",
       cidade: "São Paulo",
       estado: "SP",
@@ -98,7 +98,7 @@ export function PropostaDetalhesContent() {
     },
     {
       cep: "04567-890",
-      logradouro: "Av. Paulista, 1000",
+      logradouro: "Endereço do cliente, 1000",
       bairro: "Bela Vista",
       cidade: "São Paulo",
       estado: "SP",
@@ -142,7 +142,7 @@ export function PropostaDetalhesContent() {
   };
 
   const outrosPagamentos = [
-    { tipo: "PIX", chave: "422.817.188-59", principal: "Sim" },
+    { tipo: "PIX", chave: "123.456.789-10", principal: "Sim" },
     { tipo: "TED", banco: "Banco Itaú", agencia: "9876", conta: "54321-0", principal: "Não" }
   ];
 

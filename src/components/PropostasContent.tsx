@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -31,8 +30,8 @@ const propostas = [
   {
     numero: "056939510",
     parceiro: "BMP Money Plus",
-    cliente: "IZABELA MARIA PEREIRA DE AZEVEDO",
-    cpf: "077.445.417-23",
+    cliente: "Nome do cliente",
+    cpf: "123.456.789-10",
     valor: "R$ 20.000,00",
     status: "Aprovada",
     dataContratacao: "05/06/2025",
@@ -41,8 +40,8 @@ const propostas = [
   {
     numero: "056441261",
     parceiro: "Financeira XYZ",
-    cliente: "JOÃO SILVA SANTOS",
-    cpf: "123.456.789-00",
+    cliente: "Nome do cliente",
+    cpf: "123.456.789-10",
     valor: "R$ 15.000,00",
     status: "Paga",
     dataContratacao: "04/06/2025",
@@ -51,8 +50,8 @@ const propostas = [
   {
     numero: "056411663",
     parceiro: "Crédito ABC",
-    cliente: "MARIA OLIVEIRA COSTA",
-    cpf: "987.654.321-11",
+    cliente: "Nome do cliente",
+    cpf: "123.456.789-10",
     valor: "R$ 30.000,00",
     status: "Liberada",
     dataContratacao: "03/06/2025",
@@ -61,8 +60,8 @@ const propostas = [
   {
     numero: "056386138",
     parceiro: "BMP Money Plus",
-    cliente: "CARLOS EDUARDO FERREIRA",
-    cpf: "456.789.123-22",
+    cliente: "Nome do cliente",
+    cpf: "123.456.789-10",
     valor: "R$ 10.000,00",
     status: "Finalizada",
     dataContratacao: "02/06/2025",

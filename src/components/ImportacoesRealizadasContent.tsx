@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,7 +35,7 @@ export function ImportacoesRealizadasContent() {
       status: "Concluída",
       registrosProcessados: 1250,
       registrosComErro: 12,
-      usuarioResponsavel: "Ana Silva",
+      usuarioResponsavel: "Nome do cliente",
       observacoes: "Importação de clientes do primeiro trimestre"
     },
     {
@@ -46,7 +45,7 @@ export function ImportacoesRealizadasContent() {
       status: "Concluída",
       registrosProcessados: 890,
       registrosComErro: 5,
-      usuarioResponsavel: "Carlos Santos",
+      usuarioResponsavel: "Nome do cliente",
       observacoes: "Propostas finalizadas em dezembro"
     },
     {
@@ -56,7 +55,7 @@ export function ImportacoesRealizadasContent() {
       status: "Concluída com Erros",
       registrosProcessados: 2100,
       registrosComErro: 45,
-      usuarioResponsavel: "Maria Costa",
+      usuarioResponsavel: "Nome do cliente",
       observacoes: "Alguns contratos com dados incompletos"
     },
     {
@@ -66,7 +65,7 @@ export function ImportacoesRealizadasContent() {
       status: "Concluída",
       registrosProcessados: 567,
       registrosComErro: 0,
-      usuarioResponsavel: "João Oliveira",
+      usuarioResponsavel: "Nome do cliente",
       observacoes: "Importação sem erros"
     }
   ];

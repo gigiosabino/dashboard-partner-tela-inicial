@@ -20,8 +20,8 @@ export function ClienteDetalhesContent() {
     if (clienteId === "4") {
       return {
         // Dados da Empresa (CNPJ)
-        nome: "EMPRESA MODELO LTDA",
-        documento: "12.345.678/0001-90",
+        nome: "Nome do cliente",
+        documento: "12.345.678/0001-00",
         dataNascimento: "01/06/2015", // Data de abertura da empresa
         rg: "",
         sexo: "",
@@ -31,7 +31,7 @@ export function ClienteDetalhesContent() {
         nacionalidade: "Brasileira",
         
         // Dados de Contato
-        email: "contato@empresamodelo.com.br",
+        email: "cliente@email.com",
         telefone: "(11) 3456-7890",
         
         // Endereços
@@ -39,7 +39,7 @@ export function ClienteDetalhesContent() {
           {
             id: "1",
             cep: "01310-100",
-            logradouro: "Av. Paulista, 1578",
+            logradouro: "Endereço do cliente, 1578",
             bairro: "Bela Vista",
             cidade: "São Paulo",
             estado: "SP",
@@ -88,16 +88,16 @@ export function ClienteDetalhesContent() {
           {
             id: "1",
             documentoFederal: "123.456.789-10",
-            nome: "CARLOS SILVA SANTOS",
+            nome: "Nome do cliente",
             telefone: "(11) 99123-4567",
-            email: "carlos@empresamodelo.com.br",
+            email: "cliente@email.com",
             dataNascimento: "15/03/1980",
             papel: "Sócio Administrador",
             estadoCivil: "Casado",
             rg: "12.345.678-9",
             banco: "Banco do Brasil",
             endereco: {
-              logradouro: "Rua das Flores",
+              logradouro: "Endereço do cliente",
               numero: "456",
               complemento: "Apto 201",
               bairro: "Centro",
@@ -109,17 +109,17 @@ export function ClienteDetalhesContent() {
           },
           {
             id: "2",
-            documentoFederal: "987.654.321-00",
-            nome: "MARIA OLIVEIRA COSTA",
+            documentoFederal: "123.456.789-10",
+            nome: "Nome do cliente",
             telefone: "(11) 99987-6543",
-            email: "maria@empresamodelo.com.br",
+            email: "cliente@email.com",
             dataNascimento: "22/07/1985",
             papel: "Sócia",
             estadoCivil: "Solteira",
             rg: "98.765.432-1",
             banco: "Itaú",
             endereco: {
-              logradouro: "Avenida Paulista",
+              logradouro: "Endereço do cliente",
               numero: "1000",
               complemento: "Cobertura",
               bairro: "Bela Vista",
@@ -136,18 +136,18 @@ export function ClienteDetalhesContent() {
     // Retorna dados padrão para CPF
     return {
       // Dados Pessoais
-      nome: "JORGE LUIZ SARAIVA DA COSTA",
-      documento: "327.937.152-04",
+      nome: "Nome do cliente",
+      documento: "123.456.789-10",
       dataNascimento: "15/03/1985",
       rg: "12.345.678-9",
       sexo: "Masculino",
       escolaridade: "Superior Completo",
-      nomeMae: "MARIA COSTA",
+      nomeMae: "Nome da mãe do cliente",
       estadoCivil: "Solteiro",
       nacionalidade: "Brasileira",
       
       // Dados de Contato
-      email: "jorge@email.com",
+      email: "cliente@email.com",
       telefone: "(11) 99999-9999",
       
       // Endereços
@@ -155,7 +155,7 @@ export function ClienteDetalhesContent() {
         {
           id: "1",
           cep: "01234-567",
-          logradouro: "Rua das Flores, 123",
+          logradouro: "Endereço do cliente, 123",
           bairro: "Centro",
           cidade: "São Paulo",
           estado: "SP",

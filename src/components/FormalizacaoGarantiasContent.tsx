@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Filter } from "lucide-react";
@@ -24,22 +23,22 @@ const propostas = [
   {
     numero: "004935629",
     dataEnv: "05/06/2025",
-    nomeCliente: "TESTE LUCCA",
-    documento: "422.817.188-59",
+    nomeCliente: "Nome do cliente",
+    documento: "123.456.789-10",
     valorSolicitado: "R$ 500,00"
   },
   {
     numero: "004935630",
     dataEnv: "04/06/2025",
-    nomeCliente: "JOÃO SILVA SANTOS",
-    documento: "123.456.789-00",
+    nomeCliente: "Nome do cliente",
+    documento: "123.456.789-10",
     valorSolicitado: "R$ 1.200,00"
   },
   {
     numero: "004935631",
     dataEnv: "03/06/2025",
-    nomeCliente: "MARIA OLIVEIRA LTDA",
-    documento: "12.345.678/0001-90",
+    nomeCliente: "Nome do cliente",
+    documento: "12.345.678/0001-00",
     valorSolicitado: "R$ 2.500,00"
   }
 ];
