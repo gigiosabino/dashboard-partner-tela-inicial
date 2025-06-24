@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Search, Download, FileDown } from "lucide-react";
+import { Search, Download, FileDown, AlertTriangle } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -102,6 +102,15 @@ export function ConsultaCcbContent() {
           <h1 className="text-3xl font-bold tracking-tight">Consulta CCB</h1>
           <p className="text-muted-foreground">
             Consulte a disponibilidade de CCBs no SFTP
+          </p>
+        </div>
+
+        {/* Warning Message */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start">
+          <AlertTriangle className="w-5 h-5 text-yellow-600 mr-3 flex-shrink-0 mt-0.5" />
+          <p className="text-yellow-800 font-medium">
+            ⚠️ Atenção: A CCB estará disponível no SFTP apenas se a proposta já tiver passado pelo status "Finalizada".
+            Status anteriores ou sem finalização não geram CCB.
           </p>
         </div>
 
