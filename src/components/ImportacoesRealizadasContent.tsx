@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -93,7 +92,7 @@ export function ImportacoesRealizadasContent() {
 
   return (
     <div className="flex-1 bg-gray-50 min-h-screen">
-      <GlobalHeader />
+      <GlobalHeader title="Importações Realizadas" subtitle="Histórico de todas as importações de dados realizadas no sistema" />
       
       <main className="p-6 space-y-6 max-w-7xl mx-auto">
         <div className="flex items-center justify-between">
@@ -134,7 +133,6 @@ export function ImportacoesRealizadasContent() {
                 </label>
                 <DatePickerWithRange
                   date={selectedDate}
-                  onDateChange={setSelectedDate}
                 />
               </div>
               <div className="flex items-end">
@@ -203,7 +201,7 @@ export function ImportacoesRealizadasContent() {
                         <div className="flex items-center gap-2">
                           <Button 
                             size="sm" 
-                            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white shadow-sm font-medium"
                           >
                             <Eye className="h-3.5 w-3.5" />
                             Visualizar
