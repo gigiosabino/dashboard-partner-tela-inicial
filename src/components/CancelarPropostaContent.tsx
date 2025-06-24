@@ -194,8 +194,7 @@ export function CancelarPropostaContent() {
                       <Button
                         onClick={handleBuscarProposta}
                         disabled={!numeroProposta.trim() || isSearching}
-                        variant="outline"
-                        className="px-3"
+                        className="bg-blue-600 hover:bg-blue-700 text-white shadow-md px-3"
                       >
                         <Search className="w-4 h-4" />
                       </Button>
