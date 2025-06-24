@@ -96,7 +96,7 @@ export function ConsultaCcbContent() {
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <GlobalHeader />
+      <GlobalHeader title="Consulta CCB" />
       
       <div className="space-y-6">
         <div>
@@ -146,7 +146,7 @@ export function ConsultaCcbContent() {
                   className="flex items-center gap-2"
                 >
                   <Download className="h-4 w-4" />
-                  Download Todas ({resultados.filter(r => r.ccbEncontrada).length})
+                  Baixar tudo ({resultados.filter(r => r.ccbEncontrada).length})
                 </Button>
               )}
             </div>
@@ -169,7 +169,7 @@ export function ConsultaCcbContent() {
                       <TableHead>Nro Proposta</TableHead>
                       <TableHead>CCB Encontrada</TableHead>
                       <TableHead>Data Inclusão</TableHead>
-                      <TableHead className="text-right">Ações</TableHead>
+                      <TableHead className="text-center">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -190,7 +190,7 @@ export function ConsultaCcbContent() {
                         <TableCell>
                           {resultado.dataInclusao || '-'}
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-center">
                           {resultado.ccbEncontrada && (
                             <Button
                               size="sm"
