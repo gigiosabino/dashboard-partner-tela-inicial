@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -104,71 +105,6 @@ export function ImportacoesRealizadasContent() {
             <RefreshCw className="h-4 w-4" />
             Atualizar
           </Button>
-        </div>
-
-        {/* Card de Resumo - movido para o topo */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Total de Importações</p>
-                  <p className="text-2xl font-bold text-gray-900">{importacoes.length}</p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <RefreshCw className="h-6 w-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Registros Processados</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {importacoes.reduce((sum, imp) => sum + imp.registrosProcessados, 0).toLocaleString()}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <Eye className="h-6 w-6 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Total de Erros</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {importacoes.reduce((sum, imp) => sum + imp.registrosComErro, 0)}
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                  <Download className="h-6 w-6 text-red-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-600">Taxa de Sucesso</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {Math.round((importacoes.filter(i => i.status === 'Concluída').length / importacoes.length) * 100)}%
-                  </p>
-                </div>
-                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                  <Calendar className="h-6 w-6 text-yellow-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Seção de Filtros */}

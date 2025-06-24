@@ -35,6 +35,7 @@ import {
   RefreshCw,
   Edit,
   FileSpreadsheet,
+  Calendar,
 } from "lucide-react";
 
 export function NovaImportacaoContent() {
@@ -57,6 +58,50 @@ export function NovaImportacaoContent() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
+
+  // Mock data para as importações (dados do histórico)
+  const importacoesHistorico = [
+    {
+      id: "1",
+      nomeArquivo: "clientes_janeiro_2024.csv",
+      dataImportacao: "15/01/2024 14:30",
+      status: "Concluída",
+      registrosProcessados: 1250,
+      registrosComErro: 12,
+      usuarioResponsavel: "Ana Silva",
+      observacoes: "Importação de clientes do primeiro trimestre"
+    },
+    {
+      id: "2", 
+      nomeArquivo: "propostas_dezembro_2023.xlsx",
+      dataImportacao: "10/01/2024 09:15",
+      status: "Concluída",
+      registrosProcessados: 890,
+      registrosComErro: 5,
+      usuarioResponsavel: "Carlos Santos",
+      observacoes: "Propostas finalizadas em dezembro"
+    },
+    {
+      id: "3",
+      nomeArquivo: "contratos_novembro_2023.csv", 
+      dataImportacao: "28/12/2023 16:45",
+      status: "Concluída com Erros",
+      registrosProcessados: 2100,
+      registrosComErro: 45,
+      usuarioResponsavel: "Maria Costa",
+      observacoes: "Alguns contratos com dados incompletos"
+    },
+    {
+      id: "4",
+      nomeArquivo: "garantias_outubro_2023.xlsx",
+      dataImportacao: "15/12/2023 11:20", 
+      status: "Concluída",
+      registrosProcessados: 567,
+      registrosComErro: 0,
+      usuarioResponsavel: "João Oliveira",
+      observacoes: "Importação sem erros"
+    }
+  ];
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -113,42 +158,67 @@ export function NovaImportacaoContent() {
               <h2 className="text-3xl font-bold tracking-tight text-gray-900">Nova Importação</h2>
             </div>
 
-            {/* Cards de Status */}
-            <div className="grid gap-4 md:grid-cols-4">
+            {/* Cards de Resumo das Importações */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Erros</CardTitle>
-                  <div className="h-4 w-4 bg-red-500 rounded"></div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-red-600">{importacaoErros.length}</div>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-600">Total de Importações</p>
+                      <p className="text-2xl font-bold text-gray-900">{importacoesHistorico.length}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <RefreshCw className="h-6 w-6 text-blue-600" />
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
+              
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Sucesso</CardTitle>
-                  <div className="h-4 w-4 bg-green-500 rounded"></div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-green-600">0</div>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-600">Registros Processados</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {importacoesHistorico.reduce((sum, imp) => sum + imp.registrosProcessados, 0).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                      <Download className="h-6 w-6 text-green-600" />
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
+
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Pendente</CardTitle>
-                  <div className="h-4 w-4 bg-yellow-500 rounded"></div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-yellow-600">0</div>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-600">Total de Erros</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {importacoesHistorico.reduce((sum, imp) => sum + imp.registrosComErro, 0)}
+                      </p>
+                    </div>
+                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                      <Download className="h-6 w-6 text-red-600" />
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
+
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total</CardTitle>
-                  <div className="h-4 w-4 bg-blue-500 rounded"></div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-blue-600">{importacaoErros.length}</div>
+                <CardContent className="p-6">
+                  <div className="flex items-center">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-600">Taxa de Sucesso</p>
+                      <p className="text-2xl font-bold text-gray-900">
+                        {Math.round((importacoesHistorico.filter(i => i.status === 'Concluída').length / importacoesHistorico.length) * 100)}%
+                      </p>
+                    </div>
+                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <Calendar className="h-6 w-6 text-yellow-600" />
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
