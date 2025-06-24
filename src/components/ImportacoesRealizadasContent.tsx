@@ -1,8 +1,10 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
-import { GlobalHeader } from "@/components/GlobalHeader";
+
+import { useState } from "react";
+import { GlobalHeader } from "./GlobalHeader";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -11,515 +13,284 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
-import { Search, Eye } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { 
+  Calendar, 
+  Search, 
+  Eye,
+  Download,
+  Filter,
+  RefreshCw
+} from "lucide-react";
+import { DatePickerWithRange } from "./DatePickerWithRange";
 
 export function ImportacoesRealizadasContent() {
-  const [filtroData, setFiltroData] = useState("");
-  const [filtroStatus, setFiltroStatus] = useState("");
-  const [filtroUsuario, setFiltroUsuario] = useState("");
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [selectedImportacao, setSelectedImportacao] = useState<any>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDate, setSelectedDate] = useState<any>(null);
 
-  const importacoesRealizadas = [
+  // Mock data para as importações
+  const importacoes = [
     {
-      id: "IMP001",
-      dataImportacao: "2024-01-15",
-      usuario: "João Silva",
-      arquivo: "limite_credito_janeiro.xlsx",
-      totalRegistros: 150,
-      sucessos: 145,
-      erros: 5,
+      id: "1",
+      nomeArquivo: "clientes_janeiro_2024.csv",
+      dataImportacao: "15/01/2024 14:30",
       status: "Concluída",
-      dadosImportacao: {
-        pessoa: {
-          documentoFederal: "12.345.678/0001-90",
-          tipoPessoa: "Pessoa Jurídica",
-          nomeRazaoSocial: "Empresa Modelo LTDA",
-          nomeFantasia: "Modelo Empresa",
-          email: "contato@empresa.com.br",
-          telefoneFixo: "(11) 3456-7890",
-          telefoneCelular: "(11) 99876-5432"
-        },
-        endereco: {
-          cep: "01234-567",
-          logradouro: "Rua das Empresas",
-          numero: "123",
-          complemento: "Sala 101",
-          bairro: "Centro",
-          cidade: "São Paulo",
-          uf: "SP"
-        },
-        solicitacao: {
-          situacaoInicial: "CAPITAL DE GIRO",
-          tipoOperacao: "CAPITAL DE GIRO",
-          valorSolicitado: "R$ 50.000,00",
-          percentualJuros: "2,50%",
-          prazoMinimo: "30",
-          prazoMaximo: "180",
-          tipoTarifa: "Porcentagem",
-          tarifa: "3,00%",
-          parcelaMinima: "1",
-          parcelaMaxima: "6"
-        },
-        assinantes: [
-          {
-            documentoFederal: "123.456.789-10",
-            nome: "Carlos Silva Santos",
-            telefone: "(11) 99123-4567",
-            email: "carlos@empresa.com.br",
-            dataNascimento: "15/03/1980",
-            papel: "Sócio Administrador",
-            estadoCivil: "Casado",
-            rg: "12.345.678-9",
-            banco: "Banco do Brasil",
-            logradouro: "Rua das Flores",
-            numeroLogradouro: "456",
-            complemento: "Apto 201",
-            cidade: "São Paulo",
-            uf: "SP",
-            ordemAssinatura: "1"
-          },
-          {
-            documentoFederal: "987.654.321-00",
-            nome: "Maria Oliveira Costa",
-            telefone: "(11) 99987-6543",
-            email: "maria@empresa.com.br",
-            dataNascimento: "22/07/1985",
-            papel: "Sócia",
-            estadoCivil: "Solteira",
-            rg: "98.765.432-1",
-            banco: "Itaú",
-            logradouro: "Avenida Paulista",
-            numeroLogradouro: "1000",
-            complemento: "Cobertura",
-            cidade: "São Paulo",
-            uf: "SP",
-            ordemAssinatura: "2"
-          }
-        ]
-      }
+      registrosProcessados: 1250,
+      registrosComErro: 12,
+      usuarioResponsavel: "Ana Silva",
+      observacoes: "Importação de clientes do primeiro trimestre"
     },
     {
-      id: "IMP002",
-      dataImportacao: "2024-01-10",
-      usuario: "Maria Santos",
-      arquivo: "limite_credito_dezembro.xlsx",
-      totalRegistros: 200,
-      sucessos: 200,
-      erros: 0,
+      id: "2", 
+      nomeArquivo: "propostas_dezembro_2023.xlsx",
+      dataImportacao: "10/01/2024 09:15",
       status: "Concluída",
+      registrosProcessados: 890,
+      registrosComErro: 5,
+      usuarioResponsavel: "Carlos Santos",
+      observacoes: "Propostas finalizadas em dezembro"
     },
     {
-      id: "IMP003",
-      dataImportacao: "2024-01-08",
-      usuario: "Pedro Costa",
-      arquivo: "limite_credito_novembro.xlsx",
-      totalRegistros: 100,
-      sucessos: 85,
-      erros: 15,
+      id: "3",
+      nomeArquivo: "contratos_novembro_2023.csv", 
+      dataImportacao: "28/12/2023 16:45",
       status: "Concluída com Erros",
+      registrosProcessados: 2100,
+      registrosComErro: 45,
+      usuarioResponsavel: "Maria Costa",
+      observacoes: "Alguns contratos com dados incompletos"
     },
+    {
+      id: "4",
+      nomeArquivo: "garantias_outubro_2023.xlsx",
+      dataImportacao: "15/12/2023 11:20", 
+      status: "Concluída",
+      registrosProcessados: 567,
+      registrosComErro: 0,
+      usuarioResponsavel: "João Oliveira",
+      observacoes: "Importação sem erros"
+    }
   ];
 
-  const handleViewImportacao = (importacao: any) => {
-    setSelectedImportacao(importacao);
-    setIsViewModalOpen(true);
-  };
-
-  const getStatusColor = (status: string) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case "Concluída":
-        return "bg-green-100 text-green-800";
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Concluída</Badge>;
       case "Concluída com Erros":
-        return "bg-yellow-100 text-yellow-800";
+        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Concluída com Erros</Badge>;
       case "Em Processamento":
-        return "bg-blue-100 text-blue-800";
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Em Processamento</Badge>;
       case "Erro":
-        return "bg-red-100 text-red-800";
+        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Erro</Badge>;
       default:
-        return "bg-gray-100 text-gray-800";
+        return <Badge>{status}</Badge>;
     }
   };
 
+  const filteredImportacoes = importacoes.filter(importacao =>
+    importacao.nomeArquivo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    importacao.usuarioResponsavel.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50">
-        <AppSidebar />
-        <main className="flex-1 flex flex-col">
-          <GlobalHeader title="Importações Realizadas" subtitle="Histórico de importações de limite de crédito" />
-          <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-            <div className="flex items-center justify-between space-y-2">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900">Importações Realizadas</h2>
-            </div>
+    <div className="flex-1 bg-gray-50 min-h-screen">
+      <GlobalHeader />
+      
+      <main className="p-6 space-y-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Importações Realizadas</h1>
+            <p className="text-gray-600 mt-1">Histórico de todas as importações de dados realizadas no sistema</p>
+          </div>
+          <Button className="flex items-center gap-2">
+            <RefreshCw className="h-4 w-4" />
+            Atualizar
+          </Button>
+        </div>
 
-            {/* Filtros */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Filtros</CardTitle>
-                <CardDescription>
-                  Filtre as importações por data, status ou usuário
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 md:grid-cols-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Data da Importação:</label>
-                    <Input
-                      type="date"
-                      value={filtroData}
-                      onChange={(e) => setFiltroData(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Status:</label>
-                    <Select value={filtroStatus} onValueChange={setFiltroStatus}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="concluida">Concluída</SelectItem>
-                        <SelectItem value="concluida-erros">Concluída com Erros</SelectItem>
-                        <SelectItem value="processamento">Em Processamento</SelectItem>
-                        <SelectItem value="erro">Erro</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Usuário:</label>
-                    <Input
-                      placeholder="Digite o nome do usuário"
-                      value={filtroUsuario}
-                      onChange={(e) => setFiltroUsuario(e.target.value)}
-                    />
-                  </div>
-                  <div className="flex items-end">
-                    <Button className="w-full">
-                      <Search className="w-4 h-4 mr-2" />
-                      Pesquisar
-                    </Button>
-                  </div>
+        {/* Seção de Filtros */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Filtros de Pesquisa</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Buscar por nome do arquivo ou usuário
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Digite para buscar..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Período da importação
+                </label>
+                <DatePickerWithRange
+                  date={selectedDate}
+                  onDateChange={setSelectedDate}
+                />
+              </div>
+              <div className="flex items-end">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  Aplicar Filtros
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-            {/* Tabela de Importações */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Histórico de Importações</CardTitle>
-                <CardDescription>
-                  Lista de todas as importações de limite de crédito realizadas
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>ID</TableHead>
-                      <TableHead>Data da Importação</TableHead>
-                      <TableHead>Usuário</TableHead>
-                      <TableHead>Arquivo</TableHead>
-                      <TableHead>Total de Registros</TableHead>
-                      <TableHead>Sucessos</TableHead>
-                      <TableHead>Erros</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Ações</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {importacoesRealizadas.map((importacao) => (
-                      <TableRow key={importacao.id}>
-                        <TableCell className="font-medium">{importacao.id}</TableCell>
-                        <TableCell>{new Date(importacao.dataImportacao).toLocaleDateString('pt-BR')}</TableCell>
-                        <TableCell>{importacao.usuario}</TableCell>
-                        <TableCell>{importacao.arquivo}</TableCell>
-                        <TableCell>{importacao.totalRegistros}</TableCell>
-                        <TableCell className="text-green-600 font-semibold">{importacao.sucessos}</TableCell>
-                        <TableCell className="text-red-600 font-semibold">{importacao.erros}</TableCell>
-                        <TableCell>
-                          <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(importacao.status)}`}>
-                            {importacao.status}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewImportacao(importacao)}
+        {/* Tabela de Importações */}
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Histórico de Importações</CardTitle>
+              <div className="text-sm text-gray-600">
+                {filteredImportacoes.length} importação(ões) encontrada(s)
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="font-semibold">Nome do Arquivo</TableHead>
+                    <TableHead className="font-semibold">Data/Hora</TableHead>
+                    <TableHead className="font-semibold">Status</TableHead>
+                    <TableHead className="font-semibold">Registros</TableHead>
+                    <TableHead className="font-semibold">Erros</TableHead>
+                    <TableHead className="font-semibold">Responsável</TableHead>
+                    <TableHead className="font-semibold">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredImportacoes.map((importacao) => (
+                    <TableRow key={importacao.id} className="hover:bg-gray-50">
+                      <TableCell className="font-medium">
+                        {importacao.nomeArquivo}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-gray-400" />
+                          {importacao.dataImportacao}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(importacao.status)}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <span className="font-medium text-blue-600">
+                          {importacao.registrosProcessados.toLocaleString()}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <span className={`font-medium ${
+                          importacao.registrosComErro > 0 ? 'text-red-600' : 'text-green-600'
+                        }`}>
+                          {importacao.registrosComErro}
+                        </span>
+                      </TableCell>
+                      <TableCell>{importacao.usuarioResponsavel}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button 
+                            size="sm" 
+                            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
                           >
-                            <Eye className="w-4 h-4 mr-2" />
+                            <Eye className="h-3.5 w-3.5" />
                             Visualizar
                           </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="flex items-center gap-1"
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                            Download
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
 
-            {/* Modal de Visualização */}
-            <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>Detalhes da Importação - {selectedImportacao?.id}</DialogTitle>
-                </DialogHeader>
-                {selectedImportacao && selectedImportacao.dadosImportacao && (
-                  <div className="space-y-6">
-                    {/* Seção Pessoa */}
-                    <Card className="border-l-4 border-l-blue-500">
-                      <CardHeader className="bg-blue-50">
-                        <CardTitle className="text-lg text-blue-700">Dados da Pessoa</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4 pt-6">
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">CPF/CNPJ:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.documentoFederal}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Tipo de Pessoa:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.tipoPessoa}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Nome/Razão Social:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.nomeRazaoSocial}</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Nome Fantasia:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.nomeFantasia}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">E-mail:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.email}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Telefone Fixo:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.telefoneFixo}</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-1 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Telefone Celular:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.pessoa.telefoneCelular}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+        {/* Card de Resumo */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-600">Total de Importações</p>
+                  <p className="text-2xl font-bold text-gray-900">{importacoes.length}</p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <RefreshCw className="h-6 w-6 text-blue-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-600">Registros Processados</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {importacoes.reduce((sum, imp) => sum + imp.registrosProcessados, 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <Eye className="h-6 w-6 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-                    {/* Seção Pessoa Endereço */}
-                    <Card className="border-l-4 border-l-blue-500">
-                      <CardHeader className="bg-blue-50">
-                        <CardTitle className="text-lg text-blue-700">Endereço da Pessoa</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4 pt-6">
-                        <div className="grid grid-cols-4 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">CEP:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.cep}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Logradouro:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.logradouro}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Número:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.numero}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Complemento:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.complemento}</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Bairro:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.bairro}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Cidade:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.cidade}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">UF:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.endereco.uf}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-600">Total de Erros</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {importacoes.reduce((sum, imp) => sum + imp.registrosComErro, 0)}
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                  <Download className="h-6 w-6 text-red-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-                    {/* Seção Solicitação Análise de Crédito */}
-                    <Card className="border-l-4 border-l-blue-500">
-                      <CardHeader className="bg-blue-50">
-                        <CardTitle className="text-lg text-blue-700">Solicitação Análise de Crédito</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4 pt-6">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Situação Inicial:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.situacaoInicial}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Tipo de Operação:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.tipoOperacao}</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-4 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Valor Solicitado:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.valorSolicitado}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Percentual de Juros:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.percentualJuros}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Prazo Mínimo (dias):</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.prazoMinimo}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Prazo Máximo (dias):</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.prazoMaximo}</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-4 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Tipo de Tarifa (TA):</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.tipoTarifa}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Tarifa (TA):</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.tarifa}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Parcela Mínima:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.parcelaMinima}</p>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium mb-1">Parcela Máxima:</label>
-                            <p className="text-sm">{selectedImportacao.dadosImportacao.solicitacao.parcelaMaxima}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Seções de Assinantes */}
-                    {selectedImportacao.dadosImportacao.assinantes.map((assinante: any, index: number) => (
-                      <Card key={index} className="border-l-4 border-l-blue-500">
-                        <CardHeader className="bg-blue-50">
-                          <CardTitle className="text-lg text-blue-700">
-                            Assinante {index + 1} - {assinante.papel}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4 pt-6">
-                          <div className="grid grid-cols-3 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Documento Federal:</label>
-                              <p className="text-sm">{assinante.documentoFederal}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Nome:</label>
-                              <p className="text-sm">{assinante.nome}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Telefone/Celular:</label>
-                              <p className="text-sm">{assinante.telefone}</p>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-3 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium mb-1">E-mail:</label>
-                              <p className="text-sm">{assinante.email}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Data de Nascimento:</label>
-                              <p className="text-sm">{assinante.dataNascimento}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Papel:</label>
-                              <p className="text-sm">{assinante.papel}</p>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-3 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Estado Civil:</label>
-                              <p className="text-sm">{assinante.estadoCivil}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">RG:</label>
-                              <p className="text-sm">{assinante.rg}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Banco:</label>
-                              <p className="text-sm">{assinante.banco}</p>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-4 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Logradouro:</label>
-                              <p className="text-sm">{assinante.logradouro}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Número:</label>
-                              <p className="text-sm">{assinante.numeroLogradouro}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Complemento:</label>
-                              <p className="text-sm">{assinante.complemento || "-"}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Cidade:</label>
-                              <p className="text-sm">{assinante.cidade}</p>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-3 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium mb-1">UF:</label>
-                              <p className="text-sm">{assinante.uf}</p>
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium mb-1">Ordem Assinatura:</label>
-                              <p className="text-sm">{assinante.ordemAssinatura}</p>
-                            </div>
-                            <div></div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-
-                    <div className="flex justify-end">
-                      <Button variant="outline" onClick={() => setIsViewModalOpen(false)}>
-                        Fechar
-                      </Button>
-                    </div>
-                  </div>
-                )}
-                {selectedImportacao && !selectedImportacao.dadosImportacao && (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">Dados detalhados não disponíveis para esta importação.</p>
-                    <div className="flex justify-end mt-4">
-                      <Button variant="outline" onClick={() => setIsViewModalOpen(false)}>
-                        Fechar
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </DialogContent>
-            </Dialog>
-          </div>
-        </main>
-      </div>
-    </SidebarProvider>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-600">Taxa de Sucesso</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {Math.round((importacoes.filter(i => i.status === 'Concluída').length / importacoes.length) * 100)}%
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-yellow-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+    </div>
   );
 }

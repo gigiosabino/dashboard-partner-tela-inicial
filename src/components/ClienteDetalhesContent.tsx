@@ -648,10 +648,7 @@ export function ClienteDetalhesContent() {
                   {clienteData.limitesCredito.map((limite, index) => (
                     <div key={limite.id} className="border rounded-lg p-4">
                       <div className="flex justify-between items-center mb-4">
-                        <h4 className="font-medium">Limite {index + 1}</h4>
-                        <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
-                          {limite.numeroLimite}
-                        </span>
+                        <h4 className="font-medium">{limite.modalidade}</h4>
                       </div>
                       <div className="px-2 mb-4">
                         <Separator className="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-200 h-[1px]" />
