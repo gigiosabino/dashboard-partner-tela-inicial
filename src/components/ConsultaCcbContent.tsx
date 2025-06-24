@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -169,7 +168,7 @@ export function ConsultaCcbContent() {
                       <TableHead>Nro Proposta</TableHead>
                       <TableHead>CCB Encontrada</TableHead>
                       <TableHead>Data Inclusão</TableHead>
-                      <TableHead className="text-right">Ações</TableHead>
+                      <TableHead>Ações</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
