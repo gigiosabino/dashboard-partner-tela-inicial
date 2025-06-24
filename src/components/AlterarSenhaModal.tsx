@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface AlterarSenhaModalProps {
@@ -76,9 +76,6 @@ export function AlterarSenhaModal({ open, onOpenChange }: AlterarSenhaModalProps
     onOpenChange(false);
   };
 
-  const passwordErrors = validatePassword(novaSenha);
-  const hasErrors = passwordErrors.length > 0 && novaSenha.length > 0;
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md" hideCloseButton>
@@ -87,6 +84,24 @@ export function AlterarSenhaModal({ open, onOpenChange }: AlterarSenhaModalProps
         </DialogHeader>
         
         <div className="space-y-4">
+          {/* Warning com requisitos da senha */}
+          <div className="bg-red-50 border border-red-200 rounded-md p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <AlertTriangle className="h-5 w-5 text-red-600" />
+              </div>
+              <div className="ml-3">
+                <div className="text-sm text-red-700 space-y-1">
+                  <div>* Senha deve conter ao menos um caractere minúsculo.</div>
+                  <div>* Senha deve conter ao menos um caractere maiúsculo.</div>
+                  <div>* Senha deve conter ao menos um número.</div>
+                  <div>* Senha deve conter ao menos um caractere especial.</div>
+                  <div>* Senha deve conter entre 8 e 20 caracteres.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="nova-senha">Nova senha</Label>
             <div className="relative">
@@ -147,25 +162,6 @@ export function AlterarSenhaModal({ open, onOpenChange }: AlterarSenhaModalProps
           >
             ATUALIZAR SENHA
           </Button>
-
-          {hasErrors && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-3">
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">!</span>
-                  </div>
-                </div>
-                <div className="ml-3">
-                  <div className="text-sm text-red-700 space-y-1">
-                    {passwordErrors.map((error, index) => (
-                      <div key={index}>{error}</div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </DialogContent>
     </Dialog>
