@@ -24,7 +24,7 @@ interface ImportacaoVisualizarModalProps {
   } | null;
 }
 
-// Dados organizados em blocos
+// Dados organizados em blocos conforme solicitado
 const dadosImportacao = {
   empresa: [
     { campo: "CNPJ da empresa", valor: "12.345.678/0001-00", status: "sucesso" },
