@@ -10,7 +10,10 @@ export default function Suporte() {
       <div className="min-h-screen flex w-full">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          <GlobalHeader />
+          <GlobalHeader 
+            title="Suporte" 
+            subtitle="Abra um chamado diretamente pelo sistema"
+          />
           <SuporteContent />
         </SidebarInset>
       </div>
