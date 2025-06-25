@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { GlobalHeader } from "./GlobalHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,10 +22,13 @@ import {
   RefreshCw
 } from "lucide-react";
 import { DatePickerWithRange } from "./DatePickerWithRange";
+import { ImportacaoVisualizarModal } from "./ImportacaoVisualizarModal";
 
 export function ImportacoesRealizadasContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedImportacao, setSelectedImportacao] = useState<any>(null);
 
   // Mock data para as importações
   const importacoes = [
@@ -89,6 +93,11 @@ export function ImportacoesRealizadasContent() {
     importacao.nomeArquivo.toLowerCase().includes(searchTerm.toLowerCase()) ||
     importacao.usuarioResponsavel.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleVisualizarImportacao = (importacao: any) => {
+    setSelectedImportacao(importacao);
+    setModalOpen(true);
+  };
 
   return (
     <div className="flex-1 bg-gray-50 min-h-screen">
@@ -201,6 +210,7 @@ export function ImportacoesRealizadasContent() {
                       <TableCell>
                         <Button 
                           size="sm" 
+                          onClick={() => handleVisualizarImportacao(importacao)}
                           className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white shadow-sm font-medium"
                         >
                           <Eye className="h-3.5 w-3.5" />
@@ -214,6 +224,12 @@ export function ImportacoesRealizadasContent() {
             </div>
           </CardContent>
         </Card>
+
+        <ImportacaoVisualizarModal
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+          importacao={selectedImportacao}
+        />
       </main>
     </div>
   );

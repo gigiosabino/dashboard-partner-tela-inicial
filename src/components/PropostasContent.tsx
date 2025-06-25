@@ -1,8 +1,10 @@
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { GlobalHeader } from "./GlobalHeader";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, Eye, Download } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -11,327 +13,203 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { GlobalHeader } from "@/components/GlobalHeader";
-
-const propostas = [
-  {
-    numero: "056939510",
-    parceiro: "Nome do parceiro",
-    cliente: "Nome do cliente",
-    cpf: "123.456.789-10",
-    valor: "R$ 20.000,00",
-    status: "Aprovada",
-    dataContratacao: "05/06/2025",
-    prazo: "24 meses"
-  },
-  {
-    numero: "056441261",
-    parceiro: "Nome do parceiro",
-    cliente: "Nome do cliente",
-    cpf: "123.456.789-10",
-    valor: "R$ 15.000,00",
-    status: "Paga",
-    dataContratacao: "04/06/2025",
-    prazo: "18 meses"
-  },
-  {
-    numero: "056411663",
-    parceiro: "Nome do parceiro",
-    cliente: "Nome do cliente",
-    cpf: "123.456.789-10",
-    valor: "R$ 30.000,00",
-    status: "Liberada",
-    dataContratacao: "03/06/2025",
-    prazo: "36 meses"
-  },
-  {
-    numero: "056386138",
-    parceiro: "Nome do parceiro",
-    cliente: "Nome do cliente",
-    cpf: "123.456.789-10",
-    valor: "R$ 10.000,00",
-    status: "Finalizada",
-    dataContratacao: "02/06/2025",
-    prazo: "12 meses"
-  }
-];
-
-const getStatusVariant = (status: string) => {
-  switch (status) {
-    case "Aprovada":
-      return "outline";
-    case "Paga":
-      return "default";
-    case "Liberada":
-      return "secondary";
-    case "Finalizada":
-      return "destructive";
-    default:
-      return "outline";
-  }
-};
-
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "Aprovada":
-      return "bg-green-50 text-green-700 border-green-200";
-    case "Paga":
-      return "bg-blue-50 text-blue-700 border-blue-200";
-    case "Liberada":
-      return "bg-yellow-50 text-yellow-700 border-yellow-200";
-    case "Finalizada":
-      return "bg-gray-50 text-gray-700 border-gray-200";
-    default:
-      return "bg-gray-50 text-gray-700 border-gray-200";
-  }
-};
-
-// Função para normalizar strings (remover acentos, converter para minúsculo)
-const normalizeString = (str: string) => {
-  return str
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-};
-
-// Função para remover formatação de CPF
-const removeCpfMask = (cpf: string) => {
-  return cpf.replace(/[.\-]/g, "");
-};
-
-// Função para normalizar número da proposta (remover zeros à esquerda)
-const normalizePropostaNumber = (numero: string) => {
-  return numero.replace(/^0+/, "") || "0";
-};
+import { 
+  Calendar, 
+  Search, 
+  Eye,
+  Download,
+  Filter,
+  RefreshCw
+} from "lucide-react";
+import { DatePickerWithRange } from "./DatePickerWithRange";
+import { Link } from "react-router-dom";
 
 export function PropostasContent() {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-  const [dataInicial, setDataInicial] = useState("");
-  const [dataFinal, setDataFinal] = useState("");
-  const [numeroPropostaFilter, setNumeroPropostaFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [selectedDate, setSelectedDate] = useState<any>(null);
 
-  const handleDetalhes = (numeroProposta: string) => {
-    navigate(`/propostas/${numeroProposta}`);
-  };
-
-  const filteredPropostas = propostas.filter(proposta => {
-    // Filtro por busca geral
-    const searchNormalized = normalizeString(searchTerm);
-    const matchesSearch = 
-      searchTerm === "" ||
-      normalizeString(proposta.cliente).includes(searchNormalized) ||
-      normalizeString(proposta.parceiro).includes(searchNormalized) ||
-      removeCpfMask(proposta.cpf).includes(removeCpfMask(searchTerm)) ||
-      normalizePropostaNumber(proposta.numero).includes(normalizePropostaNumber(searchTerm));
-    
-    // Filtro por número da proposta específico (ignora período quando preenchido)
-    const matchesNumeroProposta = !numeroPropostaFilter || 
-      normalizePropostaNumber(proposta.numero).includes(normalizePropostaNumber(numeroPropostaFilter));
-    
-    // Filtro por status
-    const matchesStatus = !statusFilter || proposta.status === statusFilter;
-    
-    // Filtro por período (ignorado se número da proposta estiver preenchido)
-    let matchesData = true;
-    if (!numeroPropostaFilter && (dataInicial || dataFinal)) {
-      const propostaDate = new Date(proposta.dataContratacao.split('/').reverse().join('-'));
-      const startDate = dataInicial ? new Date(dataInicial) : null;
-      const endDate = dataFinal ? new Date(dataFinal) : null;
-      
-      if (startDate && propostaDate < startDate) matchesData = false;
-      if (endDate && propostaDate > endDate) matchesData = false;
+  // Mock data para as propostas
+  const propostas = [
+    {
+      numero: "2024001",
+      cliente: "Nome do cliente",
+      valor: "R$ 150.000,00",
+      prazo: "24",
+      status: "Ativa",
+      dataContratacao: "15/01/2024",
+      taxaJuros: "2,50%"
+    },
+    {
+      numero: "2024002", 
+      cliente: "Nome do cliente",
+      valor: "R$ 75.500,00",
+      prazo: "12",
+      status: "Pendente",
+      dataContratacao: "10/01/2024",
+      taxaJuros: "2,80%"
+    },
+    {
+      numero: "2024003",
+      cliente: "Nome do cliente", 
+      valor: "R$ 200.000,00",
+      prazo: "36",
+      status: "Ativa",
+      dataContratacao: "08/01/2024",
+      taxaJuros: "2,35%"
+    },
+    {
+      numero: "2024004",
+      cliente: "Nome do cliente",
+      valor: "R$ 95.000,00", 
+      prazo: "18",
+      status: "Cancelada",
+      dataContratacao: "05/01/2024",
+      taxaJuros: "2,65%"
     }
-    
-    return matchesSearch && matchesNumeroProposta && matchesStatus && matchesData;
-  });
+  ];
 
-  const handleLimparFiltros = () => {
-    setDataInicial("");
-    setDataFinal("");
-    setSearchTerm("");
-    setNumeroPropostaFilter("");
-    setStatusFilter("");
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "Ativa":
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Ativa</Badge>;
+      case "Pendente":
+        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pendente</Badge>;
+      case "Cancelada":
+        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Cancelada</Badge>;
+      default:
+        return <Badge>{status}</Badge>;
+    }
   };
 
-  const handleExportarCSV = () => {
-    console.log("Exportando propostas para CSV...");
-  };
+  const filteredPropostas = propostas.filter(proposta =>
+    proposta.numero.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    proposta.cliente.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="flex-1 bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen">
-      <GlobalHeader 
-        title="Propostas Contratadas" 
-        subtitle="Gerencie e acompanhe todas as propostas contratadas" 
-      />
-
-      <main className="p-6">
-        {/* Filtros */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="border-slate-300 hover:bg-slate-50 text-slate-700 shadow-sm">
-                    <Filter className="w-4 h-4 mr-2" />
-                    Filtros
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-96 bg-white p-4 border-slate-200 shadow-lg">
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="text-sm font-medium mb-2 block text-slate-700">Data Inicial</label>
-                        <Input
-                          type="date"
-                          value={dataInicial}
-                          onChange={(e) => setDataInicial(e.target.value)}
-                          className="border-slate-300 focus:border-blue-600 focus:ring-blue-600"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-2 block text-slate-700">Data Final</label>
-                        <Input
-                          type="date"
-                          value={dataFinal}
-                          onChange={(e) => setDataFinal(e.target.value)}
-                          className="border-slate-300 focus:border-blue-600 focus:ring-blue-600"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <label className="text-sm font-medium mb-2 block text-slate-700">Número da Proposta</label>
-                      <Input
-                        placeholder="Digite o número da proposta"
-                        value={numeroPropostaFilter}
-                        onChange={(e) => setNumeroPropostaFilter(e.target.value)}
-                        className="border-slate-300 focus:border-blue-600 focus:ring-blue-600"
-                      />
-                      <p className="text-xs text-slate-500 mt-1">
-                        Ignora o período quando preenchido
-                      </p>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium mb-2 block text-slate-700">Status</label>
-                      <Select value={statusFilter} onValueChange={setStatusFilter}>
-                        <SelectTrigger className="border-slate-300 focus:border-blue-600 focus:ring-blue-600">
-                          <SelectValue placeholder="Selecione o status" />
-                        </SelectTrigger>
-                        <SelectContent className="border-slate-200 bg-white shadow-lg">
-                          <SelectItem value="Aprovada" className="text-slate-700 hover:bg-slate-50">Aprovada</SelectItem>
-                          <SelectItem value="Paga" className="text-slate-700 hover:bg-slate-50">Paga</SelectItem>
-                          <SelectItem value="Liberada" className="text-slate-700 hover:bg-slate-50">Liberada</SelectItem>
-                          <SelectItem value="Finalizada" className="text-slate-700 hover:bg-slate-50">Finalizada</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="flex justify-end space-x-2 pt-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={handleLimparFiltros}
-                        className="border-slate-300 text-slate-600 hover:bg-slate-50"
-                      >
-                        Limpar
-                      </Button>
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white shadow-md">
-                        Aplicar Filtros
-                      </Button>
-                    </div>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              
-              <Button 
-                onClick={handleExportarCSV}
-                variant="outline" 
-                className="border-slate-300 hover:bg-slate-50 text-slate-700 shadow-sm"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Exportar CSV
-              </Button>
-              
-              <span className="text-sm text-slate-600 bg-slate-100 px-3 py-2 rounded-lg border border-slate-200">
-                {filteredPropostas.length} proposta(s) encontrada(s)
-              </span>
-            </div>
-
-            <div className="relative w-80">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-              <Input 
-                placeholder="Buscar por cliente, CPF, proposta ou parceiro" 
-                className="pl-10 border-slate-300 focus:border-blue-600 focus:ring-blue-600 shadow-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+    <div className="flex-1 bg-gray-50 min-h-screen">
+      <GlobalHeader title="Propostas Contratadas" subtitle="Gerencie e visualize todas as propostas contratadas" />
+      
+      <main className="p-6 space-y-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Propostas Contratadas</h1>
+            <p className="text-gray-600 mt-1">Gerencie e visualize todas as propostas contratadas</p>
           </div>
+          <Button className="flex items-center gap-2">
+            <RefreshCw className="h-4 w-4" />
+            Atualizar
+          </Button>
         </div>
+
+        {/* Seção de Filtros */}
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Filtros de Pesquisa</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Buscar por número ou cliente
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Digite para buscar..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Período de contratação
+                </label>
+                <DatePickerWithRange
+                  date={selectedDate}
+                  setDate={setSelectedDate}
+                />
+              </div>
+              <div className="flex items-end">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  Aplicar Filtros
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Tabela de Propostas */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
-                <TableHead className="text-slate-700 font-semibold">Número</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Parceiro</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Cliente</TableHead>
-                <TableHead className="text-slate-700 font-semibold">CPF</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Valor</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Status</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Data Contratação</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Prazo</TableHead>
-                <TableHead className="text-slate-700 font-semibold">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredPropostas.map((proposta) => (
-                <TableRow key={proposta.numero} className="hover:bg-slate-50 border-b border-slate-100">
-                  <TableCell className="font-medium text-blue-700">#{proposta.numero}</TableCell>
-                  <TableCell className="text-slate-700">{proposta.parceiro}</TableCell>
-                  <TableCell className="text-slate-700">{proposta.cliente}</TableCell>
-                  <TableCell className="text-slate-600">{proposta.cpf}</TableCell>
-                  <TableCell className="font-medium text-slate-900">{proposta.valor}</TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusVariant(proposta.status)} className={getStatusColor(proposta.status)}>
-                      {proposta.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-sm text-slate-600">{proposta.dataContratacao}</TableCell>
-                  <TableCell className="text-sm text-slate-600">{proposta.prazo}</TableCell>
-                  <TableCell>
-                    <Button 
-                      size="sm" 
-                      className="bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-                      onClick={() => handleDetalhes(proposta.numero)}
-                    >
-                      <Eye className="w-4 h-4 mr-1" />
-                      Detalhes
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Lista de Propostas</CardTitle>
+              <div className="text-sm text-gray-600">
+                {filteredPropostas.length} proposta(s) encontrada(s)
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50">
+                    <TableHead className="font-semibold">Número</TableHead>
+                    <TableHead className="font-semibold">Cliente</TableHead>
+                    <TableHead className="font-semibold">Valor</TableHead>
+                    <TableHead className="font-semibold">Prazo</TableHead>
+                    <TableHead className="font-semibold">Status</TableHead>
+                    <TableHead className="font-semibold">Data</TableHead>
+                    <TableHead className="font-semibold">Taxa</TableHead>
+                    <TableHead className="font-semibold">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredPropostas.map((proposta) => (
+                    <TableRow key={proposta.numero} className="hover:bg-gray-50">
+                      <TableCell className="font-medium text-blue-600">
+                        {proposta.numero}
+                      </TableCell>
+                      <TableCell>{proposta.cliente}</TableCell>
+                      <TableCell className="font-medium">
+                        {proposta.valor}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {proposta.prazo}
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(proposta.status)}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-gray-400" />
+                          {proposta.dataContratacao}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center font-medium">
+                        {proposta.taxaJuros}
+                      </TableCell>
+                      <TableCell>
+                        <Link to={`/propostas/${proposta.numero}`}>
+                          <Button 
+                            size="sm" 
+                            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white shadow-sm font-medium"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            Ver Detalhes
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );
