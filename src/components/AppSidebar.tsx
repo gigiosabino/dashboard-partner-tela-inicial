@@ -28,6 +28,7 @@ import {
   Receipt,
   Search,
   Upload,
+  HelpCircle,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -102,6 +103,12 @@ const menuItems = [
     icon: Users,
     items: [],
     url: "/gestao-acessos"
+  },
+  {
+    title: "Suporte",
+    icon: HelpCircle,
+    items: [],
+    url: "/suporte"
   },
 ];
 

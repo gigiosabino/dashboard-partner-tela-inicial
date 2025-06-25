@@ -31,6 +31,7 @@ import ClientesCadastrados from "./pages/ClientesCadastrados";
 import ClienteDetalhes from "./pages/ClienteDetalhes";
 import NovaImportacao from "./pages/NovaImportacao";
 import ImportacoesRealizadas from "./pages/ImportacoesRealizadas";
+import Suporte from "./pages/Suporte";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -68,6 +69,7 @@ const App = () => (
           <Route path="/boletos" element={<Boletos />} />
           <Route path="/nova-importacao" element={<NovaImportacao />} />
           <Route path="/importacoes-realizadas" element={<ImportacoesRealizadas />} />
+          <Route path="/suporte" element={<Suporte />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
