@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Settings, Calendar, Save, FileText, Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -201,6 +202,81 @@ export function ConfigurarRelatorioTab() {
     return colors[periodicidade as keyof typeof colors] || "bg-gray-100 text-gray-800";
   };
 
+  const renderCalendarioMensal = () => {
+    const dias = Array.from({ length: 31 }, (_, i) => i + 1);
+    
+    return (
+      <div className="p-4 border rounded-lg bg-white">
+        <div className="text-center mb-4">
+          <h4 className="text-lg font-semibold text-gray-800">Selecione o dia do mês</h4>
+        </div>
+        <div className="grid grid-cols-7 gap-2 max-w-md mx-auto">
+          {dias.map((dia) => (
+            <button
+              key={dia}
+              type="button"
+              onClick={() => setDiaMes(dia.toString())}
+              className={`
+                w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
+                transition-all duration-200
+                ${diaMes === dia.toString() 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }
+              `}
+            >
+              {dia}
+            </button>
+          ))}
+        </div>
+        {diaMes && (
+          <div className="text-center mt-4">
+            <Badge className="bg-blue-100 text-blue-800">
+              Dia {diaMes} selecionado
+            </Badge>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderSeletorSemanal = () => {
+    const diasSemana = [
+      { value: "1", label: "Segunda", shortLabel: "Seg" },
+      { value: "2", label: "Terça", shortLabel: "Ter" },
+      { value: "3", label: "Quarta", shortLabel: "Qua" },
+      { value: "4", label: "Quinta", shortLabel: "Qui" },
+      { value: "5", label: "Sexta", shortLabel: "Sex" },
+      { value: "6", label: "Sábado", shortLabel: "Sáb" },
+      { value: "0", label: "Domingo", shortLabel: "Dom" }
+    ];
+
+    return (
+      <div className="p-4 border rounded-lg bg-white">
+        <div className="text-center mb-4">
+          <h4 className="text-lg font-semibold text-gray-800">Frequência do Relatório</h4>
+        </div>
+        <RadioGroup value={diaSemana} onValueChange={setDiaSemana} className="space-y-3">
+          {diasSemana.map((dia) => (
+            <div key={dia.value} className="flex items-center space-x-3">
+              <RadioGroupItem value={dia.value} id={dia.value} />
+              <Label htmlFor={dia.value} className="text-base font-medium cursor-pointer">
+                {dia.label}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+        {diaSemana && (
+          <div className="mt-4">
+            <Badge className="bg-blue-100 text-blue-800">
+              {diasSemana.find(d => d.value === diaSemana)?.label} selecionado
+            </Badge>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (mostrarNovoRelatorio) {
     return (
       <div className="space-y-6">
@@ -239,52 +315,46 @@ export function ConfigurarRelatorioTab() {
 
               <div className="space-y-2">
                 <Label htmlFor="periodicidade">Periodicidade</Label>
-                <Select value={periodicidade} onValueChange={setPeriodicidade}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione a periodicidade" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Diário">Diário</SelectItem>
-                    <SelectItem value="Semanal">Semanal</SelectItem>
-                    <SelectItem value="Mensal">Mensal</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex space-x-2">
+                  <Button
+                    type="button"
+                    variant={periodicidade === "Diário" ? "default" : "outline"}
+                    onClick={() => setPeriodicidade("Diário")}
+                    className="flex-1"
+                  >
+                    Diário
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={periodicidade === "Semanal" ? "default" : "outline"}
+                    onClick={() => setPeriodicidade("Semanal")}
+                    className="flex-1"
+                  >
+                    Semanal
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={periodicidade === "Mensal" ? "default" : "outline"}
+                    onClick={() => setPeriodicidade("Mensal")}
+                    className="flex-1"
+                  >
+                    Mensal
+                  </Button>
+                </div>
               </div>
             </div>
 
             {periodicidade === "Semanal" && (
               <div className="space-y-2">
-                <Label htmlFor="diaSemana">Dia da Semana</Label>
-                <Select value={diaSemana} onValueChange={setDiaSemana}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione o dia da semana" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {diasSemana.map((dia) => (
-                      <SelectItem key={dia.value} value={dia.value}>
-                        {dia.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label>Dia da Semana</Label>
+                {renderSeletorSemanal()}
               </div>
             )}
 
             {periodicidade === "Mensal" && (
               <div className="space-y-2">
-                <Label htmlFor="diaMes">Dia do Mês</Label>
-                <Select value={diaMes} onValueChange={setDiaMes}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione o dia do mês" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 31 }, (_, i) => i + 1).map((dia) => (
-                      <SelectItem key={dia} value={dia.toString()}>
-                        Dia {dia}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label>Dia do Mês</Label>
+                {renderCalendarioMensal()}
               </div>
             )}
           </CardContent>
