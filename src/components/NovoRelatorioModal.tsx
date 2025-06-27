@@ -137,21 +137,21 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
     const dias = Array.from({ length: 31 }, (_, i) => i + 1);
     
     return (
-      <div className="p-4 border rounded-lg bg-white">
-        <div className="text-center mb-4">
-          <h4 className="text-lg font-semibold text-gray-800">Selecione o dia do mês</h4>
+      <div className="p-3 border rounded-lg bg-white">
+        <div className="text-center mb-3">
+          <h4 className="text-sm font-medium text-gray-800">Dia do mês</h4>
         </div>
-        <div className="grid grid-cols-7 gap-2 max-w-md mx-auto">
+        <div className="grid grid-cols-7 gap-1 max-w-xs mx-auto">
           {dias.map((dia) => (
             <button
               key={dia}
               type="button"
               onClick={() => setDiaMes(dia.toString())}
               className={`
-                w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
+                w-8 h-8 rounded-md flex items-center justify-center text-xs font-medium
                 transition-all duration-200
                 ${diaMes === dia.toString() 
-                  ? 'bg-blue-600 text-white shadow-md' 
+                  ? 'bg-blue-600 text-white shadow-sm' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }
               `}
@@ -161,9 +161,9 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
           ))}
         </div>
         {diaMes && (
-          <div className="text-center mt-4">
-            <Badge className="bg-blue-100 text-blue-800">
-              Dia {diaMes} selecionado
+          <div className="text-center mt-2">
+            <Badge className="bg-blue-100 text-blue-800 text-xs">
+              Dia {diaMes}
             </Badge>
           </div>
         )}
@@ -173,34 +173,34 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
 
   const renderSeletorSemanal = () => {
     const diasSemana = [
-      { value: "1", label: "Segunda", shortLabel: "Seg" },
-      { value: "2", label: "Terça", shortLabel: "Ter" },
-      { value: "3", label: "Quarta", shortLabel: "Qua" },
-      { value: "4", label: "Quinta", shortLabel: "Qui" },
-      { value: "5", label: "Sexta", shortLabel: "Sex" },
-      { value: "6", label: "Sábado", shortLabel: "Sáb" },
-      { value: "0", label: "Domingo", shortLabel: "Dom" }
+      { value: "1", label: "Segunda" },
+      { value: "2", label: "Terça" },
+      { value: "3", label: "Quarta" },
+      { value: "4", label: "Quinta" },
+      { value: "5", label: "Sexta" },
+      { value: "6", label: "Sábado" },
+      { value: "0", label: "Domingo" }
     ];
 
     return (
-      <div className="p-4 border rounded-lg bg-white">
-        <div className="text-center mb-4">
-          <h4 className="text-lg font-semibold text-gray-800">Frequência do Relatório</h4>
+      <div className="p-3 border rounded-lg bg-white">
+        <div className="text-center mb-3">
+          <h4 className="text-sm font-medium text-gray-800">Dia da semana</h4>
         </div>
-        <RadioGroup value={diaSemana} onValueChange={setDiaSemana} className="space-y-3">
+        <RadioGroup value={diaSemana} onValueChange={setDiaSemana} className="space-y-2">
           {diasSemana.map((dia) => (
-            <div key={dia.value} className="flex items-center space-x-3">
+            <div key={dia.value} className="flex items-center space-x-2">
               <RadioGroupItem value={dia.value} id={dia.value} />
-              <Label htmlFor={dia.value} className="text-base font-medium cursor-pointer">
+              <Label htmlFor={dia.value} className="text-sm cursor-pointer">
                 {dia.label}
               </Label>
             </div>
           ))}
         </RadioGroup>
         {diaSemana && (
-          <div className="mt-4">
-            <Badge className="bg-blue-100 text-blue-800">
-              {diasSemana.find(d => d.value === diaSemana)?.label} selecionado
+          <div className="mt-2">
+            <Badge className="bg-blue-100 text-blue-800 text-xs">
+              {diasSemana.find(d => d.value === diaSemana)?.label}
             </Badge>
           </div>
         )}
@@ -272,14 +272,14 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
           {/* Seleção de periodicidade específica */}
           {periodicidade === "Semanal" && (
             <div className="space-y-2">
-              <Label>Dia da Semana</Label>
+              <Label>Frequência</Label>
               {renderSeletorSemanal()}
             </div>
           )}
 
           {periodicidade === "Mensal" && (
             <div className="space-y-2">
-              <Label>Dia do Mês</Label>
+              <Label>Frequência</Label>
               {renderCalendarioMensal()}
             </div>
           )}
