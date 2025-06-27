@@ -6,27 +6,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, X } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Badge } from "@/components/ui/badge";
+import { Search, X, Save } from "lucide-react";
 
 interface NovoRelatorioModalProps {
   open: boolean;
@@ -35,54 +21,67 @@ interface NovoRelatorioModalProps {
   onCancel: () => void;
 }
 
-const camposDisponiveis = [
-  { id: "numero_proposta", nome: "Número da Proposta", categoria: "Proposta" },
-  { id: "cpf_cliente", nome: "CPF do Cliente", categoria: "Cliente" },
-  { id: "nome_cliente", nome: "Nome do Cliente", categoria: "Cliente" },
-  { id: "valor_solicitado", nome: "Valor Solicitado", categoria: "Financeiro" },
-  { id: "valor_aprovado", nome: "Valor Aprovado", categoria: "Financeiro" },
-  { id: "taxa_juros", nome: "Taxa de Juros", categoria: "Financeiro" },
-  { id: "prazo_pagamento", nome: "Prazo de Pagamento", categoria: "Financeiro" },
-  { id: "status_proposta", nome: "Status da Proposta", categoria: "Proposta" },
-  { id: "data_criacao", nome: "Data de Criação", categoria: "Proposta" },
-  { id: "data_aprovacao", nome: "Data de Aprovação", categoria: "Proposta" },
-  { id: "banco_origem", nome: "Banco de Origem", categoria: "Bancário" },
-  { id: "agencia", nome: "Agência", categoria: "Bancário" },
-  { id: "conta", nome: "Conta", categoria: "Bancário" },
-  { id: "tipo_conta", nome: "Tipo de Conta", categoria: "Bancário" },
-  { id: "canal_origem", nome: "Canal de Origem", categoria: "Origem" },
-  { id: "produto", nome: "Produto", categoria: "Produto" },
-  { id: "convenio", nome: "Convênio", categoria: "Produto" },
-  { id: "margem_disponivel", nome: "Margem Disponível", categoria: "Financeiro" },
-  { id: "score_cliente", nome: "Score do Cliente", categoria: "Cliente" },
-  { id: "renda_declarada", nome: "Renda Declarada", categoria: "Cliente" },
-];
-
-const diasSemana = [
-  { value: "1", label: "Segunda-feira" },
-  { value: "2", label: "Terça-feira" },
-  { value: "3", label: "Quarta-feira" },
-  { value: "4", label: "Quinta-feira" },
-  { value: "5", label: "Sexta-feira" },
-  { value: "6", label: "Sábado" },
-  { value: "0", label: "Domingo" },
-];
+const camposDisponiveis = {
+  "PROPOSTA": [
+    { id: "DocumentoCliente", nome: "Documento Cliente", tipo: "string" },
+    { id: "DocumentoPromotor", nome: "Documento Promotor", tipo: "string" },
+    { id: "DocumentoParceiroCorrespondente", nome: "Documento Parceiro Correspondente", tipo: "string" },
+    { id: "CodigoOperacao", nome: "Código Operação", tipo: "string" },
+    { id: "CodigoVersaoCCB", nome: "Código Versão CCB", tipo: "number" },
+    { id: "TipoIndiceFinan", nome: "Tipo Índice Financeiro", tipo: "number" },
+    { id: "PercIndiceFinan", nome: "Percentual Índice Financeiro", tipo: "number" },
+    { id: "VrSolicitado", nome: "Valor Solicitado", tipo: "currency" },
+    { id: "Prazo", nome: "Prazo", tipo: "number" },
+    { id: "PercJurosNegociado", nome: "Percentual Juros Negociado", tipo: "percentage" },
+    { id: "VrIOF", nome: "Valor IOF", tipo: "currency" },
+    { id: "PercIOF", nome: "Percentual IOF", tipo: "percentage" },
+    { id: "PercIOFAdicional", nome: "Percentual IOF Adicional", tipo: "percentage" },
+    { id: "VrParcela", nome: "Valor Parcela", tipo: "currency" },
+    { id: "VrTAC", nome: "Valor TAC", tipo: "currency" },
+    { id: "VrBoleto", nome: "Valor Boleto", tipo: "currency" }
+  ],
+  "DATAS DA PROPOSTA": [
+    { id: "DataCriacao", nome: "Data de Criação", tipo: "date" },
+    { id: "DataAprovacao", nome: "Data de Aprovação", tipo: "date" },
+    { id: "DataFinalizacao", nome: "Data de Finalização", tipo: "date" },
+    { id: "DataLiberacao", nome: "Data de Liberação", tipo: "date" },
+    { id: "DataCessao", nome: "Data de Cessão", tipo: "date" },
+    { id: "DataPagamento", nome: "Data de Pagamento", tipo: "date" },
+    { id: "DataPendenciaPagamento", nome: "Data de Pendência de Pagamento", tipo: "date" }
+  ],
+  "DESEMBOLSO": [
+    { id: "CodigoBanco", nome: "Código Banco", tipo: "number" },
+    { id: "TipoConta", nome: "Tipo Conta", tipo: "number" },
+    { id: "Agencia", nome: "Agência", tipo: "string" },
+    { id: "AgenciaDig", nome: "Dígito Agência", tipo: "string" },
+    { id: "Conta", nome: "Conta", tipo: "string" },
+    { id: "ContaDig", nome: "Dígito Conta", tipo: "string" },
+    { id: "NumeroBanco", nome: "Número Banco", tipo: "string" },
+    { id: "DocumentoFederalPagamento", nome: "Documento Federal Pagamento", tipo: "string" },
+    { id: "NomePagamento", nome: "Nome Pagamento", tipo: "string" }
+  ],
+  "SPLIT": [
+    { id: "CampoID", nome: "Campo ID", tipo: "string" },
+    { id: "VlrTransacao", nome: "Valor Transação", tipo: "currency" },
+    { id: "DtPagamento", nome: "Data Pagamento", tipo: "date" },
+    { id: "LinhaDigitavel", nome: "Linha Digitável", tipo: "string" },
+    { id: "CodigoBanco", nome: "Código Banco", tipo: "number" },
+    { id: "NumeroBanco", nome: "Número Banco", tipo: "string" },
+    { id: "TipoConta", nome: "Tipo Conta", tipo: "number" },
+    { id: "DocumentoFederal", nome: "Documento Federal", tipo: "string" },
+    { id: "NomePagamento", nome: "Nome Pagamento", tipo: "string" },
+    { id: "DocumentoFederalCedente", nome: "Documento Federal Cedente", tipo: "string" },
+    { id: "NomeCedente", nome: "Nome Cedente", tipo: "string" }
+  ]
+};
 
 export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: NovoRelatorioModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [nomeRelatorio, setNomeRelatorio] = useState("");
-  const [descricaoRelatorio, setDescricaoRelatorio] = useState("");
-  const [frequencia, setFrequencia] = useState("");
+  const [periodicidade, setPeriodicidade] = useState("");
   const [diaSemana, setDiaSemana] = useState("");
   const [diaMes, setDiaMes] = useState("");
-
-  const form = useForm();
-
-  const camposFiltrados = camposDisponiveis.filter(campo =>
-    campo.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    campo.categoria.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const handleFieldToggle = (fieldId: string) => {
     setSelectedFields(prev =>
@@ -93,35 +92,136 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
   };
 
   const handleSave = () => {
-    // Aqui você pode adicionar validações se necessário
-    console.log({
-      nome: nomeRelatorio,
-      descricao: descricaoRelatorio,
-      campos: selectedFields,
-      frequencia,
-      diaSemana,
-      diaMes
-    });
+    if (!nomeRelatorio.trim()) {
+      return;
+    }
+    if (!periodicidade) {
+      return;
+    }
+    if (selectedFields.length === 0) {
+      return;
+    }
+    if (periodicidade === "Semanal" && !diaSemana) {
+      return;
+    }
+    if (periodicidade === "Mensal" && !diaMes) {
+      return;
+    }
+
     onSave();
+    handleCancel();
   };
 
   const handleCancel = () => {
-    // Limpar formulário
     setNomeRelatorio("");
-    setDescricaoRelatorio("");
     setSelectedFields([]);
-    setFrequencia("");
+    setPeriodicidade("");
     setDiaSemana("");
     setDiaMes("");
     setSearchTerm("");
     onCancel();
   };
 
-  const categorias = [...new Set(camposFiltrados.map(campo => campo.categoria))];
+  const getTipoBadge = (tipo: string) => {
+    const colors = {
+      "string": "bg-blue-100 text-blue-800",
+      "number": "bg-green-100 text-green-800",
+      "currency": "bg-yellow-100 text-yellow-800",
+      "percentage": "bg-purple-100 text-purple-800",
+      "date": "bg-red-100 text-red-800"
+    };
+    return colors[tipo as keyof typeof colors] || "bg-gray-100 text-gray-800";
+  };
+
+  const renderCalendarioMensal = () => {
+    const dias = Array.from({ length: 31 }, (_, i) => i + 1);
+    
+    return (
+      <div className="p-4 border rounded-lg bg-white">
+        <div className="text-center mb-4">
+          <h4 className="text-lg font-semibold text-gray-800">Selecione o dia do mês</h4>
+        </div>
+        <div className="grid grid-cols-7 gap-2 max-w-md mx-auto">
+          {dias.map((dia) => (
+            <button
+              key={dia}
+              type="button"
+              onClick={() => setDiaMes(dia.toString())}
+              className={`
+                w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
+                transition-all duration-200
+                ${diaMes === dia.toString() 
+                  ? 'bg-blue-600 text-white shadow-md' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }
+              `}
+            >
+              {dia}
+            </button>
+          ))}
+        </div>
+        {diaMes && (
+          <div className="text-center mt-4">
+            <Badge className="bg-blue-100 text-blue-800">
+              Dia {diaMes} selecionado
+            </Badge>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderSeletorSemanal = () => {
+    const diasSemana = [
+      { value: "1", label: "Segunda", shortLabel: "Seg" },
+      { value: "2", label: "Terça", shortLabel: "Ter" },
+      { value: "3", label: "Quarta", shortLabel: "Qua" },
+      { value: "4", label: "Quinta", shortLabel: "Qui" },
+      { value: "5", label: "Sexta", shortLabel: "Sex" },
+      { value: "6", label: "Sábado", shortLabel: "Sáb" },
+      { value: "0", label: "Domingo", shortLabel: "Dom" }
+    ];
+
+    return (
+      <div className="p-4 border rounded-lg bg-white">
+        <div className="text-center mb-4">
+          <h4 className="text-lg font-semibold text-gray-800">Frequência do Relatório</h4>
+        </div>
+        <RadioGroup value={diaSemana} onValueChange={setDiaSemana} className="space-y-3">
+          {diasSemana.map((dia) => (
+            <div key={dia.value} className="flex items-center space-x-3">
+              <RadioGroupItem value={dia.value} id={dia.value} />
+              <Label htmlFor={dia.value} className="text-base font-medium cursor-pointer">
+                {dia.label}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+        {diaSemana && (
+          <div className="mt-4">
+            <Badge className="bg-blue-100 text-blue-800">
+              {diasSemana.find(d => d.value === diaSemana)?.label} selecionado
+            </Badge>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const camposFiltrados = Object.entries(camposDisponiveis).reduce((acc, [categoria, campos]) => {
+    const filtrados = campos.filter(campo =>
+      campo.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      categoria.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    if (filtrados.length > 0) {
+      acc[categoria] = filtrados;
+    }
+    return acc;
+  }, {} as typeof camposDisponiveis);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Novo Relatório Personalizado</DialogTitle>
         </DialogHeader>
@@ -139,15 +239,50 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="descricaoRelatorio">Descrição</Label>
-              <Input
-                id="descricaoRelatorio"
-                placeholder="Digite uma descrição para o relatório"
-                value={descricaoRelatorio}
-                onChange={(e) => setDescricaoRelatorio(e.target.value)}
-              />
+              <Label>Periodicidade</Label>
+              <div className="flex space-x-2">
+                <Button
+                  type="button"
+                  variant={periodicidade === "Diário" ? "default" : "outline"}
+                  onClick={() => setPeriodicidade("Diário")}
+                  className="flex-1"
+                >
+                  Diário
+                </Button>
+                <Button
+                  type="button"
+                  variant={periodicidade === "Semanal" ? "default" : "outline"}
+                  onClick={() => setPeriodicidade("Semanal")}
+                  className="flex-1"
+                >
+                  Semanal
+                </Button>
+                <Button
+                  type="button"
+                  variant={periodicidade === "Mensal" ? "default" : "outline"}
+                  onClick={() => setPeriodicidade("Mensal")}
+                  className="flex-1"
+                >
+                  Mensal
+                </Button>
+              </div>
             </div>
           </div>
+
+          {/* Seleção de periodicidade específica */}
+          {periodicidade === "Semanal" && (
+            <div className="space-y-2">
+              <Label>Dia da Semana</Label>
+              {renderSeletorSemanal()}
+            </div>
+          )}
+
+          {periodicidade === "Mensal" && (
+            <div className="space-y-2">
+              <Label>Dia do Mês</Label>
+              {renderCalendarioMensal()}
+            </div>
+          )}
 
           {/* Seleção de campos */}
           <div className="space-y-4">
@@ -171,84 +306,34 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
 
             {/* Lista de campos por categoria */}
             <div className="max-h-60 overflow-y-auto border rounded-lg p-4 space-y-4">
-              {categorias.map(categoria => (
+              {Object.entries(camposFiltrados).map(([categoria, campos]) => (
                 <div key={categoria}>
-                  <h4 className="font-medium text-blue-600 mb-2">{categoria}</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {camposFiltrados
-                      .filter(campo => campo.categoria === categoria)
-                      .map(campo => (
-                        <div key={campo.id} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={campo.id}
-                            checked={selectedFields.includes(campo.id)}
-                            onCheckedChange={() => handleFieldToggle(campo.id)}
-                          />
-                          <Label htmlFor={campo.id} className="text-sm cursor-pointer">
+                  <h4 className="font-semibold text-lg text-gray-900 border-b border-gray-200 pb-2 mb-3">
+                    {categoria}
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {campos.map((campo) => (
+                      <div key={campo.id} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+                        <Checkbox
+                          id={campo.id}
+                          checked={selectedFields.includes(campo.id)}
+                          onCheckedChange={() => handleFieldToggle(campo.id)}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <label htmlFor={campo.id} className="text-sm font-medium text-gray-900 cursor-pointer">
                             {campo.nome}
-                          </Label>
+                          </label>
+                          <div className="mt-1">
+                            <Badge className={getTipoBadge(campo.tipo)}>
+                              {campo.tipo}
+                            </Badge>
+                          </div>
                         </div>
-                      ))}
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Configuração de agendamento */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Agendamento do Relatório</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Frequência</Label>
-                <Select value={frequencia} onValueChange={setFrequencia}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione a frequência" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="diario">Diário</SelectItem>
-                    <SelectItem value="semanal">Semanal</SelectItem>
-                    <SelectItem value="mensal">Mensal</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {frequencia === "semanal" && (
-                <div className="space-y-2">
-                  <Label>Dia da Semana</Label>
-                  <Select value={diaSemana} onValueChange={setDiaSemana}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o dia" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {diasSemana.map(dia => (
-                        <SelectItem key={dia.value} value={dia.value}>
-                          {dia.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-
-              {frequencia === "mensal" && (
-                <div className="space-y-2">
-                  <Label>Dia do Mês</Label>
-                  <Select value={diaMes} onValueChange={setDiaMes}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o dia" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 31 }, (_, i) => i + 1).map(dia => (
-                        <SelectItem key={dia} value={dia.toString()}>
-                          Dia {dia}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
             </div>
           </div>
 
@@ -259,9 +344,10 @@ export function NovoRelatorioModal({ open, onOpenChange, onSave, onCancel }: Nov
             </Button>
             <Button 
               onClick={handleSave}
-              disabled={!nomeRelatorio || selectedFields.length === 0}
+              disabled={!nomeRelatorio || selectedFields.length === 0 || !periodicidade}
               className="bg-blue-600 hover:bg-blue-700"
             >
+              <Save className="w-4 h-4 mr-2" />
               Salvar Relatório
             </Button>
           </div>
